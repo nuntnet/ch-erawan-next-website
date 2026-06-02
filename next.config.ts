@@ -20,7 +20,7 @@ const securityHeaders = [
       "img-src 'self' data: blob: res.cloudinary.com *.notion.so images.unsplash.com *.s3.amazonaws.com *.cloudfront.net *.amazonaws.com img.youtube.com files.manuscdn.com d2xsxph8kpxj0f.cloudfront.net www.gwm.co.th www.kia.com www.mitsubishi-motors.co.th www.mitsubishi-motors.com www.ford.co.th www.changan.co.th imgcdn.zigwheels.co.th upload.wikimedia.org *.tile.openstreetmap.org",
       "media-src 'self' res.cloudinary.com",
       "connect-src 'self' *.notion.so api.notion.com *.googleapis.com vitals.vercel-insights.com *.vercel-insights.com *.tile.openstreetmap.org",
-      "frame-src www.youtube.com www.google.com maps.google.com *.googlemaps.com *.google.com",
+      "frame-src www.youtube.com www.google.com maps.google.com *.googlemaps.com *.google.com www.tiktok.com *.tiktok.com",
       "worker-src 'self' blob:",
     ].join("; "),
   },

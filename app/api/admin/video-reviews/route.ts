@@ -7,10 +7,13 @@ import { revalidatePath } from "next/cache";
 const PLATFORMS = ["YouTube", "TikTok"] as const;
 const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
 
+const SOURCES = ["own", "external"] as const;
+
 const schema = z.object({
   title: z.string().min(1),
   brand: z.enum(BRANDS),
   platform: z.enum(PLATFORMS),
+  source: z.enum(SOURCES).default("external"),
   videoUrl: z.string().url(),
   thumbnailUrl: z.string().url().nullable().optional(),
   description: z.string().optional().default(""),

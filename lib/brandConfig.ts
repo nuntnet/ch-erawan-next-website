@@ -108,8 +108,9 @@ export const BRANDS: BrandConfig[] = [
     ],
     showroomImageUrl: "https://res.cloudinary.com/n5llrdnq/image/upload/v1780232080/f89626b59ed4a3e4d1e8bd9bc02425aab34baac9_pfkga4.png",
     social: {
-      facebook: "https://www.facebook.com/mazdacherawannakhonpathom",
-      line: "https://line.me/R/ti/p/@mazdach.erawan",
+      facebook: "https://www.facebook.com/MazdaCh.Erawan/",
+      youtube: "https://www.youtube.com/@Ch.Erawan",
+      line: "https://lin.ee/NLeKZy6",
     },
   },
   {
@@ -133,8 +134,10 @@ export const BRANDS: BrandConfig[] = [
     ],
     showroomImageUrl: "https://res.cloudinary.com/n5llrdnq/image/upload/v1780232079/7d595956bfc73f66b458b3bf124456e0c87daefe_h8rdtn.png",
     social: {
-      facebook: "https://www.facebook.com/fordcherawan",
-      line: "https://line.me/R/ti/p/@fordch.erawan",
+      facebook: "https://www.facebook.com/FordCh.Erawan/",
+      tiktok: "https://www.tiktok.com/@ch.erawan.nakhonp",
+      youtube: "https://www.youtube.com/@Ch.Erawan",
+      line: "https://lin.ee/PhIWeTl",
     },
   },
   {
@@ -156,8 +159,10 @@ export const BRANDS: BrandConfig[] = [
     ],
     showroomImageUrl: "https://res.cloudinary.com/n5llrdnq/image/upload/v1780232079/2025-08-07_ehic0w.webp",
     social: {
-      facebook: "https://www.facebook.com/mitsucherawan",
-      line: "https://line.me/R/ti/p/@mitsuch.erawan",
+      facebook: "https://www.facebook.com/mitsuch.erawan/",
+      tiktok: "https://www.tiktok.com/@mitsubishi_ch.erawan",
+      youtube: "https://www.youtube.com/@Ch.Erawan",
+      line: "https://lin.ee/N7UjCTE",
     },
   },
   {
@@ -180,9 +185,10 @@ export const BRANDS: BrandConfig[] = [
     showroomImageUrl: "https://res.cloudinary.com/n5llrdnq/image/upload/v1780232081/23356b8dd4f6a0f0f343dd8c5731f5b33565adf9_yogc1z.png",
     subLines: GWM_SUB_LINES,
     social: {
-      facebook: "https://www.facebook.com/gwmcherawan",
-      tiktok: "https://www.tiktok.com/@gwmcherawan",
-      line: "https://line.me/R/ti/p/@gwmch.erawan",
+      facebook: "https://www.facebook.com/GWMCh.Erawan/",
+      tiktok: "https://www.tiktok.com/@gwm.cherawan",
+      youtube: "https://www.youtube.com/@Ch.Erawan",
+      line: "https://lin.ee/xKFaZcUG",
     },
   },
   {
@@ -203,8 +209,10 @@ export const BRANDS: BrandConfig[] = [
     hubPath: "/deepal",
     showroomImageUrl: "https://res.cloudinary.com/n5llrdnq/image/upload/v1780232080/078345fc0504bfe8a7a869aefe1b8c3657f392be_afwo4t.png",
     social: {
-      facebook: "https://www.facebook.com/deepalcherawan",
-      line: "https://line.me/R/ti/p/@deepalch.erawan",
+      facebook: "https://www.facebook.com/deepalcherawan/",
+      tiktok: "https://www.tiktok.com/@deepalsalaya",
+      youtube: "https://www.youtube.com/@Ch.Erawan",
+      line: "https://lin.ee/vK6Z54v",
     },
     featuredModels: [
       { name: "Lumin", slug: "deepal-lumin-2026" },
@@ -236,8 +244,10 @@ export const BRANDS: BrandConfig[] = [
     ],
     showroomImageUrl: "https://res.cloudinary.com/n5llrdnq/image/upload/v1780232079/c07d5385558a48bc887dc7c14bc8c6cd5d9ed80a_gkgjv8.png",
     social: {
-      facebook: "https://www.facebook.com/kiacherawan",
-      line: "https://line.me/R/ti/p/@kiach.erawan",
+      facebook: "https://www.facebook.com/KiaCh.Erawan/",
+      tiktok: "https://www.tiktok.com/@kia.cherawan",
+      youtube: "https://www.youtube.com/@Ch.Erawan",
+      line: "https://lin.ee/XQiajzI",
     },
   },
 ];

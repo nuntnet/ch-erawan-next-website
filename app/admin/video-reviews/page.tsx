@@ -13,6 +13,17 @@ import Pagination from "@/components/admin/Pagination";
 
 const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
 const PLATFORMS = ["YouTube", "TikTok"] as const;
+const SOURCES = ["own", "external"] as const;
+
+const SOURCE_LABELS: Record<string, string> = {
+  own: "ช่องเรา",
+  external: "ช่องอื่น",
+};
+
+const SOURCE_COLORS: Record<string, string> = {
+  own: "bg-emerald-50 text-emerald-700",
+  external: "bg-gray-50 text-gray-600",
+};
 
 const BRAND_COLORS: Record<string, string> = {
   Mazda: "bg-red-50 text-red-700",
@@ -32,6 +43,7 @@ type FormData = {
   title: string;
   brand: typeof BRANDS[number];
   platform: typeof PLATFORMS[number];
+  source: typeof SOURCES[number];
   videoUrl: string;
   thumbnailUrl: string;
   description: string;
@@ -40,7 +52,7 @@ type FormData = {
 };
 
 const EMPTY_FORM: FormData = {
-  title: "", brand: "GWM", platform: "YouTube",
+  title: "", brand: "GWM", platform: "YouTube", source: "external",
   videoUrl: "", thumbnailUrl: "", description: "",
   isActive: true, sortOrder: 0,
 };
@@ -66,6 +78,7 @@ export default function AdminVideoReviewsPage() {
   const [search, setSearch] = useState("");
   const [brandFilter, setBrandFilter] = useState<string>("all");
   const [platformFilter, setPlatformFilter] = useState<string>("all");
+  const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
   const resetPage = () => setPage(1);
@@ -92,7 +105,8 @@ export default function AdminVideoReviewsPage() {
     const matchSearch = !q || v.title.toLowerCase().includes(q) || v.brand.toLowerCase().includes(q);
     const matchBrand = brandFilter === "all" || v.brand === brandFilter;
     const matchPlatform = platformFilter === "all" || v.platform === platformFilter;
-    return matchSearch && matchBrand && matchPlatform;
+    const matchSource = sourceFilter === "all" || v.source === sourceFilter;
+    return matchSearch && matchBrand && matchPlatform && matchSource;
   });
 
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -109,6 +123,7 @@ export default function AdminVideoReviewsPage() {
       title: v.title,
       brand: v.brand as typeof BRANDS[number],
       platform: v.platform,
+      source: (v.source || "external") as typeof SOURCES[number],
       videoUrl: v.videoUrl,
       thumbnailUrl: v.thumbnailUrl ?? "",
       description: v.description,
@@ -215,6 +230,15 @@ export default function AdminVideoReviewsPage() {
           <option value="all">— ทุก Platform —</option>
           {PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}
         </select>
+        <select
+          value={sourceFilter}
+          onChange={(e) => { setSourceFilter(e.target.value); resetPage(); }}
+          className="border border-[#E2E8F0] rounded-xl px-3 py-2 text-sm"
+        >
+          <option value="all">— ทุกแหล่ง —</option>
+          <option value="own">ช่องเรา</option>
+          <option value="external">ช่องอื่น</option>
+        </select>
       </div>
 
       {/* Table */}
@@ -234,6 +258,7 @@ export default function AdminVideoReviewsPage() {
                   <th className="text-left px-4 py-3 font-medium text-[#64748B]">รีวิว</th>
                   <th className="text-left px-4 py-3 font-medium text-[#64748B] hidden md:table-cell">แบรนด์</th>
                   <th className="text-left px-4 py-3 font-medium text-[#64748B] hidden sm:table-cell">Platform</th>
+                  <th className="text-left px-4 py-3 font-medium text-[#64748B] hidden lg:table-cell">แหล่ง</th>
                   <th className="text-center px-4 py-3 font-medium text-[#64748B]">เผยแพร่</th>
                   <th className="text-right px-4 py-3 font-medium text-[#64748B]">จัดการ</th>
                 </tr>
@@ -269,6 +294,11 @@ export default function AdminVideoReviewsPage() {
                       <td className="px-4 py-3 hidden sm:table-cell">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${PLATFORM_COLORS[v.platform] ?? ""}`}>
                           {v.platform}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 hidden lg:table-cell">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${SOURCE_COLORS[v.source] ?? SOURCE_COLORS.external}`}>
+                          {SOURCE_LABELS[v.source] ?? "ช่องอื่น"}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-center">
@@ -331,7 +361,7 @@ export default function AdminVideoReviewsPage() {
                 <input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                   className="w-full border border-[#E2E8F0] rounded-xl px-3 py-2 text-sm" placeholder="ชื่อรีวิวรถ..." />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-[#0F172A] mb-1.5">แบรนด์ *</label>
                   <select value={form.brand} onChange={(e) => setForm((f) => ({ ...f, brand: e.target.value as typeof BRANDS[number] }))}
@@ -344,6 +374,14 @@ export default function AdminVideoReviewsPage() {
                   <select value={form.platform} onChange={(e) => setForm((f) => ({ ...f, platform: e.target.value as typeof PLATFORMS[number] }))}
                     className="w-full border border-[#E2E8F0] rounded-xl px-3 py-2 text-sm">
                     {PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#0F172A] mb-1.5">แหล่งที่มา</label>
+                  <select value={form.source} onChange={(e) => setForm((f) => ({ ...f, source: e.target.value as typeof SOURCES[number] }))}
+                    className="w-full border border-[#E2E8F0] rounded-xl px-3 py-2 text-sm">
+                    <option value="own">ช่องเรา</option>
+                    <option value="external">ช่องอื่น</option>
                   </select>
                 </div>
               </div>

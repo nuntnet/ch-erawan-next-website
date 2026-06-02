@@ -50,14 +50,14 @@ function getYouTubeId(url: string): string | null {
   return null;
 }
 
-/** Extract TikTok video ID */
-function getTikTokId(url: string): string | null {
-  const m = url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
-  return m ? m[1] : null;
-}
-
 function getYouTubeThumbnail(videoId: string) {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+}
+
+/** Get TikTok embed URL from video URL */
+function getTikTokEmbedUrl(url: string): string | null {
+  const id = url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/)?.[1];
+  return id ? `https://www.tiktok.com/embed/v2/${id}` : null;
 }
 
 /** YouTube subscribe URL — use brand social config, or a sensible fallback */
@@ -90,6 +90,16 @@ export default async function BrandReviewsPage({ params }: PageProps) {
     { name: "รีวิวรถ", path: `${brand.hubPath}/reviews` },
   ];
 
+  // แยก own (ช่องเรา) vs external (ช่องอื่น)
+  const ownVideos = videos.filter((v) => v.source === "own");
+  const extVideos = videos.filter((v) => v.source !== "own");
+
+  const ownYt = ownVideos.filter((v) => v.platform === "YouTube");
+  const ownTt = ownVideos.filter((v) => v.platform === "TikTok");
+  const extYt = extVideos.filter((v) => v.platform === "YouTube");
+  const extTt = extVideos.filter((v) => v.platform === "TikTok");
+
+  // Legacy compat
   const ytVideos = videos.filter((v) => v.platform === "YouTube");
   const ttVideos = videos.filter((v) => v.platform === "TikTok");
 
@@ -161,143 +171,195 @@ export default async function BrandReviewsPage({ params }: PageProps) {
             </div>
           </section>
         ) : (
-          <section className="container py-12 lg:py-16 space-y-12">
-
-            {/* YouTube */}
-            {ytVideos.length > 0 && (
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex items-center gap-2 bg-red-600 text-white text-sm font-semibold px-3 py-1.5 rounded-full">
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                    </svg>
-                    YouTube
+          <div className="space-y-0">
+            {/* ── ช่อง ช.เอราวัณ (Own) ── */}
+            {ownVideos.length > 0 && (
+              <section className="container py-12 lg:py-16 space-y-10">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-lg font-bold text-[#0F172A]">จากช่อง ช.เอราวัณ</h2>
+                    <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Official</span>
                   </div>
-                  <div className="flex-1 h-px bg-gray-200" />
-                  <span className="text-xs text-gray-400 mr-2">{ytVideos.length} วิดีโอ</span>
-                  {subscribeUrl && (
-                    <a
-                      href={subscribeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-full transition-colors shrink-0"
-                    >
-                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current">
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                      </svg>
-                      Subscribe
-                    </a>
-                  )}
+                  <p className="text-sm text-gray-500 mb-6">รีวิวและแนะนำรถยนต์โดยทีมงาน ช.เอราวัณ ออโต้ กรุป</p>
                 </div>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {ytVideos.map((video) => {
-                    const ytId = getYouTubeId(video.videoUrl);
-                    const thumb = video.thumbnailUrl || (ytId ? getYouTubeThumbnail(ytId) : null);
-                    return (
-                      <a
-                        key={video.id}
-                        href={video.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
-                      >
-                        {/* Thumbnail */}
-                        <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                          {thumb ? (
-                            <img
-                              src={thumb}
-                              alt={video.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900" />
-                          )}
-                          {/* Play overlay */}
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                            <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                              <Play className="w-6 h-6 text-white fill-current ml-0.5" />
+                {/* Own YouTube */}
+                {ownYt.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="flex items-center gap-2 bg-red-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        YouTube
+                      </div>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <span className="text-xs text-gray-400 mr-2">{ownYt.length} วิดีโอ</span>
+                      {subscribeUrl && (
+                        <a href={subscribeUrl} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-full transition-colors shrink-0">
+                          Subscribe
+                        </a>
+                      )}
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {ownYt.map((video) => {
+                        const ytId = getYouTubeId(video.videoUrl);
+                        const thumb = video.thumbnailUrl || (ytId ? getYouTubeThumbnail(ytId) : null);
+                        return (
+                          <a key={video.id} href={video.videoUrl} target="_blank" rel="noopener noreferrer"
+                            className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div className="relative aspect-video bg-gray-900 overflow-hidden">
+                              {thumb ? (
+                                <img src={thumb} alt={video.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900" />
+                              )}
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                                <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                  <Play className="w-6 h-6 text-white fill-current ml-0.5" />
+                                </div>
+                              </div>
+                              <div className="absolute bottom-2 left-2 bg-emerald-600 text-white text-[10px] px-1.5 py-0.5 rounded font-medium">ช.เอราวัณ</div>
+                            </div>
+                            <div className="p-4">
+                              <h3 className="font-semibold text-[#0F172A] text-sm leading-snug line-clamp-2 group-hover:text-[#C8102E] transition-colors">{video.title}</h3>
+                              {video.description && <p className="text-xs text-gray-500 mt-1.5 line-clamp-2">{video.description}</p>}
+                            </div>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Own TikTok */}
+                {ownTt.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="flex items-center gap-2 bg-[#010101] text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        TikTok
+                      </div>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <span className="text-xs text-gray-400">{ownTt.length} วิดีโอ</span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {ownTt.map((video) => {
+                        const embedUrl = getTikTokEmbedUrl(video.videoUrl);
+                        return (
+                          <div key={video.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
+                              {embedUrl ? (
+                                <iframe src={embedUrl} className="w-full h-full border-0" allow="encrypted-media" allowFullScreen loading="lazy" title={video.title} />
+                              ) : (
+                                <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                  <span className="text-white/50 text-xs">ดูบน TikTok</span>
+                                </a>
+                              )}
+                            </div>
+                            <div className="p-3">
+                              <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-[#0F172A] line-clamp-2 hover:text-[#C8102E] transition-colors">{video.title}</a>
                             </div>
                           </div>
-                          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded">
-                            YouTube
-                          </div>
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-semibold text-[#0F172A] text-sm leading-snug line-clamp-2 group-hover:text-[#C8102E] transition-colors">
-                            {video.title}
-                          </h3>
-                          {video.description && (
-                            <p className="text-xs text-gray-500 mt-1.5 line-clamp-2">
-                              {video.description}
-                            </p>
-                          )}
-                        </div>
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </section>
             )}
 
-            {/* TikTok */}
-            {ttVideos.length > 0 && (
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex items-center gap-2 bg-[#010101] text-white text-sm font-semibold px-3 py-1.5 rounded-full">
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
-                    </svg>
-                    TikTok
-                  </div>
-                  <div className="flex-1 h-px bg-gray-200" />
-                  <span className="text-xs text-gray-400">{ttVideos.length} วิดีโอ</span>
+            {/* ── Divider ── */}
+            {ownVideos.length > 0 && extVideos.length > 0 && (
+              <div className="border-t border-gray-200" />
+            )}
+
+            {/* ── นักรีวิวภายนอก (External) ── */}
+            {extVideos.length > 0 && (
+              <section className="container py-12 lg:py-16 space-y-10">
+                <div>
+                  <h2 className="text-lg font-bold text-[#0F172A] mb-1">จากนักรีวิวภายนอก</h2>
+                  <p className="text-sm text-gray-500 mb-6">รีวิวจากช่อง YouTube และ TikTok ที่น่าสนใจ</p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {ttVideos.map((video) => {
-                    // getTikTokId reserved for future use (e.g. embed)
-                    void getTikTokId(video.videoUrl);
-                    return (
-                      <a
-                        key={video.id}
-                        href={video.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
-                      >
-                        <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
-                          {video.thumbnailUrl ? (
-                            <img
-                              src={video.thumbnailUrl}
-                              alt={video.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                              <svg viewBox="0 0 24 24" className="w-12 h-12 fill-white/20">
-                                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
-                              </svg>
+                {/* External YouTube */}
+                {extYt.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="flex items-center gap-2 bg-red-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        YouTube
+                      </div>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <span className="text-xs text-gray-400">{extYt.length} วิดีโอ</span>
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {extYt.map((video) => {
+                        const ytId = getYouTubeId(video.videoUrl);
+                        const thumb = video.thumbnailUrl || (ytId ? getYouTubeThumbnail(ytId) : null);
+                        return (
+                          <a key={video.id} href={video.videoUrl} target="_blank" rel="noopener noreferrer"
+                            className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div className="relative aspect-video bg-gray-900 overflow-hidden">
+                              {thumb ? (
+                                <img src={thumb} alt={video.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900" />
+                              )}
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                                <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                  <Play className="w-6 h-6 text-white fill-current ml-0.5" />
+                                </div>
+                              </div>
+                              <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded">YouTube</div>
                             </div>
-                          )}
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
-                              <Play className="w-5 h-5 text-white fill-current ml-0.5" />
+                            <div className="p-4">
+                              <h3 className="font-semibold text-[#0F172A] text-sm leading-snug line-clamp-2 group-hover:text-[#C8102E] transition-colors">{video.title}</h3>
+                              {video.description && <p className="text-xs text-gray-500 mt-1.5 line-clamp-2">{video.description}</p>}
+                            </div>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* External TikTok */}
+                {extTt.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="flex items-center gap-2 bg-[#010101] text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        TikTok
+                      </div>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <span className="text-xs text-gray-400">{extTt.length} วิดีโอ</span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {extTt.map((video) => {
+                        const embedUrl = getTikTokEmbedUrl(video.videoUrl);
+                        return (
+                          <div key={video.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
+                              {embedUrl ? (
+                                <iframe src={embedUrl} className="w-full h-full border-0" allow="encrypted-media" allowFullScreen loading="lazy" title={video.title} />
+                              ) : (
+                                <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                  <span className="text-white/50 text-xs">ดูบน TikTok</span>
+                                </a>
+                              )}
+                            </div>
+                            <div className="p-3">
+                              <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-[#0F172A] line-clamp-2 hover:text-[#C8102E] transition-colors">{video.title}</a>
                             </div>
                           </div>
-                        </div>
-                        <div className="p-3">
-                          <p className="text-xs font-medium text-[#0F172A] line-clamp-2 group-hover:text-[#C8102E] transition-colors">
-                            {video.title}
-                          </p>
-                        </div>
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </section>
             )}
-          </section>
+          </div>
         )}
 
         {/* CTA to social channels */}

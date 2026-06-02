@@ -1210,11 +1210,13 @@ export async function archiveSocialLink(id: string): Promise<void> {
 // ─── Video Reviews ────────────────────────────────────────────────────────────
 
 function pageToVideoReview(page: NotionPage): VideoReview {
+  const src = propSelect(page, "Source");
   return {
     id: page.id,
     title: propTitle(page, "Title"),
     brand: propSelect(page, "Brand"),
     platform: propSelect(page, "Platform") as VideoReview["platform"],
+    source: (src === "own" ? "own" : "external") as VideoReview["source"],
     videoUrl: propUrl(page, "VideoURL") ?? "",
     thumbnailUrl: propUrl(page, "ThumbnailURL"),
     description: propText(page, "Description"),
@@ -1234,7 +1236,7 @@ export async function getVideoReviewsByBrand(brand: string): Promise<VideoReview
       ],
     },
     sorts: [{ property: "SortOrder", direction: "ascending" }],
-    page_size: 20,
+    page_size: 50,
   });
   return response.results.map(pageToVideoReview);
 }
@@ -1259,6 +1261,7 @@ export async function createVideoReview(data: Omit<VideoReview, "id">): Promise<
       Title: { title: [{ text: { content: data.title } }] },
       Brand: { select: { name: data.brand } },
       Platform: { select: { name: data.platform } },
+      Source: { select: { name: data.source || "external" } },
       VideoURL: { url: data.videoUrl || null },
       ThumbnailURL: { url: data.thumbnailUrl || null },
       Description: { rich_text: data.description ? [{ text: { content: data.description } }] : [] },
@@ -1275,6 +1278,7 @@ export async function updateVideoReview(id: string, data: Partial<Omit<VideoRevi
   if (data.title !== undefined) props.Title = { title: [{ text: { content: data.title } }] };
   if (data.brand !== undefined) props.Brand = { select: { name: data.brand } };
   if (data.platform !== undefined) props.Platform = { select: { name: data.platform } };
+  if (data.source !== undefined) props.Source = { select: { name: data.source } };
   if (data.videoUrl !== undefined) props.VideoURL = { url: data.videoUrl || null };
   if (data.thumbnailUrl !== undefined) props.ThumbnailURL = { url: data.thumbnailUrl || null };
   if (data.description !== undefined) props.Description = { rich_text: data.description ? [{ text: { content: data.description } }] : [] };

@@ -46,7 +46,7 @@ export const branches: Branch[] = [
     phone: "034-305-500",
     fax: "034-305-499",
     lineId: "@mazdach.erawan",
-    lineUrl: "https://line.me/R/ti/p/@mazdach.erawan",
+    lineUrl: "https://lin.ee/NLeKZy6",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
     services: [
       "ขายรถยนต์ใหม่ Mazda",
@@ -87,7 +87,7 @@ export const branches: Branch[] = [
     phone: "02-482-2000",
     fax: "02-482-1912",
     lineId: "@mazdach.erawan",
-    lineUrl: "https://line.me/R/ti/p/@mazdach.erawan",
+    lineUrl: "https://lin.ee/qDzqmdn",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
     services: [
       "ขายรถยนต์ใหม่ Mazda",
@@ -128,7 +128,7 @@ export const branches: Branch[] = [
     phone: "02-482-2000",
     fax: "-",
     lineId: "@mazdach.erawan",
-    lineUrl: "https://line.me/R/ti/p/@mazdach.erawan",
+    lineUrl: "https://lin.ee/vK6Z54v",
     hours: "ทุกวัน 10:00–20:00",
     services: [
       "ขายรถยนต์ EV Deepal",
@@ -167,7 +167,7 @@ export const branches: Branch[] = [
     phone: "02-431-1000",
     fax: "02-431-1565",
     lineId: "@fordch.erawan",
-    lineUrl: "https://line.me/R/ti/p/@fordch.erawan",
+    lineUrl: "https://lin.ee/PhIWeTl",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
     services: [
       "ขายรถยนต์ใหม่ Ford",
@@ -206,7 +206,7 @@ export const branches: Branch[] = [
     phone: "034-300-333",
     fax: "034-300-390",
     lineId: "@mitsuch.erawan",
-    lineUrl: "https://line.me/R/ti/p/@mitsuch.erawan",
+    lineUrl: "https://lin.ee/N7UjCTE",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
     services: [
       "ขายรถยนต์ใหม่ Mitsubishi",
@@ -244,7 +244,7 @@ export const branches: Branch[] = [
     phone: "034-219-000",
     fax: "-",
     lineId: "@gwmch.erawan",
-    lineUrl: "https://line.me/R/ti/p/@gwmch.erawan",
+    lineUrl: "https://lin.ee/xKFaZcUG",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
     services: [
       "ขายรถยนต์ GWM (HAVAL, ORA, TANK)",
@@ -283,7 +283,7 @@ export const branches: Branch[] = [
     phone: "02-431-1000",
     fax: "-",
     lineId: "@kiach.erawan",
-    lineUrl: "https://line.me/R/ti/p/@kiach.erawan",
+    lineUrl: "https://lin.ee/XQiajzI",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
     services: [
       "ขายรถยนต์ใหม่ Kia",

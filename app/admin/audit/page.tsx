@@ -34,7 +34,7 @@ export default function AdminAuditPage() {
   useEffect(() => { load(); }, [days, resource]);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#0F172A] rounded-xl flex items-center justify-center"><ScrollText className="w-5 h-5 text-white" /></div>

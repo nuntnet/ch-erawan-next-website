@@ -9,6 +9,30 @@
 - Only commit when the user **explicitly asks** to commit, push, or deploy.
 - Focus on making code changes quickly without stopping for git operations.
 
+## Git Flow
+
+```
+feature/* ──→ staging ──→ master (production)
+                ↓              ↓
+         staging.vercel.app   newweb.ch-erawan.com
+         Staging Notion DBs   Production Notion DBs
+         Staging Turso DB     Production Turso DB
+```
+
+| Branch | หน้าที่ | Vercel Project | Auto-deploy |
+|---|---|---|---|
+| `master` | **Production** — code ที่ใช้งานจริง | `ch-erawanwebsite` | ✅ |
+| `staging` | **Staging** — ทดสอบก่อน prod | `ch-erawan-next-website-staging` | ✅ |
+| `feature/*` | พัฒนา feature ใหม่ | — | — |
+
+**ขั้นตอน:**
+1. สร้าง feature branch จาก `staging`
+2. ทำงาน + commit
+3. Merge เข้า `staging` → auto-deploy → ทดสอบ
+4. ผ่านแล้ว → merge `staging` เข้า `master` → auto-deploy production
+
+❌ **ห้าม push ตรงไป `master` โดยไม่ผ่าน staging**
+
 ## Stack
 
 - **Next.js 15** App Router + React 19 + TypeScript

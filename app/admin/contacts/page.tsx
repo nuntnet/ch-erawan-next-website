@@ -39,7 +39,7 @@ export default function AdminContactsPage() {
   });
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-bold text-[#131F3C]">ข้อความติดต่อ</h1>
         <p className="text-sm text-gray-500 mt-0.5">ข้อความจากลูกค้าผ่านฟอร์มติดต่อเรา</p>

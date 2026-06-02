@@ -274,7 +274,7 @@ export default function AdminDashboard() {
     .slice(0, 5);
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl">
+    <div className="space-y-6 max-w-7xl">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-[#131F3C]">ภาพรวม</h1>

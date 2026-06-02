@@ -159,6 +159,7 @@ export interface VideoReview {
   title: string;
   brand: string;
   platform: "YouTube" | "TikTok";
+  source: "own" | "external";
   videoUrl: string;
   thumbnailUrl: string | null;
   description: string;

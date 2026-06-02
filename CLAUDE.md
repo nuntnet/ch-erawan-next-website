@@ -60,6 +60,8 @@ bun run seed:cars       # seed Notion cars + Cloudinary hero/gallery images
 bun run add-th-cars     # add TH-market models (does not archive existing cars)
 bun run sync:galleries  # push gallery URLs from seed data into Notion
 bun run audit:galleries # report cars missing gallery images in Notion
+bun run infra:setup -- --env staging     # provision new environment (Notion + Turso + Vercel + git)
+bun run infra:setup -- --env preview --skip turso,vercel  # Notion only
 ```
 
 ## Key Files

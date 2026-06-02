@@ -108,7 +108,7 @@ export default function Footer() {
             <div className="space-y-2.5">
               {LINE_ACCOUNTS.map((account) => (
                 <a
-                  key={account.lineId}
+                  key={account.brand}
                   href={account.url}
                   target="_blank"
                   rel="noopener noreferrer"

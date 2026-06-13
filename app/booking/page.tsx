@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Wrench, Shield, Star, CheckCircle, X, FileText, Image as ImageIcon } from "lucide-react";
+import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
 type BookingType = "test_drive" | "service" | "body_paint" | "insurance_quote";
@@ -16,7 +16,6 @@ const bookingTypes = [
   { id: "test_drive" as BookingType, icon: Calendar, title: "นัดหมายทดลองขับ", desc: "สัมผัสประสบการณ์ขับขี่จริงก่อนตัดสินใจ" },
   { id: "service" as BookingType, icon: Wrench, title: "นัดหมายเข้าศูนย์บริการ", desc: "จองคิวล่วงหน้า ไม่ต้องรอนาน" },
   { id: "body_paint" as BookingType, icon: Shield, title: "แจ้งซ่อมตัวถังและสี", desc: "ส่งรูปและเอกสารล่วงหน้า ประกันอนุมัติก่อน" },
-  { id: "insurance_quote" as BookingType, icon: Star, title: "ขอเสนอราคาประกันภัย", desc: "รับใบเสนอราคาออนไลน์รวดเร็วทันใจ" },
 ];
 
 const branches = [
@@ -29,6 +28,8 @@ const branches = [
   "GWM ช.เอราวัณ นครปฐม",
   "Kia ช.เอราวัณ นครปฐม",
 ];
+
+const serviceBranches = branches.filter(b => b !== "ฟอร์ด ช.เอราวัณ นครปฐม");
 
 const timeSlots = ["08:00", "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
@@ -218,7 +219,7 @@ function BookingForm() {
 
       <div className="container py-10 lg:py-14">
         {/* Type Selection */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
           {bookingTypes.map((type) => (
             <button
               key={type.id}
@@ -276,7 +277,7 @@ function BookingForm() {
                   <Label className="text-gray-600 text-sm">สาขา {selectedType === "service" ? "*" : ""}</Label>
                   <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
                     <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
-                    <SelectContent>{branches.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
+                    <SelectContent>{(selectedType === "service" ? serviceBranches : branches).map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div>
@@ -412,31 +413,6 @@ function BookingForm() {
                   <div>
                     <Label htmlFor="insurance" className="text-gray-600 text-sm">บริษัทประกันภัย</Label>
                     <Input id="insurance" value={form.insuranceCompany} onChange={e => setForm(f => ({ ...f, insuranceCompany: e.target.value }))} placeholder="เช่น เมืองไทยประกันภัย" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
-                  </div>
-                </div>
-              )}
-
-              {/* Insurance Quote fields */}
-              {selectedType === "insurance_quote" && (
-                <div className="space-y-4 pt-5 border-t border-gray-50">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="reg" className="text-gray-600 text-sm">ทะเบียนรถ</Label>
-                      <Input id="reg" value={form.vehicleRegistration} onChange={e => setForm(f => ({ ...f, vehicleRegistration: e.target.value }))} placeholder="เช่น กก 1234 กรุงเทพ" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
-                    </div>
-                    <div>
-                      <Label className="text-gray-600 text-sm">ประเภทความคุ้มครอง</Label>
-                      <Select value={form.coverageType} onValueChange={v => setForm(f => ({ ...f, coverageType: v }))}>
-                        <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกประเภท" /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="type1">ชั้น 1</SelectItem>
-                          <SelectItem value="type2">ชั้น 2</SelectItem>
-                          <SelectItem value="type2plus">ชั้น 2+</SelectItem>
-                          <SelectItem value="type3">ชั้น 3</SelectItem>
-                          <SelectItem value="type3plus">ชั้น 3+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
                   </div>
                 </div>
               )}

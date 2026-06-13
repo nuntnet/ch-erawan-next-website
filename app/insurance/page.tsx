@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle, Phone, MessageCircle, Shield, Clock, Gift, Users, Heart, CreditCard, Home, Truck } from "lucide-react";
+import { CheckCircle, Phone, MessageCircle, Shield, Clock, Gift, Users, Heart } from "lucide-react";
+import InsuranceQuoteForm from "@/components/InsuranceQuoteForm";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/site";
 import { serviceJsonLd } from "@/lib/seo";
 
@@ -157,11 +158,6 @@ export default function Insurance() {
               ต่อทะเบียนแทนคุณไม่ที่ขั้นตอนไม่ว่าจะเป็นเอกสาร การชำระเงิน หรือการจัดส่งป้าย —
               เราดูแลให้ครบ จบในที่เดียว ยังมีข้อสงสัย? <Link href="/contact" className="text-[#0F172A] underline font-medium">ติดต่อเราเลย</Link>
             </p>
-            <Link href="/booking?type=insurance">
-              <button className="bg-[#0F172A] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#1E293B] transition-colors">
-                ซื้อประกันรถกับเราเลย
-              </button>
-            </Link>
           </div>
           <div className="space-y-6">
             {steps.map((s, i) => (
@@ -184,6 +180,21 @@ export default function Insurance() {
                   ไม่ว่าจะขับใกล้หรือไกล
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quote Form */}
+      <div id="quote" className="bg-[#F8FAFC] border-t border-gray-100">
+        <div className="container py-16">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-[#0F172A] mb-3">ขอใบเสนอราคาประกันภัย</h2>
+              <p className="text-[#64748B]">กรอกข้อมูลเพื่อรับใบเสนอราคา ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง</p>
+            </div>
+            <div className="bg-white rounded-2xl border border-gray-100 p-6 lg:p-8 shadow-sm">
+              <InsuranceQuoteForm />
             </div>
           </div>
         </div>

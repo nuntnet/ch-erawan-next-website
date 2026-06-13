@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import { BRANDS, type BrandSlug } from "@/lib/brandConfig";
+import { getNotifyEmailForBrand as getNotifyEmailFromNotion } from "@/lib/notion";
 
 const TYPE_LABELS: Record<string, string> = {
   test_drive: "ทดลองขับ",
@@ -7,6 +9,30 @@ const TYPE_LABELS: Record<string, string> = {
   insurance_quote: "ขอใบเสนอราคาประกัน",
 };
 
+const BRANCH_BRAND_MAP: Record<string, BrandSlug> = {
+  "มาสด้า ช.เอราวัณ นครปฐม": "mazda",
+  "มาสด้า ช.เอราวัณ ศาลายา": "mazda",
+  "Deepal ช.เอราวัณ ศาลายา": "deepal",
+  "ฟอร์ด ช.เอราวัณ อ้อมใหญ่": "ford",
+  "ฟอร์ด ช.เอราวัณ นครปฐม": "ford",
+  "มิตซูบิชิ ช.เอราวัณ นครปฐม": "mitsubishi",
+  "GWM ช.เอราวัณ นครปฐม": "gwm",
+  "Kia ช.เอราวัณ นครปฐม": "kia",
+};
+
+async function resolveNotifyEmail(brandSlug?: BrandSlug): Promise<string | undefined> {
+  if (brandSlug) {
+    const notionEmail = await getNotifyEmailFromNotion(brandSlug);
+    if (notionEmail) return notionEmail;
+  }
+  return process.env.APPOINTMENT_NOTIFY_EMAIL;
+}
+
+export function resolveBrandFromBranch(branch?: string): BrandSlug | undefined {
+  if (!branch) return undefined;
+  return BRANCH_BRAND_MAP[branch];
+}
+
 export interface AppointmentEmailPayload {
   customerName: string;
   customerPhone: string;
@@ -14,6 +40,7 @@ export interface AppointmentEmailPayload {
   type: string;
   carModel?: string;
   branch?: string;
+  brandSlug?: BrandSlug;
   preferredDate?: string;
   preferredTime?: string;
   notes?: string;
@@ -81,17 +108,19 @@ async function sendViaSmtp(to: string, subject: string, text: string): Promise<b
   return true;
 }
 
-/** Notify dealer of a new appointment. Gracefully skips if email is not configured. */
+/** Notify dealer of a new appointment. Routes to brand-specific email when available. */
 export async function sendAppointmentNotification(
   data: AppointmentEmailPayload
 ): Promise<{ sent: boolean; channel?: "resend" | "smtp" | "none" }> {
-  const to = process.env.APPOINTMENT_NOTIFY_EMAIL;
+  const brandSlug = data.brandSlug ?? resolveBrandFromBranch(data.branch);
+  const to = await resolveNotifyEmail(brandSlug);
   if (!to) {
-    console.warn("[email] APPOINTMENT_NOTIFY_EMAIL not set — skipping notification");
+    console.warn("[email] No notify email configured — skipping notification");
     return { sent: false, channel: "none" };
   }
 
-  const subject = `[นัดหมายใหม่] ${TYPE_LABELS[data.type] ?? data.type} — ${data.customerName}`;
+  const brandLabel = brandSlug ? BRANDS.find((b) => b.slug === brandSlug)?.displayName : undefined;
+  const subject = `[นัดหมายใหม่]${brandLabel ? ` ${brandLabel} —` : ""} ${TYPE_LABELS[data.type] ?? data.type} — ${data.customerName}`;
   const text = buildPlainTextBody(data);
 
   try {

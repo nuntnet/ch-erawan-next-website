@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Client } from "@notionhq/client";
-import { sendAppointmentNotification } from "@/lib/email";
+import { sendAppointmentNotification, resolveBrandFromBranch } from "@/lib/email";
 import { trackEvent } from "@/lib/analytics";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
       type: data.type,
       carModel: data.carModel,
       branch: data.branch,
+      brandSlug: resolveBrandFromBranch(data.branch),
       preferredDate: data.preferredDate,
       preferredTime: data.preferredTime,
       notes: data.notes,

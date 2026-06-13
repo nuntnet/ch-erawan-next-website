@@ -32,6 +32,22 @@ const branches = [
 
 const timeSlots = ["08:00", "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
+const serviceTimeSlots = [
+  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+  "11:00", "11:30", "13:00", "13:30", "14:00", "14:30",
+  "15:00", "15:30", "16:00", "16:30",
+];
+
+const spsServiceTypes = [
+  { value: "เช็คระยะ", label: "เช็คระยะ" },
+  { value: "ซ่อมทั่วไป", label: "ซ่อมทั่วไป" },
+  { value: "เช็คระยะ+ซ่อมทั่วไป", label: "เช็คระยะ+ซ่อมทั่วไป" },
+  { value: "นัดแจ้งเคลม", label: "นัดแจ้งเคลม" },
+  { value: "นัดจอดซ่อม", label: "นัดจอดซ่อม" },
+  { value: "นัดรับรถซ่อมเสร็จ", label: "นัดรับรถซ่อมเสร็จ" },
+  { value: "อื่นๆ", label: "อื่นๆ" },
+];
+
 interface UploadedFile { name: string; size: number; type: string; url?: string; uploading?: boolean; }
 
 async function uploadBookingFile(file: File, kind: "damage" | "insurance"): Promise<string> {
@@ -48,6 +64,7 @@ const emptyForm = {
   customerName: "", customerPhone: "", customerEmail: "", carModel: "",
   branch: "", preferredDate: "", preferredTime: "", notes: "",
   damageDescription: "", insuranceCompany: "", vehicleRegistration: "", coverageType: "",
+  serviceType: "", mileage: "", repairDetails: "",
 };
 
 function BookingForm() {
@@ -94,23 +111,52 @@ function BookingForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.customerName || !form.customerPhone) { toast.error("กรุณากรอกชื่อและเบอร์โทรศัพท์"); return; }
+    if (selectedType === "service" && (!form.branch || !form.preferredDate || !form.preferredTime)) {
+      toast.error("กรุณาเลือกสาขา วันที่ และเวลา");
+      return;
+    }
+    if (selectedType === "service" && new Date(form.preferredDate).getDay() === 0) {
+      toast.error("ไม่สามารถจองวันอาทิตย์ได้ ศูนย์บริการปิดทำการ");
+      return;
+    }
     if (damagePhotos.some((f) => f.uploading) || insuranceDocs.some((f) => f.uploading)) {
       toast.error("กรุณารอการอัปโหลดไฟล์ให้เสร็จ");
       return;
     }
     setLoading(true);
     try {
-      const res = await fetch("/api/submit/booking", {
+      const endpoint = selectedType === "service" ? "/api/submit/service-booking" : "/api/submit/booking";
+      const payload = selectedType === "service"
+        ? {
+            customerName: form.customerName,
+            customerPhone: form.customerPhone,
+            customerEmail: form.customerEmail,
+            carModel: form.carModel,
+            branch: form.branch,
+            preferredDate: form.preferredDate,
+            preferredTime: form.preferredTime,
+            notes: form.notes,
+            vehicleRegistration: form.vehicleRegistration,
+            serviceType: form.serviceType,
+            mileage: form.mileage,
+            repairDetails: form.repairDetails,
+          }
+        : {
+            ...form,
+            type: selectedType,
+            damagePhotoUrls: damagePhotos.map((f) => f.url).filter(Boolean),
+            insuranceDocUrls: insuranceDocs.map((f) => f.url).filter(Boolean),
+          };
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          type: selectedType,
-          damagePhotoUrls: damagePhotos.map((f) => f.url).filter(Boolean),
-          insuranceDocUrls: insuranceDocs.map((f) => f.url).filter(Boolean),
-        }),
+        body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("ส่งไม่สำเร็จ");
+      const result = await res.json();
+      if (!res.ok) { toast.error(result.error || "ส่งไม่สำเร็จ"); return; }
+      if (selectedType === "service" && result.spsSuccess === false) {
+        toast.warning("บันทึกข้อมูลแล้ว แต่ระบบ SPS ยังไม่ได้รับข้อมูล ทีมงานจะติดต่อกลับ");
+      }
       setSubmitted(true);
     } catch {
       toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
@@ -227,23 +273,23 @@ function BookingForm() {
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-gray-600 text-sm">สาขา</Label>
+                  <Label className="text-gray-600 text-sm">สาขา {selectedType === "service" ? "*" : ""}</Label>
                   <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
                     <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
                     <SelectContent>{branches.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="date" className="text-gray-600 text-sm">วันที่ต้องการ</Label>
+                  <Label htmlFor="date" className="text-gray-600 text-sm">วันที่ต้องการ {selectedType === "service" ? "*" : ""}</Label>
                   <Input id="date" type="date" value={form.preferredDate} onChange={e => setForm(f => ({ ...f, preferredDate: e.target.value }))} className="mt-1.5 border-gray-200 focus:border-[#0F172A]" min={new Date().toISOString().split("T")[0]} />
                 </div>
               </div>
 
               {form.preferredDate && (
                 <div>
-                  <Label className="text-gray-600 text-sm">เวลาที่ต้องการ</Label>
+                  <Label className="text-gray-600 text-sm">เวลาที่ต้องการ {selectedType === "service" ? "*" : ""}</Label>
                   <div className="flex flex-wrap gap-2 mt-1.5">
-                    {timeSlots.map(t => (
+                    {(selectedType === "service" ? serviceTimeSlots : timeSlots).map(t => (
                       <button
                         key={t} type="button"
                         onClick={() => setForm(f => ({ ...f, preferredTime: t }))}
@@ -252,6 +298,49 @@ function BookingForm() {
                         {t}
                       </button>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Service fields */}
+              {selectedType === "service" && (
+                <div className="space-y-4 pt-5 border-t border-gray-50">
+                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                    <p className="text-blue-800 text-sm font-semibold mb-1">จองคิวเข้าศูนย์บริการ</p>
+                    <p className="text-blue-700 text-xs">ข้อมูลจะถูกส่งเข้าระบบศูนย์บริการโดยตรง กรุณากรอกให้ครบถ้วน</p>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="vehicleReg" className="text-gray-600 text-sm">ทะเบียนรถ</Label>
+                    <Input id="vehicleReg" value={form.vehicleRegistration} onChange={e => setForm(f => ({ ...f, vehicleRegistration: e.target.value }))} placeholder="เช่น กก 1234 นครปฐม" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-gray-600 text-sm">ประเภทบริการ</Label>
+                      <Select value={form.serviceType} onValueChange={v => setForm(f => ({ ...f, serviceType: v }))}>
+                        <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกประเภท" /></SelectTrigger>
+                        <SelectContent>{spsServiceTypes.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}</SelectContent>
+                      </Select>
+                    </div>
+                    {(form.serviceType === "เช็คระยะ" || form.serviceType === "เช็คระยะ+ซ่อมทั่วไป") && (
+                      <div>
+                        <Label className="text-gray-600 text-sm">ระยะทาง (กม.)</Label>
+                        <Select value={form.mileage} onValueChange={v => setForm(f => ({ ...f, mileage: v }))}>
+                          <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกระยะ" /></SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 20 }, (_, i) => (i + 1) * 10000).map(km => (
+                              <SelectItem key={km} value={String(km)}>{km.toLocaleString()} กม.</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="repairDetails" className="text-gray-600 text-sm">รายละเอียดการซ่อม / อาการ</Label>
+                    <Textarea id="repairDetails" value={form.repairDetails} onChange={e => setForm(f => ({ ...f, repairDetails: e.target.value }))} placeholder="อธิบายอาการหรือรายละเอียดที่ต้องการซ่อม" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" rows={3} />
                   </div>
                 </div>
               )}

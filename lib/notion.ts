@@ -83,6 +83,7 @@ const DB = {
   videoReviews: process.env.NOTION_VIDEO_REVIEWS_DB_ID!,
   faq: process.env.NOTION_FAQ_DB_ID!,
   serviceContent: process.env.NOTION_SERVICE_CONTENT_DB_ID!,
+  settings: process.env.NOTION_SETTINGS_DB_ID!,
 };
 
 // ─── Property Helpers ─────────────────────────────────────────────────────────
@@ -1365,4 +1366,45 @@ export async function updateFAQItem(id: string, data: Partial<Omit<FAQItem, "id"
 
 export async function archiveFAQItem(id: string): Promise<void> {
   await notion.pages.update({ page_id: id, in_trash: true });
+}
+
+// ─── Settings ────────────────────────────────────────────────────────────────
+
+export interface SettingEntry {
+  key: string;
+  value: string;
+}
+
+let settingsCache: { data: SettingEntry[]; fetchedAt: number } | null = null;
+const SETTINGS_CACHE_TTL = 5 * 60 * 1000; // 5 min
+
+export async function getSettings(): Promise<SettingEntry[]> {
+  if (!DB.settings) return [];
+  if (settingsCache && Date.now() - settingsCache.fetchedAt < SETTINGS_CACHE_TTL) {
+    return settingsCache.data;
+  }
+  try {
+    const res = await notion.databases.query({
+      database_id: DB.settings,
+      page_size: 100,
+    });
+    const entries = res.results.map((page: NotionPage) => ({
+      key: propTitle(page, "Key"),
+      value: propRichText(page, "Value"),
+    }));
+    settingsCache = { data: entries, fetchedAt: Date.now() };
+    return entries;
+  } catch (err) {
+    console.error("[notion] Failed to fetch settings:", err);
+    return settingsCache?.data ?? [];
+  }
+}
+
+export async function getSetting(key: string): Promise<string | undefined> {
+  const settings = await getSettings();
+  return settings.find((s) => s.key === key)?.value || undefined;
+}
+
+export async function getNotifyEmailForBrand(brandSlug: string): Promise<string | undefined> {
+  return getSetting(`notify_email_${brandSlug}`);
 }

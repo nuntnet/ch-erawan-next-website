@@ -13,6 +13,7 @@ Copy `.env.local.example` → `.env.local` แล้วกรอกค่าต�
 | `NOTION_APPOINTMENTS_DB_ID` | ✅ | Database ID ของ Appointments database |
 | `NOTION_CONTACTS_DB_ID` | ✅ | Database ID ของ Contacts database |
 | `NOTION_PROMOTIONS_DB_ID` | optional | Database ID ของ Promotions database (brand web โปรโมชั่น) |
+| `NOTION_SETTINGS_DB_ID` | optional | Database ID ของ Settings database (key-value config เช่น notify emails) |
 
 **วิธีหา Database ID:** เปิด database ใน Notion → Copy link → URL มีรูปแบบ:
 ```
@@ -76,7 +77,7 @@ turso db tokens create ch-erawan
 
 | Variable | Required | คำอธิบาย |
 |----------|----------|----------|
-| `APPOINTMENT_NOTIFY_EMAIL` | แนะนำ prod | อีเมลผู้รับแจ้งเตือนนัดหมายใหม่ |
+| `APPOINTMENT_NOTIFY_EMAIL` | แนะนำ prod | อีเมล fallback ถ้าแบรนด์ไม่มี email ใน Notion |
 | `RESEND_API_KEY` | optional | ใช้ Resend ส่งอีเมล (แนะนำ prod) |
 | `RESEND_FROM_EMAIL` | optional | From address ที่ verify แล้วใน Resend |
 | `SMTP_HOST` | optional | SMTP fallback ถ้าไม่มี Resend |
@@ -86,7 +87,18 @@ turso db tokens create ch-erawan
 | `SMTP_FROM` | optional | From header (default: `SMTP_USER`) |
 | `SMTP_SECURE` | optional | `"true"` สำหรับ port 465 |
 
-ถ้าไม่ตั้ง email vars — booking ยังทำงาน แต่ระบบจะ log-only (ไม่ส่งอีเมล)
+**อีเมลแจ้งเตือนแยกตามแบรนด์:** ตั้งค่าใน **Notion Settings DB** (`NOTION_SETTINGS_DB_ID`)
+
+| Key (title) | Value (rich_text) | คำอธิบาย |
+|-------------|-------------------|----------|
+| `notify_email_mazda` | `manager@example.com` | อีเมลผจก. Mazda |
+| `notify_email_ford` | `ford@example.com` | อีเมลผจก. Ford |
+| `notify_email_gwm` | `gwm@example.com` | อีเมลผจก. GWM |
+| ... | ... | ทุกแบรนด์ |
+
+**ลำดับการหา email:** Notion Settings (`notify_email_{brand}`) → `APPOINTMENT_NOTIFY_EMAIL` → log-only
+
+ถ้าไม่ตั้ง email — booking ยังทำงาน แต่ระบบจะ log-only (ไม่ส่งอีเมล)
 
 ## Site URL
 
@@ -132,7 +144,7 @@ NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSy...
 # Site URL (canonical / OG)
 NEXT_PUBLIC_SITE_URL=https://ch-erawan.com
 
-# Appointment email (optional — log-only if unset)
+# Appointment email fallback (per-brand emails are in Notion Settings DB)
 APPOINTMENT_NOTIFY_EMAIL=service@ch-erawan.com
 RESEND_API_KEY=re_xxxxxxxx
 RESEND_FROM_EMAIL=notifications@ch-erawan.com

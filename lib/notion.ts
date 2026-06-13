@@ -715,7 +715,7 @@ export async function getAllStories(status?: CustomerStory["status"]): Promise<C
 function pageToAppointment(page: NotionPage): Appointment {
   return {
     id: page.id,
-    customerName: propText(page, "Customer Name") || propTitle(page, "Name"),
+    customerName: propTitle(page, "Customer Name") || propText(page, "Customer Name") || propTitle(page, "Name"),
     type: propSelect(page, "Type") as Appointment["type"],
     status: (propSelect(page, "Status") || "pending") as Appointment["status"],
     customerPhone: propPhone(page, "Phone"),

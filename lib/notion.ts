@@ -1390,7 +1390,7 @@ export async function getSettings(): Promise<SettingEntry[]> {
     });
     const entries = res.results.map((page: NotionPage) => ({
       key: propTitle(page, "Key"),
-      value: propRichText(page, "Value"),
+      value: propText(page, "Value"),
     }));
     settingsCache = { data: entries, fetchedAt: Date.now() };
     return entries;

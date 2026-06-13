@@ -9,7 +9,7 @@ import { BRAND_IMAGES } from "@/lib/brandImages";
 import type { BrandConfig } from "@/lib/brandConfig";
 import type { BreadcrumbItem } from "@/lib/site";
 import type { BrandSocialLink } from "@/lib/notion-types";
-import { ArrowRight } from "lucide-react";
+
 
 interface BrandHeroProps {
   brand: BrandConfig;
@@ -183,35 +183,41 @@ export default function BrandHero({
 
 export function BrandHeroSubLineLinks({
   brand,
+  activeSlug,
 }: {
   brand: BrandConfig;
+  activeSlug?: string;
 }) {
   if (!brand.subLines?.length) return null;
 
   return (
-    <>
-      <p className="text-white/45 text-sm mb-4">สายย่อย GWM</p>
-      <div className="flex flex-wrap gap-3">
-        {brand.subLines.map((line) => (
+    <div className="flex flex-wrap gap-2">
+      {brand.subLines.map((line) => {
+        const isActive = line.slug === activeSlug;
+        return (
           <Link
             key={line.slug}
             href={`/gwm/${line.slug}`}
-            className="inline-flex items-center gap-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 px-4 py-3 min-h-[44px] transition-colors backdrop-blur-sm"
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 min-h-[44px] text-sm font-medium transition-colors backdrop-blur-sm ${
+              isActive
+                ? "bg-white text-[#0F172A]"
+                : "bg-white/10 text-white/75 hover:bg-white/20 border border-white/15"
+            }`}
           >
             <BrandLogo
               src={line.logoPath}
               alt={line.displayName}
-              size="sm"
+              size="xs"
               bare
-              white
-              width={72}
-              height={24}
+              white={!isActive}
+              width={56}
+              height={20}
+              className={isActive ? "brightness-0" : "opacity-90"}
             />
-            <span className="text-sm text-white/75">{line.displayNameTh}</span>
-            <ArrowRight className="w-3.5 h-3.5 text-white/40" />
+            {line.displayName}
           </Link>
-        ))}
-      </div>
-    </>
+        );
+      })}
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import BrandLogo from "@/components/BrandLogo";
 import BrandCarGrid from "@/components/BrandCarGrid";
-import BrandHero from "@/components/BrandHero";
+import BrandHero, { BrandHeroSubLineLinks } from "@/components/BrandHero";
 import {
   BRAND_BY_SLUG,
   GWM_LINE_BY_SLUG,
@@ -75,31 +74,7 @@ export default async function GwmLinePage({ params }: PageProps) {
           secondaryCta={{ label: "ดู GWM ทั้งหมด", href: "/gwm" }}
           secondaryLogo={{ src: gwm.logoPath, alt: "GWM", label: "by" }}
           footer={
-            <div className="flex flex-wrap gap-2">
-              {gwm.subLines?.map((sub) => (
-                <Link
-                  key={sub.slug}
-                  href={`/gwm/${sub.slug}`}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 min-h-[44px] text-sm font-medium transition-colors backdrop-blur-sm ${
-                    sub.slug === slug
-                      ? "bg-white text-[#0F172A]"
-                      : "bg-white/10 text-white/75 hover:bg-white/20 border border-white/15"
-                  }`}
-                >
-                  <BrandLogo
-                    src={sub.logoPath}
-                    alt={sub.displayName}
-                    size="xs"
-                    bare
-                    white={sub.slug !== slug}
-                    width={56}
-                    height={20}
-                    className={sub.slug === slug ? "brightness-0" : "opacity-90"}
-                  />
-                  {sub.displayName}
-                </Link>
-              ))}
-            </div>
+            <BrandHeroSubLineLinks brand={gwm} activeSlug={slug} />
           }
         />
 

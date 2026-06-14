@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Search } from "lucide-react";
+import { Calendar, Search, ChevronDown, Phone, Mail, FileText, Car, MapPin, Clock, MessageSquare, Shield } from "lucide-react";
 import { toast } from "sonner";
 import type { Appointment } from "@/lib/notion-types";
 
@@ -29,6 +29,19 @@ function statusClass(status: string) {
   return map[status] ?? "bg-gray-50 border-gray-200 text-gray-600";
 }
 
+function DetailItem({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value?: string | null }) {
+  if (!value) return null;
+  return (
+    <div className="flex items-start gap-2.5">
+      <Icon className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+      <div>
+        <p className="text-xs text-gray-400">{label}</p>
+        <p className="text-sm text-gray-700">{value}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminAppointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +49,7 @@ export default function AdminAppointments() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const fetchData = () => {
     setLoading(true);
@@ -124,42 +138,75 @@ export default function AdminAppointments() {
                 <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider">รถยนต์ / สาขา</th>
                 <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider w-32">วันที่นัด</th>
                 <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider w-36">สถานะ</th>
+                <th className="w-10" />
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {filtered.map(apt => (
-                <tr key={apt.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-5 py-4">
-                    <p className="text-sm font-medium text-[#131F3C]">{apt.customerName}</p>
-                    <p className="text-xs text-gray-400">{apt.customerPhone}</p>
-                  </td>
-                  <td className="px-5 py-4">
-                    <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
-                      {TYPE_LABEL[apt.type] ?? apt.type}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4">
-                    <p className="text-sm text-gray-600">{apt.carModel || "—"}</p>
-                    {apt.branch && <p className="text-xs text-gray-400">{apt.branch}</p>}
-                  </td>
-                  <td className="px-5 py-4 text-sm text-gray-600">
-                    {apt.preferredDate
-                      ? new Date(apt.preferredDate).toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "2-digit" })
-                      : "—"}
-                    {apt.preferredTime && <span className="text-xs text-gray-400 ml-1">{apt.preferredTime}</span>}
-                  </td>
-                  <td className="px-5 py-4">
-                    <select
-                      value={apt.status}
-                      disabled={updating === apt.id}
-                      onChange={e => handleStatusChange(apt.id, e.target.value as Appointment["status"])}
-                      className={`text-xs font-medium px-2 py-1 rounded-lg border focus:outline-none cursor-pointer disabled:opacity-60 ${statusClass(apt.status)}`}
-                    >
-                      {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-                    </select>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map(apt => {
+                const isExpanded = expandedId === apt.id;
+                return (
+                  <tr key={apt.id} className="group">
+                    <td colSpan={6} className="p-0">
+                      <div
+                        className="flex items-center hover:bg-gray-50/50 transition-colors cursor-pointer"
+                        onClick={() => setExpandedId(isExpanded ? null : apt.id)}
+                      >
+                        <div className="px-5 py-4 flex-1 min-w-0" style={{ width: "auto" }}>
+                          <p className="text-sm font-medium text-[#131F3C]">{apt.customerName}</p>
+                          <p className="text-xs text-gray-400">{apt.customerPhone}</p>
+                        </div>
+                        <div className="px-5 py-4 w-32 shrink-0">
+                          <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                            {TYPE_LABEL[apt.type] ?? apt.type}
+                          </span>
+                        </div>
+                        <div className="px-5 py-4 flex-1 min-w-0">
+                          <p className="text-sm text-gray-600">{apt.carModel || "—"}</p>
+                          {apt.branch && <p className="text-xs text-gray-400">{apt.branch}</p>}
+                        </div>
+                        <div className="px-5 py-4 w-32 shrink-0 text-sm text-gray-600">
+                          {apt.preferredDate
+                            ? new Date(apt.preferredDate).toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "2-digit" })
+                            : "—"}
+                          {apt.preferredTime && <span className="text-xs text-gray-400 ml-1">{apt.preferredTime}</span>}
+                        </div>
+                        <div className="px-5 py-4 w-36 shrink-0" onClick={e => e.stopPropagation()}>
+                          <select
+                            value={apt.status}
+                            disabled={updating === apt.id}
+                            onChange={e => handleStatusChange(apt.id, e.target.value as Appointment["status"])}
+                            className={`text-xs font-medium px-2 py-1 rounded-lg border focus:outline-none cursor-pointer disabled:opacity-60 ${statusClass(apt.status)}`}
+                          >
+                            {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                          </select>
+                        </div>
+                        <div className="px-3 py-4 w-10 shrink-0">
+                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                        </div>
+                      </div>
+
+                      {isExpanded && (
+                        <div className="px-5 pb-5 pt-1 bg-gray-50/70 border-t border-gray-100">
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4">
+                            <DetailItem icon={Phone} label="เบอร์โทร" value={apt.customerPhone} />
+                            <DetailItem icon={Mail} label="อีเมล" value={apt.customerEmail} />
+                            <DetailItem icon={Car} label="รุ่นรถ" value={apt.carModel} />
+                            <DetailItem icon={MapPin} label="สาขา" value={apt.branch} />
+                            <DetailItem icon={Calendar} label="วันที่ต้องการ" value={apt.preferredDate ? new Date(apt.preferredDate).toLocaleDateString("th-TH", { day: "numeric", month: "long", year: "numeric" }) : undefined} />
+                            <DetailItem icon={Clock} label="เวลา" value={apt.preferredTime} />
+                            <DetailItem icon={MessageSquare} label="หมายเหตุ" value={apt.notes} />
+                            <DetailItem icon={FileText} label="รายละเอียดความเสียหาย" value={apt.damageDescription} />
+                            <DetailItem icon={Shield} label="บริษัทประกัน" value={apt.insuranceCompany} />
+                            <DetailItem icon={Car} label="ทะเบียนรถ" value={apt.vehicleRegistration} />
+                            <DetailItem icon={Shield} label="ประเภทความคุ้มครอง" value={apt.coverageType} />
+                            <DetailItem icon={Calendar} label="วันที่ส่ง" value={apt.submittedAt ? new Date(apt.submittedAt).toLocaleString("th-TH", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }) : undefined} />
+                          </div>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

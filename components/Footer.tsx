@@ -53,7 +53,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-white/70 text-sm leading-relaxed mb-6">
-              {`กลุ่มบริษัท ช.เอราวัณ ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี ในจังหวัดนครปฐมและนครปฐม`}
+              {`กลุ่มบริษัท ช.เอราวัณ ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี ในจังหวัดนครปฐม`}
             </p>
 
             {/* Contact details */}

@@ -120,8 +120,8 @@ export default function PrivacyCCTV() {
               <p><strong>เจ้าหน้าที่คุ้มครองข้อมูลส่วนบุคคล (DPO)</strong></p>
               <p>กลุ่มบริษัท ช.เอราวัณ ออโต้ กรุป</p>
               <p>75/2 หมู่ 1 ต.ธรรมศาลา อ.เมือง จ.นครปฐม 73000</p>
-              <p>โทรศัพท์: 034-305-500 ต่อ 7</p>
-              <p>อีเมล: dpo@cherawan.co.th</p>
+              <p>โทรศัพท์: 034-305-500</p>
+              <p>อีเมล: info@ch-erawan.com</p>
             </div>
           </CCTVSection>
 

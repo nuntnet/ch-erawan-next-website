@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://ch-erawan.com";
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_BRANCH_URL ? `https://${process.env.VERCEL_BRANCH_URL}` : null) ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+  "https://ch-erawan.com";
 
 export const SITE_NAME = "ช.เอราวัณ กรุป";
 

@@ -6,7 +6,7 @@ import Image from "next/image";
 import {
   CheckCircle, Phone, Mail, Building, DollarSign,
   Clock, ArrowUpRight, Users, TrendingUp, Shield, Gift,
-  Wrench, Car, Calculator, Headphones, ChevronRight,
+  Wrench, Car, Calculator, Headphones, ChevronRight, MessageCircle,
 } from "lucide-react";
 
 // ───────────────────────────────────────────
@@ -290,23 +290,34 @@ export default function Career() {
             <h2 className="text-2xl font-bold text-[#0F172A] mb-2">สนใจร่วมงานกับเรา</h2>
             <p className="text-gray-500 text-sm">ติดต่อฝ่ายบุคคลโดยตรง หรือส่ง Resume มาได้เลย</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-5 max-w-3xl mx-auto">
             <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
               <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center mb-4">
                 <Phone className="w-5 h-5 text-[#C8102E]" />
               </div>
-              <h3 className="font-semibold text-[#0F172A] mb-1">ติดต่อฝ่ายบุคคล</h3>
-              <p className="text-gray-400 text-xs mb-3">จันทร์–เสาร์ เวลา 08:30–17:00 น.</p>
-              <p className="text-[#0F172A] font-medium text-sm">099-212-1177</p>
+              <h3 className="font-semibold text-[#0F172A] mb-1">โทรฝ่ายบุคคล</h3>
+              <p className="text-gray-400 text-xs mb-3">จันทร์–เสาร์ 08:30–17:00 น.</p>
+              <a href="tel:099-212-1177" className="text-[#0F172A] font-medium text-sm hover:underline">099-212-1177</a>
               <p className="text-gray-500 text-xs mt-1">034-305-500 ต่อ 7 หรือ 127</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div className="w-10 h-10 bg-[#06C755]/10 rounded-lg flex items-center justify-center mb-4">
+                <MessageCircle className="w-5 h-5 text-[#06C755]" />
+              </div>
+              <h3 className="font-semibold text-[#0F172A] mb-1">LINE แผนก HR</h3>
+              <p className="text-gray-400 text-xs mb-3">แชทสอบถามหรือส่ง Resume ได้เลย</p>
+              <a href="https://lin.ee/ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05B04C] transition-colors">
+                <MessageCircle className="w-4 h-4" />
+                @ads1599i
+              </a>
             </div>
             <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
               <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center mb-4">
                 <Mail className="w-5 h-5 text-[#C8102E]" />
               </div>
               <h3 className="font-semibold text-[#0F172A] mb-1">ส่ง Resume</h3>
-              <p className="text-gray-400 text-xs mb-3">ส่งเอกสารสมัครงานหรือ Resume ได้เลย</p>
-              <p className="text-[#0F172A] font-medium text-sm">cherawan.hr@gmail.com</p>
+              <p className="text-gray-400 text-xs mb-3">ส่งเอกสารสมัครงานได้เลย</p>
+              <a href="mailto:cherawan.hr@gmail.com" className="text-[#0F172A] font-medium text-sm hover:underline">cherawan.hr@gmail.com</a>
             </div>
           </div>
         </div>

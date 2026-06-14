@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const emailResult = await sendAppointmentNotification({
+    await sendAppointmentNotification({
       customerName: data.customerName,
       customerPhone: data.customerPhone,
       customerEmail: data.customerEmail || undefined,
@@ -73,7 +73,6 @@ export async function POST(req: NextRequest) {
       preferredTime: data.preferredTime,
       notes: data.notes,
     });
-    console.log("[booking] Email result:", JSON.stringify(emailResult));
 
     void trackEvent("booking", { model: data.carModel, path: "/booking" });
     return NextResponse.json({ success: true });

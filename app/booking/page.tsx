@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon } from "lucide-react";
+import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon, Phone, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 type BookingType = "test_drive" | "service" | "body_paint" | "insurance_quote";
@@ -23,13 +23,10 @@ const branches = [
   "มาสด้า ช.เอราวัณ ศาลายา",
   "Deepal ช.เอราวัณ ศาลายา",
   "ฟอร์ด ช.เอราวัณ อ้อมใหญ่",
-  "ฟอร์ด ช.เอราวัณ นครปฐม",
   "มิตซูบิชิ ช.เอราวัณ นครปฐม",
   "GWM ช.เอราวัณ นครปฐม",
   "Kia ช.เอราวัณ นครปฐม",
 ];
-
-const serviceBranches = branches.filter(b => b !== "ฟอร์ด ช.เอราวัณ นครปฐม");
 
 const timeSlots = ["08:00", "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
@@ -48,6 +45,11 @@ const spsServiceTypes = [
   { value: "นัดรับรถซ่อมเสร็จ", label: "นัดรับรถซ่อมเสร็จ" },
   { value: "อื่นๆ", label: "อื่นๆ" },
 ];
+
+interface SlotInfo {
+  time: string;
+  available: boolean;
+}
 
 interface UploadedFile { name: string; size: number; type: string; url?: string; uploading?: boolean; }
 
@@ -70,6 +72,7 @@ const emptyForm = {
 
 function BookingForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const typeParam = searchParams.get("type") as BookingType | null;
   const carParam = searchParams.get("car") ?? "";
 
@@ -79,8 +82,35 @@ function BookingForm() {
   const [damagePhotos, setDamagePhotos] = useState<UploadedFile[]>([]);
   const [insuranceDocs, setInsuranceDocs] = useState<UploadedFile[]>([]);
   const [form, setForm] = useState({ ...emptyForm, carModel: carParam });
+  const [slots, setSlots] = useState<SlotInfo[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [slotsError, setSlotsError] = useState(false);
 
   useEffect(() => { if (typeParam) setSelectedType(typeParam); }, [typeParam]);
+
+  useEffect(() => {
+    if (selectedType !== "service" || !form.branch || !form.preferredDate) {
+      setSlots([]);
+      return;
+    }
+    setSlotsLoading(true);
+    setSlotsError(false);
+    fetch(`/api/slots?branch=${encodeURIComponent(form.branch)}&date=${form.preferredDate}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.slots) setSlots(data.slots);
+        else setSlotsError(true);
+      })
+      .catch(() => setSlotsError(true))
+      .finally(() => setSlotsLoading(false));
+  }, [selectedType, form.branch, form.preferredDate]);
+
+  const handleTypeChange = (type: BookingType) => {
+    setSelectedType(type);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("type", type);
+    router.replace(`/booking?${params.toString()}`, { scroll: false });
+  };
 
   const handleFileUpload = async (files: FileList | null, type: "damage" | "insurance") => {
     if (!files) return;
@@ -177,7 +207,9 @@ function BookingForm() {
           </div>
           <h2 className="text-2xl font-bold text-[#0F172A] mb-3">ส่งคำขอสำเร็จ!</h2>
           <p className="text-gray-500 mb-6 leading-relaxed">
-            เราได้รับการนัดหมายของคุณแล้ว ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง
+            {selectedType === "service"
+              ? "การจองของคุณเป็นการจอง slot เบื้องต้น เจ้าหน้าที่จะติดต่อกลับเพื่อยืนยันการนัดหมาย กรุณารอการยืนยันก่อนเข้ารับบริการ"
+              : "เราได้รับการนัดหมายของคุณแล้ว ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง"}
             {selectedType === "body_paint" && " เจ้าหน้าที่จะตรวจสอบรูปภาพและเอกสารเพื่อประสานงานกับประกันภัย"}
           </p>
           <div className="bg-white rounded-2xl border border-gray-100 p-5 mb-6 text-left">
@@ -223,7 +255,7 @@ function BookingForm() {
           {bookingTypes.map((type) => (
             <button
               key={type.id}
-              onClick={() => setSelectedType(type.id)}
+              onClick={() => handleTypeChange(type.id)}
               className={`p-5 rounded-2xl border-2 text-left transition-all duration-200 ${
                 selectedType === type.id
                   ? "border-[#0F172A] bg-[#0F172A] text-white shadow-lg shadow-[#0F172A]/20"
@@ -277,7 +309,7 @@ function BookingForm() {
                   <Label className="text-gray-600 text-sm">สาขา {selectedType === "service" ? "*" : ""}</Label>
                   <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
                     <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
-                    <SelectContent>{(selectedType === "service" ? serviceBranches : branches).map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
+                    <SelectContent>{branches.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div>
@@ -286,11 +318,11 @@ function BookingForm() {
                 </div>
               </div>
 
-              {form.preferredDate && (
+              {form.preferredDate && selectedType !== "service" && (
                 <div>
-                  <Label className="text-gray-600 text-sm">เวลาที่ต้องการ {selectedType === "service" ? "*" : ""}</Label>
+                  <Label className="text-gray-600 text-sm">เวลาที่ต้องการ</Label>
                   <div className="flex flex-wrap gap-2 mt-1.5">
-                    {(selectedType === "service" ? serviceTimeSlots : timeSlots).map(t => (
+                    {timeSlots.map(t => (
                       <button
                         key={t} type="button"
                         onClick={() => setForm(f => ({ ...f, preferredTime: t }))}
@@ -299,6 +331,111 @@ function BookingForm() {
                         {t}
                       </button>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Service slot availability picker */}
+              {selectedType === "service" && form.branch && form.preferredDate && (
+                <div className="space-y-3">
+                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-3.5">
+                    <p className="text-blue-800 text-sm leading-relaxed">
+                      <span className="font-semibold">การจองผ่านออนไลน์เป็นการจอง slot เบื้องต้นเท่านั้น</span> — การจองจะสมบูรณ์ต่อเมื่อเจ้าหน้าที่ติดต่อกลับเพื่อยืนยัน กรุณารอการยืนยันก่อนเข้ารับบริการ
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-gray-600 text-sm">เลือกเวลานัดหมาย *</Label>
+                      {slotsLoading && (
+                        <span className="text-xs text-gray-400 flex items-center gap-1.5">
+                          <span className="w-3 h-3 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+                          กำลังตรวจสอบ...
+                        </span>
+                      )}
+                    </div>
+
+                    {slotsError ? (
+                      <div className="text-sm text-gray-500 bg-gray-50 rounded-xl p-4 text-center">
+                        ไม่สามารถตรวจสอบช่องว่างได้ กรุณาเลือกเวลาด้านล่าง
+                        <div className="flex flex-wrap gap-2 mt-3 justify-center">
+                          {serviceTimeSlots.map(t => (
+                            <button
+                              key={t} type="button"
+                              onClick={() => setForm(f => ({ ...f, preferredTime: t }))}
+                              className={`px-3.5 py-2 rounded-lg text-sm font-medium border transition-all ${form.preferredTime === t ? "bg-[#0F172A] text-white border-[#0F172A]" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
+                            >
+                              {t}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : slots.length > 0 ? (
+                      <>
+                        <div className="grid grid-cols-4 sm:grid-cols-4 gap-2">
+                          {slots.map(slot => {
+                            const isSelected = form.preferredTime === slot.time;
+                            if (!slot.available) {
+                              return (
+                                <button key={slot.time} type="button" disabled
+                                  className="py-2.5 px-1 rounded-lg border border-gray-100 bg-gray-50 text-center opacity-50 cursor-not-allowed"
+                                >
+                                  <div className="text-sm font-medium text-gray-400 line-through">{slot.time}</div>
+                                  <div className="text-[10px] text-gray-400 mt-0.5">เต็ม</div>
+                                </button>
+                              );
+                            }
+                            return (
+                              <button key={slot.time} type="button"
+                                onClick={() => setForm(f => ({ ...f, preferredTime: slot.time }))}
+                                className={`py-2.5 px-1 rounded-lg border text-center transition-all ${
+                                  isSelected
+                                    ? "border-[#0F172A] bg-[#0F172A] text-white shadow-md"
+                                    : "border-gray-200 hover:border-[#0F172A]/40 hover:bg-blue-50/50"
+                                }`}
+                              >
+                                <div className={`text-sm font-semibold ${isSelected ? "text-white" : "text-[#0F172A]"}`}>{slot.time}</div>
+                                <div className={`text-[10px] mt-0.5 ${isSelected ? "text-white/70" : "text-emerald-600"}`}>ว่าง</div>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {form.preferredTime && (
+                          <div className="mt-2 bg-blue-50 rounded-lg px-3.5 py-2.5">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-blue-600 shrink-0" />
+                              <span className="text-sm text-blue-700 font-medium">
+                                เลือกเวลา {form.preferredTime} น. — {new Date(form.preferredDate).toLocaleDateString("th-TH", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                              </span>
+                            </div>
+                            <p className="text-xs text-blue-600/70 mt-1 ml-6">* การจองจะสมบูรณ์เมื่อเจ้าหน้าที่ติดต่อกลับเพื่อยืนยัน</p>
+                          </div>
+                        )}
+                      </>
+                    ) : !slotsLoading ? (
+                      <div className="flex flex-wrap gap-2 mt-1.5">
+                        {serviceTimeSlots.map(t => (
+                          <button
+                            key={t} type="button"
+                            onClick={() => setForm(f => ({ ...f, preferredTime: t }))}
+                            className={`px-3.5 py-2 rounded-lg text-sm font-medium border transition-all ${form.preferredTime === t ? "bg-[#0F172A] text-white border-[#0F172A]" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}
+                          >
+                            {t}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="bg-gray-50 rounded-xl p-3.5 flex items-center gap-3 flex-wrap">
+                    <p className="text-xs text-gray-500 flex-1 min-w-[180px]">ต้องการเข้าใช้บริการเร่งด่วน? ติดต่อเจ้าหน้าที่โดยตรง</p>
+                    <a href="tel:034-305-500" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
+                      <Phone className="w-3 h-3" /> 034-305500
+                    </a>
+                    <a href="https://lin.ee/erawan" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05B04C] transition-colors">
+                      <MessageCircle className="w-3 h-3" /> LINE
+                    </a>
                   </div>
                 </div>
               )}

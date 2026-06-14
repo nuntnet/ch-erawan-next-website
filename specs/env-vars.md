@@ -100,6 +100,17 @@ turso db tokens create ch-erawan
 
 ถ้าไม่ตั้ง email — booking ยังทำงาน แต่ระบบจะ log-only (ไม่ส่งอีเมล)
 
+## SPS (Service Booking System)
+
+| Variable | Required | คำอธิบาย |
+|----------|----------|----------|
+| `SPS_BASE_URL` | ✅ prod | Base URL ระบบ SPS เช่น `https://system.ch-erawan.com/sps` |
+| `SPS_API_KEY` | ✅ prod | API key สำหรับ authenticate กับ SPS (ตั้งค่าเดียวกันในไฟล์ PHP ฝั่ง SPS) |
+
+**ใช้ใน:**
+- `/api/submit/service-booking` — proxy ส่งนัดหมายเข้า SPS
+- `/api/slots` — proxy ดู slot ว่าง/เต็มจาก SPS
+
 ## Site URL
 
 | Variable | Required | คำอธิบาย |
@@ -143,6 +154,10 @@ NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSy...
 
 # Site URL (canonical / OG)
 NEXT_PUBLIC_SITE_URL=https://ch-erawan.com
+
+# SPS (Service Booking System)
+SPS_BASE_URL=https://system.ch-erawan.com/sps
+SPS_API_KEY=your-sps-api-key
 
 # Appointment email fallback (per-brand emails are in Notion Settings DB)
 APPOINTMENT_NOTIFY_EMAIL=service@ch-erawan.com

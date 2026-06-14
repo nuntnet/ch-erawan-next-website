@@ -5,8 +5,9 @@ import { sendAppointmentNotification, resolveBrandFromBranch } from "@/lib/email
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-const SPS_ENDPOINT =
-  "https://system.ch-erawan.com/sps/servicebooking_form.php";
+const SPS_ENDPOINT = process.env.SPS_BASE_URL
+  ? `${process.env.SPS_BASE_URL}/servicebooking_form.php`
+  : "https://system.ch-erawan.com/sps/servicebooking_form.php";
 
 // Branch name → SPS branch_id mapping
 const BRANCH_SPS_ID: Record<string, string> = {
@@ -19,16 +20,6 @@ const BRANCH_SPS_ID: Record<string, string> = {
   "Deepal ช.เอราวัณ ศาลายา": "8",
   "Kia ช.เอราวัณ นครปฐม": "9",
 };
-
-const SPS_SERVICE_TYPES = [
-  "เช็คระยะ",
-  "นัดแจ้งเคลม",
-  "นัดจอดซ่อม",
-  "นัดรับรถซ่อมเสร็จ",
-  "ซ่อมทั่วไป",
-  "เช็คระยะ+ซ่อมทั่วไป",
-  "อื่นๆ",
-] as const;
 
 const schema = z.object({
   customerName: z.string().min(1),
@@ -45,10 +36,9 @@ const schema = z.object({
   repairDetails: z.string().optional(),
 });
 
-function toThaiDate(isoDate: string): string {
+function toSpsDate(isoDate: string): string {
   const [y, m, d] = isoDate.split("-");
-  const buddhistYear = parseInt(y, 10) + 543;
-  return `${d}/${m}/${buddhistYear}`;
+  return `${d}/${m}/${y}`;
 }
 
 function isSunday(isoDate: string): boolean {
@@ -77,8 +67,11 @@ export async function POST(req: NextRequest) {
 
     // Build SPS form data
     const spsParams = new URLSearchParams();
+    if (process.env.SPS_API_KEY) {
+      spsParams.set("api_key", process.env.SPS_API_KEY);
+    }
     spsParams.set("branch_id", branchId);
-    spsParams.set("svb_date", toThaiDate(data.preferredDate));
+    spsParams.set("svb_date", toSpsDate(data.preferredDate));
     spsParams.set("svb_time", data.preferredTime);
     spsParams.set("svb_time2", "");
     spsParams.set("sbth_id", "");
@@ -98,7 +91,9 @@ export async function POST(req: NextRequest) {
     spsParams.set("svb_type", data.serviceType || "ซ่อมทั่วไป");
     spsParams.set("svb_typedetail", data.mileage || "");
     spsParams.set("svb_desc", data.repairDetails || "");
-    spsParams.set("svb_remark", data.notes || "");
+    const remarkParts = ["[นัดหมายจากเว็บไซต์]"];
+    if (data.notes) remarkParts.push(data.notes);
+    spsParams.set("svb_remark", remarkParts.join(" "));
     spsParams.set("svb_appoint", "1"); // 1 = ลูกค้า (customer-initiated)
     spsParams.set("svb_remind", "1"); // 1 = เตือน
     spsParams.set("Submit", "บันทึก");
@@ -107,7 +102,6 @@ export async function POST(req: NextRequest) {
 
     // POST to SPS
     let spsSuccess = false;
-    let spsError = "";
     try {
       const spsRes = await fetch(SPS_ENDPOINT, {
         method: "POST",
@@ -117,12 +111,10 @@ export async function POST(req: NextRequest) {
       const html = await spsRes.text();
       spsSuccess = html.includes("ขอขอบคุณสำหรับการนัดหมาย");
       if (!spsSuccess) {
-        spsError = "SPS did not return success marker";
-        console.error("[service-booking] SPS response did not contain success marker");
+        console.error("[service-booking] SPS did not return success marker");
       }
     } catch (err) {
-      spsError = err instanceof Error ? err.message : "SPS fetch failed";
-      console.error("[service-booking] SPS proxy error:", spsError);
+      console.error("[service-booking] SPS proxy error:", err instanceof Error ? err.message : err);
     }
 
     // Also save to Notion as backup
@@ -149,7 +141,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Send email notification
-    const emailResult = await sendAppointmentNotification({
+    await sendAppointmentNotification({
       customerName: data.customerName,
       customerPhone: data.customerPhone,
       customerEmail: data.customerEmail || undefined,
@@ -161,8 +153,6 @@ export async function POST(req: NextRequest) {
       preferredTime: data.preferredTime,
       notes: data.notes,
     });
-    console.log("[service-booking] Email result:", JSON.stringify(emailResult));
-
     if (!spsSuccess) {
       return NextResponse.json({
         success: true,

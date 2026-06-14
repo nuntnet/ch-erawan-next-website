@@ -12,6 +12,8 @@ const notionMock = vi.hoisted(() => ({
 
 const emailMock = vi.hoisted(() => ({
   sendAppointmentNotification: vi.fn(async () => ({ sent: false, channel: "none" as const })),
+  sendFormNotification: vi.fn(async () => ({ sent: false, channel: "none" as const })),
+  resolveBrandFromBranch: vi.fn(() => undefined),
 }));
 
 vi.mock("@notionhq/client", () => ({
@@ -22,6 +24,8 @@ vi.mock("@notionhq/client", () => ({
 
 vi.mock("@/lib/email", () => ({
   sendAppointmentNotification: emailMock.sendAppointmentNotification,
+  sendFormNotification: emailMock.sendFormNotification,
+  resolveBrandFromBranch: emailMock.resolveBrandFromBranch,
 }));
 
 import { POST as bookingPOST } from "@/app/api/submit/booking/route";
@@ -38,6 +42,8 @@ beforeEach(() => {
   notionMock.pages.create.mockResolvedValue({ id: "new-page" });
   emailMock.sendAppointmentNotification.mockReset();
   emailMock.sendAppointmentNotification.mockResolvedValue({ sent: false, channel: "none" });
+  emailMock.sendFormNotification.mockReset();
+  emailMock.sendFormNotification.mockResolvedValue({ sent: false, channel: "none" });
 });
 
 afterEach(() => {

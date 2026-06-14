@@ -62,7 +62,7 @@ describe("brandConfig", () => {
   it("exposes hub paths for all six brands", () => {
     expect(Object.keys(BRAND_BY_SLUG)).toHaveLength(6);
     expect(BRAND_BY_SLUG.mazda.hubPath).toBe("/mazda");
-    expect(BRAND_BY_SLUG.gwm.subLines).toHaveLength(3);
+    expect(BRAND_BY_SLUG.gwm.subLines).toHaveLength(4);
   });
 
   it("uses correct Thai spelling for Deepal", () => {

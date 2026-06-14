@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Client } from "@notionhq/client";
 import { trackEvent } from "@/lib/analytics";
+import { sendFormNotification } from "@/lib/email";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -31,6 +32,16 @@ export async function POST(req: NextRequest) {
     });
 
     void trackEvent("contact", { path: "/contact" });
+    void sendFormNotification({
+      formType: "contact",
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      fields: {
+        สาขา: data.branch ?? "",
+        ข้อความ: data.message.slice(0, 200),
+      },
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) {

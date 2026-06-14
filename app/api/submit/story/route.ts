@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Client } from "@notionhq/client";
+import { sendFormNotification } from "@/lib/email";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -33,6 +34,17 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    void sendFormNotification({
+      formType: "story",
+      name: data.customerName,
+      phone: data.customerPhone,
+      email: data.customerEmail,
+      fields: {
+        คะแนน: `${data.rating}/5`,
+        รุ่นรถ: data.carModel ?? "",
+        เรื่องราว: data.story.slice(0, 200),
+      },
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) {

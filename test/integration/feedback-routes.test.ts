@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   createFeedback: vi.fn(),
   getAllFeedbackAdmin: vi.fn(),
   updateFeedbackStatus: vi.fn(),
+  sendFormNotification: vi.fn(),
 }));
 
 vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
@@ -14,6 +15,9 @@ vi.mock("@/lib/notion", () => ({
   createFeedback: mocks.createFeedback,
   getAllFeedbackAdmin: mocks.getAllFeedbackAdmin,
   updateFeedbackStatus: mocks.updateFeedbackStatus,
+}));
+vi.mock("@/lib/email", () => ({
+  sendFormNotification: mocks.sendFormNotification,
 }));
 
 import { POST as feedbackPOST } from "@/app/api/submit/feedback/route";
@@ -23,6 +27,7 @@ beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
   allowAdmin(mocks.requireAdmin);
   mocks.createFeedback.mockResolvedValue(undefined);
+  mocks.sendFormNotification.mockResolvedValue({ sent: false, channel: "none" });
   mocks.getAllFeedbackAdmin.mockResolvedValue([{ id: "f1", name: "Somchai", status: "ใหม่" }]);
   mocks.updateFeedbackStatus.mockResolvedValue(undefined);
 });

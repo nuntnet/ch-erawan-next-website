@@ -108,6 +108,61 @@ async function sendViaSmtp(to: string, subject: string, text: string): Promise<b
   return true;
 }
 
+export interface FormNotificationPayload {
+  formType: "contact" | "feedback" | "story";
+  name: string;
+  phone?: string;
+  email?: string;
+  brandSlug?: BrandSlug;
+  fields: Record<string, string>;
+}
+
+const FORM_LABELS: Record<string, string> = {
+  contact: "ข้อความติดต่อ",
+  feedback: "แนะนำ-ติชม",
+  story: "รีวิวลูกค้า",
+};
+
+function buildFormNotificationBody(data: FormNotificationPayload): string {
+  const lines = [
+    `มี${FORM_LABELS[data.formType]}ใหม่จากเว็บไซต์ ช.เอราวัณ ออโต้ กรุป`,
+    "",
+    `ประเภท: ${FORM_LABELS[data.formType]}`,
+    `ชื่อ: ${data.name}`,
+  ];
+  if (data.phone) lines.push(`เบอร์โทร: ${data.phone}`);
+  if (data.email) lines.push(`อีเมล: ${data.email}`);
+  for (const [key, value] of Object.entries(data.fields)) {
+    if (value) lines.push(`${key}: ${value}`);
+  }
+  lines.push("", "กรุณาตรวจสอบใน Admin Panel");
+  return lines.join("\n");
+}
+
+/** Notify admin of a new form submission (contact, feedback, story). */
+export async function sendFormNotification(
+  data: FormNotificationPayload
+): Promise<{ sent: boolean; channel?: "resend" | "smtp" | "none" }> {
+  const to = await resolveNotifyEmail(data.brandSlug);
+  if (!to) {
+    console.warn(`[email] No notify email — skipping ${data.formType} notification`);
+    return { sent: false, channel: "none" };
+  }
+
+  const subject = `[${FORM_LABELS[data.formType]}] ${data.name}`;
+  const text = buildFormNotificationBody(data);
+
+  try {
+    if (await sendViaResend(to, subject, text)) return { sent: true, channel: "resend" };
+    if (await sendViaSmtp(to, subject, text)) return { sent: true, channel: "smtp" };
+    console.warn(`[email] No provider — ${data.formType} notification logged only`);
+    return { sent: false, channel: "none" };
+  } catch (err) {
+    console.error(`[email] Failed to send ${data.formType} notification:`, err);
+    return { sent: false, channel: "none" };
+  }
+}
+
 /** Notify dealer of a new appointment. Routes to brand-specific email when available. */
 export async function sendAppointmentNotification(
   data: AppointmentEmailPayload

@@ -300,8 +300,10 @@ function BookingForm() {
               </div>
 
               <div>
-                <Label htmlFor="car" className="text-gray-600 text-sm">รุ่นรถที่สนใจ</Label>
-                <Input id="car" value={form.carModel} onChange={e => setForm(f => ({ ...f, carModel: e.target.value }))} placeholder="เช่น Mazda CX-5, Ford Ranger" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
+                <Label htmlFor="car" className="text-gray-600 text-sm">
+                  {selectedType === "service" ? "รุ่นรถที่นำเข้าใช้บริการ" : "รุ่นรถที่สนใจ"}
+                </Label>
+                <Input id="car" value={form.carModel} onChange={e => setForm(f => ({ ...f, carModel: e.target.value }))} placeholder={selectedType === "service" ? "เช่น Mazda 3, GWM ORA Good Cat" : "เช่น Mazda CX-5, Ford Ranger"} className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">

@@ -529,7 +529,7 @@ export default function About() {
                         </div>
                       </div>
                     </div>
-                    <div className="absolute left-4 md:left-1/2 top-8 w-4 h-4 rounded-full bg-[#DD5259] border-4 border-white shadow-md -translate-x-1/2 z-10" />
+                    <div className="absolute left-6 md:left-1/2 top-8 w-4 h-4 rounded-full bg-[#DD5259] border-4 border-white shadow-md -translate-x-1/2 z-10" />
                     <div className="hidden md:block flex-1" />
                   </div>
                 ))}

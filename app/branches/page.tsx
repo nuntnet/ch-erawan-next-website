@@ -150,7 +150,7 @@ export default function ServiceLocator() {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Branch List */}
           <div className="lg:col-span-2 space-y-3">
             {filtered.map(branch => {

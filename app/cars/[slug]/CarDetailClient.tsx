@@ -126,7 +126,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
           <span className="text-[#0F172A] font-medium">{car.brand} {car.model}</span>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Images & Details */}
           <div className="lg:col-span-2">
             {/* Image Gallery */}

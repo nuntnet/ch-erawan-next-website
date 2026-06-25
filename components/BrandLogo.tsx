@@ -7,7 +7,7 @@ const SIZE_CLASSES = {
   sm: { box: "h-11 w-[96px]", pad: "p-1.5", maxH: "max-h-9" },
   md: { box: "h-14 w-[120px]", pad: "p-2", maxH: "max-h-11" },
   lg: { box: "h-16 w-[140px]", pad: "p-2", maxH: "max-h-12" },
-  xl: { box: "h-20 w-[220px]", pad: "p-1", maxH: "max-h-[4.5rem] md:max-h-20" },
+  xl: { box: "h-16 w-[170px] sm:h-20 sm:w-[220px]", pad: "p-1", maxH: "max-h-[3.5rem] sm:max-h-[4.5rem] md:max-h-20" },
 } as const;
 
 export type BrandLogoSize = keyof typeof SIZE_CLASSES;

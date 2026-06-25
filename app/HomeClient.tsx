@@ -547,6 +547,13 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
               </div>
             ))}
           </div>
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/stories" aria-label="ดูรีวิวลูกค้าทั้งหมด">
+              <Button variant="outline" className="border-gray-200 text-gray-600 hover:border-[#0F172A]">
+                ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -590,6 +597,13 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
                 </div>
               </Link>
             ))}
+          </div>
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/blog" aria-label="ดูบทความทั้งหมด">
+              <Button variant="outline" className="border-gray-200 text-gray-600 hover:border-[#0F172A]">
+                ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

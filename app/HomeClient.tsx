@@ -20,7 +20,7 @@ import {
   ArrowRight, Phone, MapPin, Calendar, Star,
   Shield, Wrench, Award, TrendingUp,
 } from "lucide-react";
-import type { Car, BlogPost, CustomerStory } from "@/lib/notion-types";
+import type { Car, BlogPost, CustomerStory, Promotion } from "@/lib/notion-types";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
 
@@ -69,6 +69,7 @@ interface Props {
   featuredCars: Car[];
   recentPosts: BlogPost[];
   publicStories: CustomerStory[];
+  promotions: Promotion[];
 }
 
 /** Auto-play award photo slideshow for the About section */
@@ -153,7 +154,7 @@ function AwardSlideshow() {
   );
 }
 
-export default function HomeClient({ featuredCars, recentPosts, publicStories }: Props) {
+export default function HomeClient({ featuredCars, recentPosts, publicStories, promotions }: Props) {
   const [activeBrandTab, setActiveBrandTab] = useState("ทั้งหมด");
   const [heroSlide, setHeroSlide] = useState(0);
 
@@ -357,6 +358,70 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
           </div>
         </div>
       </section>
+
+      {/* PROMOTIONS */}
+      {promotions.length > 0 && (
+        <section className="py-16 lg:py-24 bg-[#F8FAFC]">
+          <div className="container">
+            <div className="text-center mb-10 max-w-2xl mx-auto">
+              <p className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.25em] mb-3">Promotions</p>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">โปรโมชั่นและข้อเสนอพิเศษ</h2>
+              <p className="text-gray-500">ดีลล่าสุดจากทุกแบรนด์ ช.เอราวัณ ออโต้ กรุป</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {promotions.map((promo) => {
+                const brandSlug = BRANDS.find((b) => b.notionBrand === promo.brand)?.slug;
+                const href = promo.linkUrl || (brandSlug ? `/${brandSlug}/promotions` : "/contact");
+                const external = !!promo.linkUrl;
+                const endLabel = promo.endDate
+                  ? `ถึง ${new Date(promo.endDate).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}`
+                  : null;
+                const card = (
+                  <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full">
+                    <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+                      {promo.coverImageUrl ? (
+                        <Image
+                          src={cldUrl(promo.coverImageUrl, "quality")}
+                          alt={promo.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0C1C3E] via-[#1a2f52] to-[#334155]">
+                          <span className="text-white/10 text-5xl font-black select-none uppercase">{promo.brand}</span>
+                        </div>
+                      )}
+                      <Badge className="absolute top-3 left-3 bg-[#0F172A]/85 text-white text-[10px] font-semibold px-2.5 py-1 border-0 backdrop-blur-sm">
+                        {promo.brand}
+                      </Badge>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-semibold text-[#0F172A] leading-snug line-clamp-2 mb-3 group-hover:text-[#DD5259] transition-colors">
+                        {promo.title}
+                      </h3>
+                      {endLabel && (
+                        <div className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500 mb-3">
+                          <Calendar className="w-3 h-3 text-gray-400" />
+                          {endLabel}
+                        </div>
+                      )}
+                      <span className="flex items-center gap-1 text-sm font-medium text-[#DD5259]">
+                        ดูรายละเอียด <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                );
+                return external ? (
+                  <a key={promo.id} href={href} target="_blank" rel="noopener noreferrer">{card}</a>
+                ) : (
+                  <Link key={promo.id} href={href}>{card}</Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* QUOTE SECTION */}
       <section className="relative py-20 lg:py-28 bg-[#131F3C] overflow-hidden">

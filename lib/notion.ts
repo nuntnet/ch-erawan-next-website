@@ -799,6 +799,18 @@ export async function getPromotionsByBrand(brand: Promotion["brand"]): Promise<P
   return response.results.map(pageToPromotion);
 }
 
+/** Active promotions across all brands — for the home page. */
+export async function getActivePromotions(limit = 6): Promise<Promotion[]> {
+  if (!DB.promotions) return [];
+  const response = await notion.databases.query({
+    database_id: DB.promotions,
+    filter: { property: "Is Active", checkbox: { equals: true } },
+    sorts: [{ timestamp: "created_time", direction: "descending" }],
+    page_size: limit,
+  });
+  return response.results.map(pageToPromotion);
+}
+
 /** Admin: all promotions (active + inactive). */
 export async function getAllPromotionsAdmin(): Promise<Promotion[]> {
   if (!DB.promotions) return [];

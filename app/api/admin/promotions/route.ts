@@ -15,7 +15,7 @@ const promoSchema = z.object({
   title: z.string().min(1),
   brand: z.enum(BRANDS),
   coverImageUrl: z.string().nullable().optional(),
-  linkUrl: z.string().url().nullable().optional().or(z.literal("")),
+  linkUrl: z.string().nullable().optional(),
   startDate: z.string().nullable().optional(),
   endDate: z.string().nullable().optional(),
   isActive: z.boolean(),

@@ -8,6 +8,7 @@ import {
   ThumbsUp, ThumbsDown, Lightbulb, CheckCircle2,
   Phone, MessageCircle, ChevronRight, AlertCircle,
 } from "lucide-react";
+import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
 const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
 
@@ -52,6 +53,8 @@ function FeedbackForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    if (!isValidPhone(phone)) { setError(PHONE_ERROR); return; }
+    if (email && !isValidEmail(email)) { setError(EMAIL_ERROR); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/submit/feedback", {
@@ -248,8 +251,10 @@ function FeedbackForm() {
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5">เบอร์โทรศัพท์ *</label>
                 <input
                   type="tel"
+                  inputMode="numeric"
+                  maxLength={10}
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => setPhone(sanitizePhone(e.target.value))}
                   required
                   placeholder="0XX-XXX-XXXX"
                   className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"

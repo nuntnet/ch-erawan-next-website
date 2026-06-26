@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon, Phone, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import { isValidEmail, EMAIL_ERROR } from "@/lib/form-validation";
 
 type BookingType = "test_drive" | "service" | "body_paint" | "insurance_quote";
 
@@ -143,6 +144,7 @@ function BookingForm() {
     e.preventDefault();
     if (!form.customerName || !form.customerPhone) { toast.error("กรุณากรอกชื่อและเบอร์โทรศัพท์"); return; }
     if (!/^\d{9,10}$/.test(form.customerPhone)) { toast.error("กรุณากรอกเบอร์โทรศัพท์ 9-10 หลัก (ตัวเลขเท่านั้น)"); return; }
+    if (form.customerEmail && !isValidEmail(form.customerEmail)) { toast.error(EMAIL_ERROR); return; }
     if (selectedType === "service" && (!form.branch || !form.preferredDate || !form.preferredTime)) {
       toast.error("กรุณาเลือกสาขา วันที่ และเวลา");
       return;
@@ -197,7 +199,9 @@ function BookingForm() {
     }
   };
 
-  const currentType = bookingTypes.find(t => t.id === selectedType)!;
+  // Fallback prevents a crash when an unsupported type (e.g. insurance_quote,
+  // which has its own /insurance page) is passed via the URL.
+  const currentType = bookingTypes.find(t => t.id === selectedType) ?? bookingTypes[0];
 
   if (submitted) {
     return (

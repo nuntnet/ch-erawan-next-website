@@ -61,7 +61,7 @@ function buildIndex(): SearchItem[] {
     { id: "book-test",     label: "นัดทดลองขับ",      href: "/booking?type=test_drive",     icon: Car,     group: "นัดหมาย" },
     { id: "book-service",  label: "นัดบริการซ่อม",    href: "/booking?type=service",        icon: Wrench,  group: "นัดหมาย" },
     { id: "book-bodyp",    label: "นัดซ่อมสี/ตัวถัง", href: "/booking?type=body_paint",     icon: Palette, group: "นัดหมาย" },
-    { id: "book-ins",      label: "ขอใบเสนอราคาประกัน",href: "/booking?type=insurance_quote",icon: Tag,     group: "นัดหมาย" },
+    { id: "book-ins",      label: "ขอใบเสนอราคาประกัน",href: "/insurance",icon: Tag,     group: "นัดหมาย" },
   ];
   return items;
 }

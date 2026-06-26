@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getAllStories, updateStoryStatus } from "@/lib/notion";
 import { requireAdmin } from "@/lib/admin-auth";
@@ -31,6 +32,9 @@ export async function PATCH(req: NextRequest) {
     const { id, action } = patchSchema.parse(body);
     const status = action === "approve" ? "approved" : "rejected";
     await updateStoryStatus(id, status, action === "approve");
+    // Approved stories appear on /stories (and the home page) — refresh their ISR cache.
+    revalidatePath("/stories");
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) {

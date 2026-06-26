@@ -306,7 +306,7 @@ export default function Career() {
               </div>
               <h3 className="font-semibold text-[#0F172A] mb-1">LINE แผนก HR</h3>
               <p className="text-gray-400 text-xs mb-3">แชทสอบถามหรือส่ง Resume ได้เลย</p>
-              <a href="https://lin.ee/ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05B04C] transition-colors">
+              <a href="https://line.me/R/ti/p/@ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05B04C] transition-colors">
                 <MessageCircle className="w-4 h-4" />
                 @ads1599i
               </a>

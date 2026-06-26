@@ -67,7 +67,14 @@ function buildIndex(): SearchItem[] {
 }
 
 const INDEX = buildIndex();
-const GROUPS = ["หน้าหลัก", "แบรนด์", "บริการ GWM", "GWM Lines", "นัดหมาย"];
+const GROUPS = ["รถยนต์", "หน้าหลัก", "แบรนด์", "บริการ GWM", "GWM Lines", "นัดหมาย"];
+
+interface CarIndexEntry {
+  slug: string;
+  brand: string;
+  model: string;
+  year: number;
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -80,7 +87,34 @@ export default function SearchPalette({ open, onOpenChange }: SearchPaletteProps
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState("");
+  const [carItems, setCarItems] = useState<SearchItem[]>([]);
   const logTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Lazy-load car models into the index on first open so searches like "CX-3" work.
+  useEffect(() => {
+    if (!open || carItems.length > 0) return;
+    let cancelled = false;
+    fetch("/api/cars-index")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((cars: CarIndexEntry[]) => {
+        if (cancelled || !Array.isArray(cars)) return;
+        setCarItems(
+          cars.map((c) => ({
+            id: `car-${c.slug}`,
+            label: `${c.brand} ${c.model}`,
+            sublabel: String(c.year),
+            href: `/cars/${c.slug}`,
+            icon: Car,
+            group: "รถยนต์",
+            keywords: `${c.brand} ${c.model} ${c.year}`,
+          }))
+        );
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [open, carItems.length]);
+
+  const fullIndex = carItems.length ? [...carItems, ...INDEX] : INDEX;
 
   const close = useCallback(() => {
     onOpenChange(false);
@@ -99,7 +133,7 @@ export default function SearchPalette({ open, onOpenChange }: SearchPaletteProps
 
     logTimerRef.current = setTimeout(() => {
       const trimmed = query.trim();
-      const hasResults = INDEX.some((item) => {
+      const hasResults = fullIndex.some((item) => {
         const q = trimmed.toLowerCase();
         return item.label.toLowerCase().includes(q) || item.sublabel?.toLowerCase().includes(q) || item.keywords?.toLowerCase().includes(q);
       });
@@ -117,7 +151,7 @@ export default function SearchPalette({ open, onOpenChange }: SearchPaletteProps
 
   // Filter items
   const results = query.trim()
-    ? INDEX.filter((item) => {
+    ? fullIndex.filter((item) => {
         const q = query.toLowerCase();
         return (
           item.label.toLowerCase().includes(q) ||

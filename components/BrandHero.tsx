@@ -134,7 +134,7 @@ export default function BrandHero({
 
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                 {brand.displayNameTh}
-                <span className="text-white/40 font-normal text-2xl md:text-3xl ml-2">
+                <span className="block sm:inline text-white/40 font-normal text-2xl md:text-3xl sm:ml-2">
                   {brand.displayName}
                 </span>
               </h1>

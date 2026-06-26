@@ -157,7 +157,7 @@ export default function BranchesMapEmbed() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title={`แผนที่ ${selected.name}`}
-              className="absolute inset-0 border-0 w-full h-full"
+              className="absolute inset-0 border-0 w-full h-full pointer-events-none"
             />
             {/* Custom marker overlay */}
             <BranchMarker brand={selected.brand} isHQ={selected.isHQ} />

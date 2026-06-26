@@ -242,12 +242,12 @@ export default async function BrandReviewsPage({ params }: PageProps) {
                       <div className="flex-1 h-px bg-gray-200" />
                       <span className="text-xs text-gray-400">{ownTt.length} วิดีโอ</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                       {ownTt.map((video) => {
                         const embedUrl = getTikTokEmbedUrl(video.videoUrl);
                         return (
                           <div key={video.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                            <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
+                            <div className="relative aspect-[9/19] bg-gray-900 overflow-hidden">
                               {embedUrl ? (
                                 <iframe src={embedUrl} className="w-full h-full border-0" allow="encrypted-media" allowFullScreen loading="lazy" title={video.title} />
                               ) : (
@@ -334,12 +334,12 @@ export default async function BrandReviewsPage({ params }: PageProps) {
                       <div className="flex-1 h-px bg-gray-200" />
                       <span className="text-xs text-gray-400">{extTt.length} วิดีโอ</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                       {extTt.map((video) => {
                         const embedUrl = getTikTokEmbedUrl(video.videoUrl);
                         return (
                           <div key={video.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                            <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
+                            <div className="relative aspect-[9/19] bg-gray-900 overflow-hidden">
                               {embedUrl ? (
                                 <iframe src={embedUrl} className="w-full h-full border-0" allow="encrypted-media" allowFullScreen loading="lazy" title={video.title} />
                               ) : (

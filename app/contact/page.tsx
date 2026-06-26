@@ -49,7 +49,7 @@ export default function ContactPage() {
       </div>
 
       <div className="container py-10 lg:py-14">
-        <div className="grid lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Contact Form */}
           <div className="lg:col-span-3">
             {submitted ? (

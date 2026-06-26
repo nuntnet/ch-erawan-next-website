@@ -47,8 +47,15 @@ function StatCard({ label, value, icon: Icon, color }: { label: string; value: n
   );
 }
 
-function timeAgo(unixSec: number) {
-  const diff = Math.floor((Date.now() / 1000) - unixSec);
+function timeAgo(value: number | string | Date) {
+  // createdAt arrives as an ISO string over JSON (Drizzle timestamp → Date → JSON),
+  // but may also be a Date or unix-seconds number. Normalize all three to ms.
+  let ms: number;
+  if (value instanceof Date) ms = value.getTime();
+  else if (typeof value === "string") ms = Date.parse(value);
+  else ms = value > 1e12 ? value : value * 1000; // seconds vs ms heuristic
+  if (!Number.isFinite(ms)) return "—";
+  const diff = Math.floor((Date.now() - ms) / 1000);
   if (diff < 60) return `${diff}s`;
   if (diff < 3600) return `${Math.floor(diff / 60)}m`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}h`;

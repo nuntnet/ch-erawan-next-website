@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getFeaturedCars, getPublishedBlogPosts, getPublicStories } from "@/lib/notion";
+import { getFeaturedCars, getPublishedBlogPosts, getPublicStories, getActivePromotions } from "@/lib/notion";
 import { pageMetadata, SITE_NAME } from "@/lib/site";
 import { JsonLd, itemListJsonLd } from "@/lib/seo";
 import HomeClient from "./HomeClient";
@@ -21,9 +21,10 @@ export default async function HomePage() {
     getFeaturedCars(),
     getPublishedBlogPosts(3),
     getPublicStories(3),
+    getActivePromotions(6),
   ]);
 
-  const labels = ["getFeaturedCars", "getPublishedBlogPosts", "getPublicStories"];
+  const labels = ["getFeaturedCars", "getPublishedBlogPosts", "getPublicStories", "getActivePromotions"];
   results.forEach((result, i) => {
     if (result.status === "rejected") {
       console.error(`[HomePage] ${labels[i]} failed:`, result.reason);
@@ -33,6 +34,7 @@ export default async function HomePage() {
   const featuredCars = results[0].status === "fulfilled" ? results[0].value : [];
   const recentPosts = results[1].status === "fulfilled" ? results[1].value : [];
   const publicStories = results[2].status === "fulfilled" ? results[2].value : [];
+  const promotions = results[3].status === "fulfilled" ? results[3].value : [];
 
   const featuredList =
     featuredCars.length > 0
@@ -58,6 +60,7 @@ export default async function HomePage() {
         featuredCars={featuredCars}
         recentPosts={recentPosts}
         publicStories={publicStories}
+        promotions={promotions}
       />
     </>
   );

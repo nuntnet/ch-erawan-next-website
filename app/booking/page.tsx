@@ -142,6 +142,7 @@ function BookingForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.customerName || !form.customerPhone) { toast.error("กรุณากรอกชื่อและเบอร์โทรศัพท์"); return; }
+    if (!/^\d{9,10}$/.test(form.customerPhone)) { toast.error("กรุณากรอกเบอร์โทรศัพท์ 9-10 หลัก (ตัวเลขเท่านั้น)"); return; }
     if (selectedType === "service" && (!form.branch || !form.preferredDate || !form.preferredTime)) {
       toast.error("กรุณาเลือกสาขา วันที่ และเวลา");
       return;
@@ -290,7 +291,7 @@ function BookingForm() {
                 </div>
                 <div>
                   <Label htmlFor="phone" className="text-gray-600 text-sm">เบอร์โทรศัพท์ *</Label>
-                  <Input id="phone" type="tel" value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: e.target.value }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" required />
+                  <Input id="phone" type="tel" inputMode="numeric" maxLength={10} value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: e.target.value.replace(/\D/g, "").slice(0, 10) }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" required />
                 </div>
               </div>
 

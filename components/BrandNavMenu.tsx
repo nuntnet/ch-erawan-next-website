@@ -45,9 +45,10 @@ function resolveNavModels(
   brand: BrandConfig,
   navModelsByBrand: NavModelsByBrand
 ): NavHighlightModel[] {
-  const fromNotion = navModelsByBrand[brand.notionBrand];
-  if (fromNotion?.length) return fromNotion;
-  return (brand.featuredModels ?? []).map((m) => ({ name: m.name, slug: m.slug }));
+  // Only show models backed by active cars (built from Notion in PublicLayoutServer).
+  // No hardcoded featuredModels fallback — a brand with no active cars must show
+  // no model links in the mega nav (otherwise stale demo models appear, R43).
+  return navModelsByBrand[brand.notionBrand] ?? [];
 }
 
 function resolveNavCount(

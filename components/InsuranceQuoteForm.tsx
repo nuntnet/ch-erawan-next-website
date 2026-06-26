@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
 const branches = [
   "มาสด้า ช.เอราวัณ นครปฐม",
@@ -41,6 +42,8 @@ export default function InsuranceQuoteForm() {
       toast.error("กรุณากรอกชื่อและเบอร์โทรศัพท์");
       return;
     }
+    if (!isValidPhone(form.customerPhone)) { toast.error(PHONE_ERROR); return; }
+    if (form.customerEmail && !isValidEmail(form.customerEmail)) { toast.error(EMAIL_ERROR); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/submit/booking", {
@@ -84,7 +87,7 @@ export default function InsuranceQuoteForm() {
         </div>
         <div>
           <Label htmlFor="ins-phone" className="text-gray-600 text-sm">เบอร์โทรศัพท์ *</Label>
-          <Input id="ins-phone" type="tel" value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: e.target.value }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" required />
+          <Input id="ins-phone" type="tel" inputMode="numeric" maxLength={10} value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: sanitizePhone(e.target.value) }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" required />
         </div>
       </div>
 

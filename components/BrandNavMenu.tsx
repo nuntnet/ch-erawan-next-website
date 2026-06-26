@@ -512,7 +512,7 @@ export function BrandMegaMenuPanel({
             ดูรถยนต์ทั้งหมด →
           </Link>
           <Link
-            href="/cars?condition=used"
+            href="/secondhand"
             className="inline-flex items-center min-h-[44px] py-2 text-sm text-gray-400 hover:text-[#131F3C] transition-colors"
           >
             รถยนต์มือสอง →

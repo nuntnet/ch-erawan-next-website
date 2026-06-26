@@ -501,7 +501,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
             {[
               { icon: Calendar, title: "นัดหมายทดลองขับ", desc: "ทดลองขับรถรุ่นที่คุณสนใจ ที่ศูนย์บริการใกล้บ้าน", href: "/booking?type=test_drive", color: "bg-blue-50 text-blue-600" },
               { icon: Wrench, title: "ศูนย์บริการมาตรฐาน", desc: "บริการซ่อมบำรุงตามระยะ ด้วยช่างผู้เชี่ยวชาญ", href: "/booking?type=service", color: "bg-emerald-50 text-emerald-600" },
-              { icon: Shield, title: "ประกันภัยรถยนต์", desc: "เปรียบเทียบราคาจากบริษัทประกันชั้นนำ", href: "/booking?type=insurance_quote", color: "bg-amber-50 text-amber-600" },
+              { icon: Shield, title: "ประกันภัยรถยนต์", desc: "เปรียบเทียบราคาจากบริษัทประกันชั้นนำ", href: "/insurance", color: "bg-amber-50 text-amber-600" },
               { icon: Star, title: "ซ่อมตัวถังและสี", desc: "แจ้งซ่อมออนไลน์ พร้อมส่งเอกสารให้ประกันอนุมัติ", href: "/booking?type=body_paint", color: "bg-rose-50 text-rose-600" },
             ].map((service) => (
               <Link key={service.title} href={service.href}>

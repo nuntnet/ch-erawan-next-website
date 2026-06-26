@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Star, CheckCircle, MessageSquare, Quote } from "lucide-react";
 import { toast } from "sonner";
 import type { CustomerStory } from "@/lib/notion-types";
+import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
 export default function StoriesClient({ stories }: { stories: CustomerStory[] }) {
   const [showForm, setShowForm] = useState(false);
@@ -22,6 +23,8 @@ export default function StoriesClient({ stories }: { stories: CustomerStory[] })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.customerName || !form.story) { toast.error("กรุณากรอกชื่อและเรื่องราว"); return; }
+    if (form.customerPhone && !isValidPhone(form.customerPhone)) { toast.error(PHONE_ERROR); return; }
+    if (form.customerEmail && !isValidEmail(form.customerEmail)) { toast.error(EMAIL_ERROR); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/submit/story", {
@@ -77,7 +80,7 @@ export default function StoriesClient({ stories }: { stories: CustomerStory[] })
               </div>
               <div>
                 <Label htmlFor="customerPhone">เบอร์โทร (ไม่บังคับ)</Label>
-                <Input id="customerPhone" value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: e.target.value }))} placeholder="08X-XXX-XXXX" className="mt-1" />
+                <Input id="customerPhone" type="tel" inputMode="numeric" maxLength={10} value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: sanitizePhone(e.target.value) }))} placeholder="08X-XXX-XXXX" className="mt-1" />
               </div>
             </div>
             <div>

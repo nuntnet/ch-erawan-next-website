@@ -10,6 +10,7 @@ import { CheckCircle, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { branches as branchList } from "@/lib/branchData";
+import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -19,6 +20,8 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.message) { toast.error("กรุณากรอกชื่อและข้อความ"); return; }
+    if (form.phone && !isValidPhone(form.phone)) { toast.error(PHONE_ERROR); return; }
+    if (form.email && !isValidEmail(form.email)) { toast.error(EMAIL_ERROR); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/submit/contact", {
@@ -82,7 +85,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <Label htmlFor="phone" className="text-gray-600 text-sm">เบอร์โทรศัพท์</Label>
-                      <Input id="phone" type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
+                      <Input id="phone" type="tel" inputMode="numeric" maxLength={10} value={form.phone} onChange={e => setForm(f => ({ ...f, phone: sanitizePhone(e.target.value) }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
                     </div>
                   </div>
 

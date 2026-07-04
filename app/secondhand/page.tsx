@@ -208,7 +208,7 @@ export default function Secondhand() {
               </div>
               <h3 className="text-white font-semibold mb-1">Call us</h3>
               <p className="text-white/50 text-sm mb-3">08.00 - 17.00 น. ติดต่อสอบถามข้อมูลเพิ่มเติม</p>
-              <p className="text-white text-sm">034-305500</p>
+              <p className="text-white text-sm">034-305-500</p>
             </div>
           </div>
         </div>

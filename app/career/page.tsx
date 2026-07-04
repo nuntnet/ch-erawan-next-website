@@ -21,7 +21,7 @@ const BRANCH_LABELS: Record<string, string> = {
   ford_omnoi:      "Ford อ้อมใหญ่",
   mitsubishi_npt:  "Mitsubishi นครปฐม",
   gwm_npt:         "GWM นครปฐม",
-  kia_sampran:     "Kia สามพราน",
+  kia_sampran:     "Kia นครปฐม",
   hq:              "สำนักงานใหญ่",
 };
 

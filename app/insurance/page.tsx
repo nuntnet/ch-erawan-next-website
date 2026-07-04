@@ -217,10 +217,10 @@ export default function Insurance() {
                   className="flex items-center gap-2 border border-white/30 text-white px-6 py-3 rounded-xl hover:bg-white/10 transition-colors"
                 >
                   <Phone className="w-4 h-4" />
-                  034-305500
+                  034-305-500
                 </a>
                 <a
-                  href="https://lin.ee/erawan"
+                  href="https://lin.ee/NLeKZy6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-[#06C755] text-white px-6 py-3 rounded-xl hover:bg-[#05B04C] transition-colors"

@@ -18,7 +18,7 @@ const BRANCHES_BY_BRAND: Record<string, string[]> = {
   Mitsubishi: ["Mitsubishi ช.เอราวัณ นครปฐม"],
   GWM:        ["GWM ช.เอราวัณ นครปฐม"],
   Deepal:     ["Deepal ช.เอราวัณ ศาลายา"],
-  Kia:        ["Kia ช.เอราวัณ สามพราน"],
+  Kia:        ["Kia ช.เอราวัณ นครปฐม"],
 };
 
 const DEPARTMENTS = ["ฝ่ายขาย", "ศูนย์บริการ", "ซ่อมสีตัวถัง", "ประกันภัย", "อื่นๆ"];

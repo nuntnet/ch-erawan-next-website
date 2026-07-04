@@ -275,9 +275,9 @@ export const branches: Branch[] = [
   {
     id: "kia-nakhonpathom",
     brand: "Kia",
-    name: "Kia ช.เอราวัณ สามพราน",
+    name: "Kia ช.เอราวัณ นครปฐม",
     companyName: "บริษัท ช.เอราวัณ ออโตเซลล์ จำกัด",
-    shortName: "Kia สามพราน",
+    shortName: "Kia นครปฐม",
     isHQ: false,
     address: "232 ต.ยายชา อ.สามพราน จ.นครปฐม 73110",
     phone: "02-431-1000",

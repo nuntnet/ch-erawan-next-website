@@ -117,6 +117,15 @@ export async function POST(req: NextRequest) {
       console.error("[service-booking] SPS proxy error:", err instanceof Error ? err.message : err);
     }
 
+    // Fold service details into Notes (appointments DB has no dedicated
+    // Service Type / Mileage / Repair Details columns).
+    const notesText = [
+      data.serviceType ? `ประเภทบริการ: ${data.serviceType}` : "",
+      data.mileage ? `เลขไมล์: ${data.mileage}` : "",
+      data.repairDetails ? `รายละเอียด/อาการ: ${data.repairDetails}` : "",
+      data.notes,
+    ].filter(Boolean).join("\n");
+
     // Also save to Notion as backup
     try {
       await notion.pages.create({
@@ -131,7 +140,7 @@ export async function POST(req: NextRequest) {
           Branch: { rich_text: [{ text: { content: data.branch } }] },
           "Preferred Date": { date: { start: data.preferredDate } },
           "Preferred Time": { rich_text: [{ text: { content: data.preferredTime } }] },
-          ...(data.notes ? { Notes: { rich_text: [{ text: { content: data.notes } }] } } : {}),
+          ...(notesText ? { Notes: { rich_text: [{ text: { content: notesText } }] } } : {}),
           ...(data.vehicleRegistration ? { "Vehicle Registration": { rich_text: [{ text: { content: data.vehicleRegistration } }] } } : {}),
           "Submitted At": { date: { start: new Date().toISOString() } },
         },

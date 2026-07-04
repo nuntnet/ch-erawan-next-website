@@ -45,23 +45,32 @@ const AWARD_SLIDES: { url: string; caption: string }[] = [
 const heroSlides = [
   {
     bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245610/ch-erawan/hero/mazda-cx5-hero-2026.jpg",
+    mobileGravity: "auto:subject",
     brand: "Mazda", tagline: "FEEL ALIVE",
     thaiTitle: "ขับเคลื่อนด้วยแรงบันดาลใจ",
     desc: "Mazda CX-5 SUV สมรรถนะสมดุล ดีไซน์ Kodo เอกลักษณ์เฉพาะตัว พร้อม i-Activsense ช่วยเหลือผู้ขับขี่",
   },
   {
     bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245615/ch-erawan/hero/gwm-haval-h6-hero.jpg",
+    mobileGravity: "auto",
     brand: "GWM", tagline: "HAVAL H6 HEV",
     thaiTitle: "SUV ไฮบริดยอดนิยม",
     desc: "GWM HAVAL H6 HEV ประหยัดน้ำมัน ออพชั่นครบ ราคาเริ่มต้น 969,000 บาท จาก gwm.co.th",
   },
   {
     bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245617/ch-erawan/hero/kia-ev5-hero.jpg",
+    mobileGravity: "auto",
     brand: "Kia", tagline: "INSPIRATION DRIVEN",
     thaiTitle: "SUV ไฟฟ้าแห่งอนาคต",
     desc: "Kia EV5 ดีไซน์ Opposites United ห้องโดยสารกว้าง ราคาเริ่มต้น 1,399,000 บาท",
   },
 ];
+
+/** Portrait, car-focused crop for the mobile hero — Cloudinary content-aware
+ * gravity keeps the vehicle in frame instead of centre-cropping a landscape shot. */
+function heroMobileSrc(bg: string, gravity = "auto"): string {
+  return bg.replace("f_auto,q_auto:good", `f_auto,q_auto:good,c_fill,g_${gravity},ar_4:5,w_800`);
+}
 
 const brandTabs = ["ทั้งหมด", ...BRANDS.map((b) => b.notionBrand)];
 
@@ -171,15 +180,25 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
   return (
     <div className="min-h-screen pt-[68px]">
       {/* HERO */}
-      <section className="relative overflow-hidden bg-black" style={{ height: "calc(100vh - 68px)" }}>
+      <section className="relative overflow-hidden bg-black h-[80svh] min-h-[540px] lg:h-[calc(100vh-68px)]">
         {heroSlides.map((slide, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === heroSlide ? "opacity-100" : "opacity-0"}`}>
+            {/* Desktop: original landscape */}
             <Image
               src={slide.bg}
               alt={slide.brand}
               fill
               priority={i === 0}
-              className="object-cover object-center"
+              className="hidden md:block object-cover object-center"
+              sizes="100vw"
+            />
+            {/* Mobile: portrait, car-focused crop (Cloudinary g_auto) */}
+            <Image
+              src={heroMobileSrc(slide.bg, slide.mobileGravity)}
+              alt={slide.brand}
+              fill
+              priority={i === 0}
+              className="md:hidden object-cover object-center"
               sizes="100vw"
             />
           </div>

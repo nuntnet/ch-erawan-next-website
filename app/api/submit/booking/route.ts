@@ -24,15 +24,18 @@ const schema = z.object({
   insuranceDocUrls: z.array(z.string().url()).optional(),
 });
 
-function urlsToNotionText(urls?: string[]) {
-  if (!urls?.length) return undefined;
-  return urls.join("\n");
-}
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const data = schema.parse(body);
+
+    // Fold uploaded file URLs into Notes (the appointments DB has no dedicated
+    // URL columns; writing non-existent properties previously caused a 500).
+    const notesText = [
+      data.notes,
+      data.damagePhotoUrls?.length ? `รูปความเสียหาย:\n${data.damagePhotoUrls.join("\n")}` : "",
+      data.insuranceDocUrls?.length ? `เอกสารแนบ/ประกัน:\n${data.insuranceDocUrls.join("\n")}` : "",
+    ].filter(Boolean).join("\n\n");
 
     await notion.pages.create({
       parent: { database_id: process.env.NOTION_APPOINTMENTS_DB_ID! },
@@ -46,17 +49,11 @@ export async function POST(req: NextRequest) {
         ...(data.branch ? { Branch: { rich_text: [{ text: { content: data.branch } }] } } : {}),
         ...(data.preferredDate ? { "Preferred Date": { date: { start: data.preferredDate } } } : {}),
         ...(data.preferredTime ? { "Preferred Time": { rich_text: [{ text: { content: data.preferredTime } }] } } : {}),
-        ...(data.notes ? { Notes: { rich_text: [{ text: { content: data.notes } }] } } : {}),
+        ...(notesText ? { Notes: { rich_text: [{ text: { content: notesText } }] } } : {}),
         ...(data.damageDescription ? { "Damage Description": { rich_text: [{ text: { content: data.damageDescription } }] } } : {}),
         ...(data.insuranceCompany ? { "Insurance Company": { rich_text: [{ text: { content: data.insuranceCompany } }] } } : {}),
         ...(data.vehicleRegistration ? { "Vehicle Registration": { rich_text: [{ text: { content: data.vehicleRegistration } }] } } : {}),
         ...(data.coverageType ? { "Coverage Type": { rich_text: [{ text: { content: data.coverageType } }] } } : {}),
-        ...(urlsToNotionText(data.damagePhotoUrls)
-          ? { "Damage Photo URLs": { rich_text: [{ text: { content: urlsToNotionText(data.damagePhotoUrls)! } }] } }
-          : {}),
-        ...(urlsToNotionText(data.insuranceDocUrls)
-          ? { "Insurance Doc URLs": { rich_text: [{ text: { content: urlsToNotionText(data.insuranceDocUrls)! } }] } }
-          : {}),
         "Submitted At": { date: { start: new Date().toISOString() } },
       },
     });

@@ -36,7 +36,7 @@ function DetailItem({ icon: Icon, label, value }: { icon: React.ElementType; lab
       <Icon className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
       <div>
         <p className="text-xs text-gray-400">{label}</p>
-        <p className="text-sm text-gray-700">{value}</p>
+        <p className="text-sm text-gray-700 whitespace-pre-line break-words">{value}</p>
       </div>
     </div>
   );
@@ -132,13 +132,19 @@ export default function AdminAppointments() {
         ) : (
           <table className="w-full">
             <thead>
+              {/* Header mirrors the flex layout of each body row (which is a single
+                  colSpan cell) so columns line up. */}
               <tr className="border-b border-gray-100 bg-gray-50/50">
-                <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider">ลูกค้า</th>
-                <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider w-32">ประเภท</th>
-                <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider">รถยนต์ / สาขา</th>
-                <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider w-32">วันที่นัด</th>
-                <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3 uppercase tracking-wider w-36">สถานะ</th>
-                <th className="w-10" />
+                <th colSpan={6} className="p-0">
+                  <div className="flex items-center text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <div className="px-5 py-3 flex-1 min-w-0">ลูกค้า</div>
+                    <div className="px-5 py-3 w-32 shrink-0">ประเภท</div>
+                    <div className="px-5 py-3 flex-1 min-w-0">รถยนต์ / สาขา</div>
+                    <div className="px-5 py-3 w-32 shrink-0">วันที่นัด</div>
+                    <div className="px-5 py-3 w-36 shrink-0">สถานะ</div>
+                    <div className="px-3 py-3 w-10 shrink-0" />
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">

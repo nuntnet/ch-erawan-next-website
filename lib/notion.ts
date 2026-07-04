@@ -773,7 +773,7 @@ export async function updateStoryStatus(
 function pageToPromotion(page: NotionPage): Promotion {
   return {
     id: page.id,
-    title: propTitle(page, "Title"),
+    title: propTitle(page, "Name"),
     brand: propSelect(page, "Brand") as Promotion["brand"],
     coverImageUrl: propText(page, "Cover Image URL") || null,
     linkUrl: propUrl(page, "Link URL"),
@@ -827,7 +827,7 @@ export async function createPromotion(data: Omit<Promotion, "id">): Promise<Prom
   const page = await notion.pages.create({
     parent: { database_id: DB.promotions },
     properties: {
-      Title: { title: [{ text: { content: data.title } }] },
+      Name: { title: [{ text: { content: data.title } }] },
       Brand: { select: { name: data.brand } },
       "Cover Image URL": data.coverImageUrl ? { rich_text: [{ text: { content: data.coverImageUrl } }] } : { rich_text: [] },
       "Link URL": data.linkUrl ? { url: data.linkUrl } : { url: null },
@@ -843,7 +843,7 @@ export async function createPromotion(data: Omit<Promotion, "id">): Promise<Prom
 export async function updatePromotion(id: string, data: Partial<Omit<Promotion, "id">>): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const props: Record<string, any> = {};
-  if (data.title !== undefined) props.Title = { title: [{ text: { content: data.title } }] };
+  if (data.title !== undefined) props.Name = { title: [{ text: { content: data.title } }] };
   if (data.brand !== undefined) props.Brand = { select: { name: data.brand } };
   if (data.coverImageUrl !== undefined) props["Cover Image URL"] = data.coverImageUrl ? { rich_text: [{ text: { content: data.coverImageUrl } }] } : { rich_text: [] };
   if (data.linkUrl !== undefined) props["Link URL"] = data.linkUrl ? { url: data.linkUrl } : { url: null };

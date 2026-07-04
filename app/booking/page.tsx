@@ -435,14 +435,16 @@ function BookingForm() {
                     ) : null}
                   </div>
 
-                  <div className="bg-gray-50 rounded-xl p-3.5 flex items-center gap-3 flex-wrap">
-                    <p className="text-xs text-gray-500 flex-1 min-w-[180px]">ต้องการเข้าใช้บริการเร่งด่วน? ติดต่อเจ้าหน้าที่โดยตรง</p>
-                    <a href="tel:034-305-500" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
-                      <Phone className="w-3 h-3" /> 034-305500
-                    </a>
-                    <a href="https://lin.ee/erawan" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05B04C] transition-colors">
-                      <MessageCircle className="w-3 h-3" /> LINE
-                    </a>
+                  <div className="bg-gray-50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <p className="text-xs text-gray-500 flex-1">ต้องการเข้าใช้บริการเร่งด่วน? ติดต่อเจ้าหน้าที่โดยตรง</p>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <a href="tel:034-305-500" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
+                        <Phone className="w-3.5 h-3.5" /> โทร
+                      </a>
+                      <a href="https://lin.ee/erawan" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05B04C] transition-colors">
+                        <MessageCircle className="w-3.5 h-3.5" /> LINE
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}

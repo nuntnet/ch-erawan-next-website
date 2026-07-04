@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon, Phone, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { isValidEmail, EMAIL_ERROR } from "@/lib/form-validation";
+import { getBranchContact } from "@/lib/branchData";
 
 type BookingType = "test_drive" | "service" | "body_paint" | "insurance_quote";
 
@@ -202,6 +203,8 @@ function BookingForm() {
   // Fallback prevents a crash when an unsupported type (e.g. insurance_quote,
   // which has its own /insurance page) is passed via the URL.
   const currentType = bookingTypes.find(t => t.id === selectedType) ?? bookingTypes[0];
+  // Contact shown in the "urgent" block follows the selected branch (HQ fallback).
+  const branchContact = getBranchContact(form.branch);
 
   if (submitted) {
     return (
@@ -438,10 +441,10 @@ function BookingForm() {
                   <div className="bg-gray-50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-3">
                     <p className="text-xs text-gray-500 flex-1">ต้องการเข้าใช้บริการเร่งด่วน? ติดต่อเจ้าหน้าที่โดยตรง</p>
                     <div className="flex items-center gap-2 shrink-0">
-                      <a href="tel:034-305-500" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
-                        <Phone className="w-3.5 h-3.5" /> โทร
+                      <a href={`tel:${branchContact.phone.replace(/[^0-9]/g, "")}`} className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
+                        <Phone className="w-3.5 h-3.5" /> {branchContact.phone}
                       </a>
-                      <a href="https://lin.ee/NLeKZy6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05B04C] transition-colors">
+                      <a href={branchContact.lineUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05B04C] transition-colors">
                         <MessageCircle className="w-3.5 h-3.5" /> LINE
                       </a>
                     </div>

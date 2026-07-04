@@ -324,3 +324,15 @@ export function getBranchesByBrand(brand: string): Branch[] {
 export function getAllBrands(): string[] {
   return Array.from(new Set(branches.map((b) => b.brand)));
 }
+
+/**
+ * Resolve the contact phone + LINE for a selected branch name.
+ * Falls back to the HQ branch when no/unknown branch is given, so callers
+ * always have a valid number + LINE to show.
+ */
+export function getBranchContact(name?: string): { phone: string; lineUrl: string } {
+  const hq = branches.find((b) => b.isHQ) ?? branches[0];
+  const match = name ? branches.find((b) => b.name === name) : undefined;
+  const src = match ?? hq;
+  return { phone: src.phone, lineUrl: src.lineUrl };
+}

@@ -45,7 +45,7 @@ const AWARD_SLIDES: { url: string; caption: string }[] = [
 const heroSlides = [
   {
     bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245610/ch-erawan/hero/mazda-cx5-hero-2026.jpg",
-    mobileGravity: "auto:subject",
+    mobileGravity: "east", // car sits on the right half; g_auto picks the reflective glass on the left
     brand: "Mazda", tagline: "FEEL ALIVE",
     thaiTitle: "ขับเคลื่อนด้วยแรงบันดาลใจ",
     desc: "Mazda CX-5 SUV สมรรถนะสมดุล ดีไซน์ Kodo เอกลักษณ์เฉพาะตัว พร้อม i-Activsense ช่วยเหลือผู้ขับขี่",

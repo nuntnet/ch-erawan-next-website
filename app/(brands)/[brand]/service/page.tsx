@@ -180,10 +180,10 @@ export default async function BrandServicePage({ params }: PageProps) {
                         </Button>
                       </a>
                     </div>
-                    {branch.mapEmbed && (
+                    {branch.lat && branch.lng && (
                       <div className="mt-4 rounded-xl overflow-hidden h-44">
                         <iframe
-                          src={branch.mapEmbed}
+                          src={`https://maps.google.com/maps?q=${branch.lat},${branch.lng}&z=16&output=embed&hl=th`}
                           width="100%"
                           height="100%"
                           loading="lazy"

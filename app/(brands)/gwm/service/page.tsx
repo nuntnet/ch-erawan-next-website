@@ -249,9 +249,9 @@ export default function GwmServicePage() {
                       </Button>
                     </a>
                   </div>
-                  {branch.mapEmbed && (
+                  {branch.lat && branch.lng && (
                     <div className="mt-4 rounded-xl overflow-hidden h-44">
-                      <iframe src={branch.mapEmbed} width="100%" height="100%" loading="lazy"
+                      <iframe src={`https://maps.google.com/maps?q=${branch.lat},${branch.lng}&z=16&output=embed&hl=th`} width="100%" height="100%" loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade" title={`แผนที่ ${branch.name}`}
                         className="border-0 w-full h-full" />
                     </div>

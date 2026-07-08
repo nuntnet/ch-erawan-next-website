@@ -48,7 +48,7 @@ export default function Footer() {
           {/* Column 1: Logo + About + Contact */}
           <div className="lg:col-span-1">
             {/* Logo */}
-            <Link href="/" className="inline-flex mb-5" aria-label="ช.เอราวัณ ออโต้ กรุป — หน้าแรก">
+            <Link href="/" className="inline-flex mb-5" aria-label="ช.เอราวัณ กรุ๊ป — หน้าแรก">
               <CompanyLogo height={56} className="h-14 w-auto" />
             </Link>
 
@@ -66,9 +66,9 @@ export default function Footer() {
                 <Phone className="w-4 h-4 shrink-0 text-white/30" />
                 034-305-500
               </a>
-              <a href="mailto:info@ch-erawan.com" className="flex items-center gap-2.5 text-sm text-white/60 hover:text-white transition-colors">
+              <a href="mailto:contactus@ch-erawan.com" className="flex items-center gap-2.5 text-sm text-white/60 hover:text-white transition-colors">
                 <Mail className="w-4 h-4 shrink-0 text-white/30" />
-                info@ch-erawan.com
+                contactus@ch-erawan.com
               </a>
               <div className="flex items-start gap-2.5 text-sm text-white/60">
                 <Clock className="w-4 h-4 mt-0.5 shrink-0 text-white/30" />
@@ -165,7 +165,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container py-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs text-white/30 text-center md:text-left">
-            © {new Date().getFullYear()} กลุ่มบริษัท ช.เอราวัณ ออโต้ กรุป · สงวนลิขสิทธิ์ทั้งหมด
+            © {new Date().getFullYear()} กลุ่มบริษัท ช.เอราวัณ กรุ๊ป · สงวนลิขสิทธิ์ทั้งหมด
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-white/30">
             <Link href="/privacy" className="hover:text-white/70 transition-colors">นโยบายคุ้มครองข้อมูลส่วนบุคคล</Link>

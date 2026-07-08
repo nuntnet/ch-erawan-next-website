@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps) {
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug as BrandSlug];
   return pageMetadata({
-    title: `ศูนย์ซ่อมสี/ตัวถัง ${brand.displayName} — ช.เอราวัณ ออโต้ กรุป`,
+    title: `ศูนย์ซ่อมสี/ตัวถัง ${brand.displayName} — ช.เอราวัณ กรุ๊ป`,
     description: `ซ่อมสีและตัวถังรถ ${brand.displayName} มาตรฐานโรงงาน ช่างเทคนิคเฉพาะทาง 20 คน สีตรงรุ่น อุปกรณ์ครบ ที่ ช.เอราวัณ จ.นครปฐม`,
     path: `${brand.hubPath}/body-repair`,
   });

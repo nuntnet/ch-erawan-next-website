@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "One Stop Service GWM — ช.เอราวัณ ออโต้ กรุป",
+  title: "One Stop Service GWM — ช.เอราวัณ กรุ๊ป",
   description:
     "บริการ One Stop Service ครบวงจร สำหรับรถ GWM — ซื้อ, เซอร์วิส, ซ่อมสี, ประกัน ที่เดียวจบ ที่ ช.เอราวัณ นครปฐม",
   path: "/gwm/one-stop",
@@ -94,7 +94,7 @@ export default function GwmOneStopPage() {
               One Stop Service GWM
             </h2>
             <p className="text-white/60 max-w-xl mx-auto">
-              ทุกความต้องการสำหรับรถ GWM ของคุณ — ครบ จบ ที่ ช.เอราวัณ ออโต้ กรุป
+              ทุกความต้องการสำหรับรถ GWM ของคุณ — ครบ จบ ที่ ช.เอราวัณ กรุ๊ป
             </p>
           </div>
         </section>

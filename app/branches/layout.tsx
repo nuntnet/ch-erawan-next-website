@@ -4,7 +4,7 @@ import { localBusinessGraph } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "สาขาของเรา",
-  description: "7 สาขา ช.เอราวัณ ออโต้ กรุป ในนครปฐมและปริมณฑล — Mazda, Ford, Mitsubishi, GWM, Deepal, Kia",
+  description: "7 สาขา ช.เอราวัณ กรุ๊ป ในนครปฐมและปริมณฑล — Mazda, Ford, Mitsubishi, GWM, Deepal, Kia",
   path: "/branches",
 });
 

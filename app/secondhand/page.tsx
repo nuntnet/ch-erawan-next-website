@@ -7,7 +7,7 @@ export const revalidate = 86400;
 
 export const metadata = pageMetadata({
   title: "รับซื้อรถมือสอง",
-  description: "บริการรับซื้อรถมือสอง ประเมินราคายุติธรรม จาก ช.เอราวัณ ออโต้ กรุป",
+  description: "บริการรับซื้อรถมือสอง ประเมินราคายุติธรรม จาก ช.เอราวัณ กรุ๊ป",
   path: "/secondhand",
 });
 
@@ -192,7 +192,7 @@ export default function Secondhand() {
               </div>
               <h3 className="text-white font-semibold mb-1">ติดต่อผ่านทางอีเมล</h3>
               <p className="text-white/50 text-sm mb-3">ส่งอีเมลหาเราได้เลย</p>
-              <p className="text-white text-sm">info@ch-erawan.com</p>
+              <p className="text-white text-sm">contactus@ch-erawan.com</p>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center">
               <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">

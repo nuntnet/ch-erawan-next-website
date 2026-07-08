@@ -491,7 +491,7 @@ export function BrandMegaMenuPanel({
     <div className="container py-8">
       <div className="mb-6">
         <h3 className="text-lg font-bold text-[#131F3C]">
-          แบรนด์รถยนต์ที่ ช.เอราวัณ ออโต้ กรุป
+          แบรนด์รถยนต์ที่ ช.เอราวัณ กรุ๊ป
         </h3>
         <p className="text-sm text-gray-400 mt-1">
           เลือกแบรนด์เพื่อดูรุ่นรถทั้งหมด — ชี้เมาส์เพื่อดูไฮไลท์รุ่นแนะนำ / ใหม่

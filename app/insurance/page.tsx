@@ -9,7 +9,7 @@ export const revalidate = 86400;
 
 export const metadata = pageMetadata({
   title: "ประกันภัยรถยนต์",
-  description: "บริการประกันภัยรถยนต์ครบวงจรจาก ช.เอราวัณ ออโต้ กรุป",
+  description: "บริการประกันภัยรถยนต์ครบวงจรจาก ช.เอราวัณ กรุ๊ป",
   path: "/insurance",
 });
 

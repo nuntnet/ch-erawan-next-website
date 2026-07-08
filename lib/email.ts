@@ -48,7 +48,7 @@ export interface AppointmentEmailPayload {
 
 function buildPlainTextBody(data: AppointmentEmailPayload): string {
   const lines = [
-    "มีการนัดหมายใหม่จากเว็บไซต์ ช.เอราวัณ ออโต้ กรุป",
+    "มีการนัดหมายใหม่จากเว็บไซต์ ช.เอราวัณ กรุ๊ป",
     "",
     `ประเภท: ${TYPE_LABELS[data.type] ?? data.type}`,
     `ชื่อลูกค้า: ${data.customerName}`,
@@ -125,7 +125,7 @@ const FORM_LABELS: Record<string, string> = {
 
 function buildFormNotificationBody(data: FormNotificationPayload): string {
   const lines = [
-    `มี${FORM_LABELS[data.formType]}ใหม่จากเว็บไซต์ ช.เอราวัณ ออโต้ กรุป`,
+    `มี${FORM_LABELS[data.formType]}ใหม่จากเว็บไซต์ ช.เอราวัณ กรุ๊ป`,
     "",
     `ประเภท: ${FORM_LABELS[data.formType]}`,
     `ชื่อ: ${data.name}`,

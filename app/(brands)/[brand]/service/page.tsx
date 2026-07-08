@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: PageProps) {
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug as BrandSlug];
   return pageMetadata({
-    title: `ศูนย์บริการ ${brand.displayName} — ช.เอราวัณ ออโต้ กรุป`,
+    title: `ศูนย์บริการ ${brand.displayName} — ช.เอราวัณ กรุ๊ป`,
     description: `ศูนย์บริการ ${brand.displayName} มาตรฐานโรงงาน ครบทุกบริการ พร้อมช่างผ่านการรับรอง ที่ ช.เอราวัณ จ.นครปฐม`,
     path: `${brand.hubPath}/service`,
   });

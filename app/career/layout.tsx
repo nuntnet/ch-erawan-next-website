@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "ร่วมงานกับเรา",
-  description: "โอกาสในการร่วมงานกับ ช.เอราวัณ ออโต้ กรุป",
+  description: "โอกาสในการร่วมงานกับ ช.เอราวัณ กรุ๊ป",
   path: "/career",
 });
 

@@ -6,7 +6,7 @@ export const SITE_URL =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
   "https://ch-erawan.com";
 
-export const SITE_NAME = "ช.เอราวัณ กรุป";
+export const SITE_NAME = "ช.เอราวัณ กรุ๊ป";
 
 /** Build absolute canonical URL for a site path (no query string). */
 export function canonicalUrl(path: string): string {

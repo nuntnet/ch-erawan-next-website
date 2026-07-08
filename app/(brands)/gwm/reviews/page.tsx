@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "รีวิวรถ GWM — ช.เอราวัณ ออโต้ กรุป",
+  title: "รีวิวรถ GWM — ช.เอราวัณ กรุ๊ป",
   description: "รีวิวรถ GWM จาก YouTube และ TikTok — HAVAL, ORA, TANK",
   path: "/gwm/reviews",
 });

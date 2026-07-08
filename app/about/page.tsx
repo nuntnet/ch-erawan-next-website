@@ -101,10 +101,10 @@ const timeline: TimelineItem[] = [
   {
     year: "ปัจจุบัน",
     title: "6 แบรนด์ 7 สาขา",
-    desc: "ช.เอราวัณ กรุป เติบโตเป็นกลุ่มดีลเลอร์ชั้นนำในภาคตะวันตก ครอบคลุม ICE, Hybrid และ EV ครบทุกกลุ่ม ส่วนแบ่งตลาดรวม ~13.1%",
+    desc: "ช.เอราวัณ กรุ๊ป เติบโตเป็นกลุ่มดีลเลอร์ชั้นนำในภาคตะวันตก ครอบคลุม ICE, Hybrid และ EV ครบทุกกลุ่ม ส่วนแบ่งตลาดรวม ~13.1%",
     milestone: "ผู้นำภาคตะวันตก",
     image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245672/ch-erawan/team/team-photo-2.jpg",
-    imageAlt: "ทีมงาน ช.เอราวัณ กรุป",
+    imageAlt: "ทีมงาน ช.เอราวัณ กรุ๊ป",
   },
 ];
 
@@ -154,7 +154,7 @@ const awards = [
   {
     title: "กิจกรรมเพื่อสังคม",
     year: "2565",
-    desc: "ช.เอราวัณ กรุป บริจาคของช่วยเหลือผู้ประสบภัยน้ำท่วมภาคอีสาน",
+    desc: "ช.เอราวัณ กรุ๊ป บริจาคของช่วยเหลือผู้ประสบภัยน้ำท่วมภาคอีสาน",
     img: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245677/ch-erawan/team/team-photo-6.jpg",
     brand: "CSR",
   },
@@ -313,7 +313,7 @@ export default function About() {
           {TEAM_GROUP_PHOTO_URL ? (
             <Image
               src={TEAM_GROUP_PHOTO_URL}
-              alt="ทีมบริหาร ช.เอราวัณ ออโต้ กรุป"
+              alt="ทีมบริหาร ช.เอราวัณ กรุ๊ป"
               fill
               priority
               className="object-cover object-center opacity-30"
@@ -391,7 +391,7 @@ export default function About() {
                 {TEAM_GROUP_PHOTO_URL ? (
                   <Image
                     src={TEAM_GROUP_PHOTO_URL}
-                    alt="ทีมบริหาร ช.เอราวัณ ออโต้ กรุป"
+                    alt="ทีมบริหาร ช.เอราวัณ กรุ๊ป"
                     fill
                     className="object-cover object-top"
                     sizes="(max-width: 1024px) 0vw, 560px"
@@ -413,7 +413,7 @@ export default function About() {
                         <Users className="w-3.5 h-3.5" />
                         ทีมผู้บริหาร
                       </div>
-                      <p className="font-bold text-lg">ช.เอราวัณ ออโต้ กรุป</p>
+                      <p className="font-bold text-lg">ช.เอราวัณ กรุ๊ป</p>
                       <p className="text-white/60 text-sm mt-1">{`ตระกูลจันทร์วาววาม · ผู้บุกเบิกกว่า ${getYearsOfExperience()} ปี`}</p>
                     </>
                   ) : (
@@ -544,7 +544,7 @@ export default function About() {
             <div className="max-w-3xl mb-10">
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">แบรนด์รถยนต์ในเครือ</h2>
               <p className="text-gray-500 leading-relaxed">
-                ช.เอราวัณ กรุป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 6 แบรนด์ชั้นนำ
+                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 6 แบรนด์ชั้นนำ
                 ครอบคลุมทุกกลุ่มรถยนต์ตั้งแต่ ICE, Hybrid ไปจนถึง EV เต็มรูปแบบ
               </p>
             </div>
@@ -640,7 +640,7 @@ export default function About() {
               <p className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.25em] mb-2">Our Team</p>
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">ทีมผู้บริหาร</h2>
               <p className="text-gray-500 leading-relaxed text-base">
-                {`ช.เอราวัณ กรุป บริหารงานโดยทีมผู้บริหารที่มีความเชี่ยวชาญและประสบการณ์ยาวนานกว่า ${getYearsOfExperience()} ปี`}
+                {`ช.เอราวัณ กรุ๊ป บริหารงานโดยทีมผู้บริหารที่มีความเชี่ยวชาญและประสบการณ์ยาวนานกว่า ${getYearsOfExperience()} ปี`}
                 ภายใต้การนำของตระกูลจันทร์วาววาม ที่สืบทอดปณิธานการให้บริการที่เป็นเลิศแก่ลูกค้าทุกท่าน
               </p>
             </div>
@@ -733,7 +733,7 @@ export default function About() {
             <div className="relative rounded-2xl overflow-hidden" style={{ minHeight: "200px" }}>
               <Image
                 src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245672/ch-erawan/team/team-photo-2.jpg"
-                alt="ทีมงาน ช.เอราวัณ กรุป"
+                alt="ทีมงาน ช.เอราวัณ กรุ๊ป"
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 1024px) 100vw, 1200px"
@@ -865,7 +865,7 @@ export default function About() {
           <p className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.2em] mb-3">Get Started</p>
           <h2 className="text-2xl lg:text-3xl font-bold mb-3">พร้อมให้บริการคุณทุกวัน</h2>
           <p className="text-white/50 mb-8 max-w-xl mx-auto">
-            ไม่ว่าจะเป็นการซื้อรถใหม่ บริการซ่อมบำรุง หรือประกันภัย ช.เอราวัณ กรุป พร้อมดูแลคุณ
+            ไม่ว่าจะเป็นการซื้อรถใหม่ บริการซ่อมบำรุง หรือประกันภัย ช.เอราวัณ กรุ๊ป พร้อมดูแลคุณ
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/cars">

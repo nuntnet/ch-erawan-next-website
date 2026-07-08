@@ -214,7 +214,7 @@ export default function Career() {
           <p className="text-[#C8102E] text-sm font-medium tracking-widest uppercase mb-3">Join Our Team</p>
           <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">มาเป็นส่วนหนึ่งของทีมเรา</h1>
           <p className="text-white/60 max-w-xl leading-relaxed mb-6">
-            ร่วมงานกับ ช.เอราวัณ ออโต้ กรุป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ
+            ร่วมงานกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ
             {`ใน 7 สาขา จ.นครปฐม ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี`}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-white/50">
@@ -274,7 +274,7 @@ export default function Career() {
           <div className="mt-10 lg:mt-0 rounded-2xl overflow-hidden shadow-lg">
             <Image
               src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/pages/career-team-photo"
-              alt="ทีมงาน ช.เอราวัณ ออโต้ กรุป"
+              alt="ทีมงาน ช.เอราวัณ กรุ๊ป"
               width={900}
               height={600}
               className="w-full h-[420px] object-cover"
@@ -458,7 +458,7 @@ export default function Career() {
             ทีม HR จะติดต่อกลับเมื่อมีตำแหน่งที่เหมาะสม
           </p>
           <a
-            href="mailto:cherawan.hr@gmail.com?subject=สมัครงาน ช.เอราวัณ ออโต้ กรุป"
+            href="mailto:cherawan.hr@gmail.com?subject=สมัครงาน ช.เอราวัณ กรุ๊ป"
             className="inline-flex items-center gap-2 bg-[#C8102E] hover:bg-[#a00d25] text-white font-medium px-6 py-3 rounded-xl transition-colors"
           >
             <Mail className="w-4 h-4" />

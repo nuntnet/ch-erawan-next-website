@@ -212,7 +212,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
                     </div>
                   ) : (
                     <p className="text-[#475569] text-sm leading-relaxed">
-                      {car.brand} {car.model} รถยนต์คุณภาพสูงจาก ช.เอราวัณ กรุป พร้อมบริการหลังการขายครบวงจร
+                      {car.brand} {car.model} รถยนต์คุณภาพสูงจาก ช.เอราวัณ กรุ๊ป พร้อมบริการหลังการขายครบวงจร
                     </p>
                   )}
 

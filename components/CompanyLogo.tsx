@@ -20,7 +20,7 @@ export default function CompanyLogo({
   return (
     <Image
       src="/logo.png"
-      alt="ช.เอราวัณ ออโต้ กรุป"
+      alt="ช.เอราวัณ กรุ๊ป"
       width={width}
       height={height}
       priority={priority}

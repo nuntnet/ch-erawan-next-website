@@ -1,7 +1,7 @@
 import { SITE_URL } from "@/lib/site";
 
 /** Legal / schema entity name — consistent across JSON-LD */
-export const ORGANIZATION_NAME = "ช.เอราวัณ ออโต้ กรุป" as const;
+export const ORGANIZATION_NAME = "ช.เอราวัณ กรุ๊ป" as const;
 
 export const LEGAL_NAME = ORGANIZATION_NAME;
 

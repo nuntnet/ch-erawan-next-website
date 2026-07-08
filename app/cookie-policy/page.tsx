@@ -16,7 +16,7 @@ export default function CookiePolicy() {
 
           <section>
             <p className="text-sm text-gray-500 mb-6">
-              เว็บไซต์ www.ch-erawan.com ("เว็บไซต์") ดำเนินการโดย กลุ่มบริษัท ช.เอราวัณ ออโต้ กรุป ("บริษัท")
+              เว็บไซต์ www.ch-erawan.com ("เว็บไซต์") ดำเนินการโดย กลุ่มบริษัท ช.เอราวัณ กรุ๊ป ("บริษัท")
               ใช้คุกกี้และเทคโนโลยีที่คล้ายคลึงกันเพื่อให้บริการที่ดีขึ้นแก่ท่าน
               นโยบายนี้อธิบายถึงประเภทของคุกกี้ที่ใช้ วัตถุประสงค์ และวิธีที่ท่านสามารถจัดการคุกกี้เหล่านั้น
             </p>
@@ -166,10 +166,10 @@ export default function CookiePolicy() {
 
           <CookieSection title="7. ติดต่อสอบถาม">
             <div className="bg-gray-50 rounded-xl p-5 text-sm space-y-1">
-              <p><strong>กลุ่มบริษัท ช.เอราวัณ ออโต้ กรุป</strong></p>
+              <p><strong>กลุ่มบริษัท ช.เอราวัณ กรุ๊ป</strong></p>
               <p>75/2 หมู่ 1 ต.ธรรมศาลา อ.เมือง จ.นครปฐม 73000</p>
               <p>โทรศัพท์: 034-305-500</p>
-              <p>อีเมล: info@ch-erawan.com</p>
+              <p>อีเมล: contactus@ch-erawan.com</p>
             </div>
           </CookieSection>
 

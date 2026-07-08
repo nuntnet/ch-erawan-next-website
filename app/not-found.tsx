@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Home } from "lucide-react";
 
 export const metadata = {
-  title: "ไม่พบหน้าที่คุณค้นหา (404) | ช.เอราวัณ ออโต้ กรุป",
+  title: "ไม่พบหน้าที่คุณค้นหา (404) | ช.เอราวัณ กรุ๊ป",
 };
 
 export default function NotFound() {

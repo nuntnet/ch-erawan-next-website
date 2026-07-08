@@ -169,7 +169,7 @@ export default function Navbar({
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/"
-              aria-label="ช.เอราวัณ ออโต้ กรุป — หน้าแรก"
+              aria-label="ช.เอราวัณ กรุ๊ป — หน้าแรก"
             >
               <CompanyLogo height={44} priority className="h-11 w-auto" />
             </Link>

@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps) {
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug];
   return pageMetadata({
-    title: `รีวิวรถ ${brand.displayName} — ช.เอราวัณ ออโต้ กรุป`,
-    description: `รีวิวรถ ${brand.displayNameTh} จาก YouTube และ TikTok ที่ ช.เอราวัณ ออโต้ กรุป จ.นครปฐม`,
+    title: `รีวิวรถ ${brand.displayName} — ช.เอราวัณ กรุ๊ป`,
+    description: `รีวิวรถ ${brand.displayNameTh} จาก YouTube และ TikTok ที่ ช.เอราวัณ กรุ๊ป จ.นครปฐม`,
     path: `${brand.hubPath}/reviews`,
   });
 }
@@ -180,7 +180,7 @@ export default async function BrandReviewsPage({ params }: PageProps) {
                     <h2 className="text-lg font-bold text-[#0F172A]">จากช่อง ช.เอราวัณ</h2>
                     <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Official</span>
                   </div>
-                  <p className="text-sm text-gray-500 mb-6">รีวิวและแนะนำรถยนต์โดยทีมงาน ช.เอราวัณ ออโต้ กรุป</p>
+                  <p className="text-sm text-gray-500 mb-6">รีวิวและแนะนำรถยนต์โดยทีมงาน ช.เอราวัณ กรุ๊ป</p>
                 </div>
 
                 {/* Own YouTube */}

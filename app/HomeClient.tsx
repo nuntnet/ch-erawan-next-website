@@ -215,7 +215,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               <div className="flex items-center gap-2.5 mb-4">
                 <div className="w-8 h-px bg-[#DD5259]" />
                 <span className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.3em]">
-                  Ch.Erawan Auto Group
+                  Ch.Erawan Group
                 </span>
               </div>
 
@@ -385,7 +385,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
             <div className="text-center mb-10 max-w-2xl mx-auto">
               <p className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.25em] mb-3">Promotions</p>
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">โปรโมชั่นและข้อเสนอพิเศษ</h2>
-              <p className="text-gray-500">ดีลล่าสุดจากทุกแบรนด์ ช.เอราวัณ ออโต้ กรุป</p>
+              <p className="text-gray-500">ดีลล่าสุดจากทุกแบรนด์ ช.เอราวัณ กรุ๊ป</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {promotions.map((promo) => {
@@ -543,7 +543,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-4">ช.เอราวัณ ออโต้ กรุป</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-4">ช.เอราวัณ กรุ๊ป</h2>
               <p className="text-gray-500 leading-relaxed mb-6">
                 กลุ่มบริษัท ช.เอราวัณ ก่อตั้งขึ้นเมื่อปี พ.ศ. 2510 โดยคุณวิชัย จันทร์วาววาม
                 เริ่มต้นจากอู่ซ่อมรถเล็กๆ ในจังหวัดนครปฐม จนเติบโตเป็นกลุ่มธุรกิจยานยนต์ครบวงจร

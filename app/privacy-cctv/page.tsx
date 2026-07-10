@@ -1,3 +1,11 @@
+import { pageMetadata } from "@/lib/site";
+
+export const metadata = pageMetadata({
+  title: "นโยบายคุ้มครองข้อมูลส่วนบุคคลสำหรับกล้องวงจรปิด (CCTV)",
+  description: "นโยบายการใช้กล้องวงจรปิดและการคุ้มครองข้อมูลส่วนบุคคลของ ช.เอราวัณ กรุ๊ป",
+  path: "/privacy-cctv",
+});
+
 export default function PrivacyCCTV() {
   return (
     <div className="min-h-screen bg-white pt-[68px]">

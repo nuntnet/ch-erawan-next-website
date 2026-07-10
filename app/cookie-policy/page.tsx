@@ -1,3 +1,11 @@
+import { pageMetadata } from "@/lib/site";
+
+export const metadata = pageMetadata({
+  title: "นโยบายการใช้คุกกี้",
+  description: "นโยบายการใช้คุกกี้บนเว็บไซต์ ช.เอราวัณ กรุ๊ป",
+  path: "/cookie-policy",
+});
+
 export default function CookiePolicy() {
   return (
     <div className="min-h-screen bg-white pt-[68px]">

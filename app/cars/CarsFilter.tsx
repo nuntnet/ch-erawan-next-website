@@ -67,7 +67,7 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
             />
           </div>
           <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-            <SelectTrigger className="border-gray-200">
+            <SelectTrigger className="border-gray-200" aria-label="เลือกแบรนด์">
               <SelectValue placeholder="แบรนด์" />
             </SelectTrigger>
             <SelectContent>
@@ -77,7 +77,7 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
             </SelectContent>
           </Select>
           <Select value={selectedType} onValueChange={setSelectedType}>
-            <SelectTrigger className="border-gray-200">
+            <SelectTrigger className="border-gray-200" aria-label="เลือกประเภทรถ">
               <SelectValue placeholder="ประเภทรถ" />
             </SelectTrigger>
             <SelectContent>
@@ -167,9 +167,9 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
 
               {/* Info */}
               <div className="p-5">
-                <h3 className="font-bold text-[#0F172A] text-lg mb-1">
+                <h2 className="font-bold text-[#0F172A] text-lg mb-1">
                   {car.brand} {car.model}
-                </h3>
+                </h2>
                 <p className="text-gray-400 text-sm mb-3">{car.year}</p>
 
                 <div className="flex flex-wrap gap-3 text-xs text-gray-500 mb-4">

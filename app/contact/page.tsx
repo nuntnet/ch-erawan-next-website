@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +11,7 @@ import { CheckCircle, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { branches as branchList } from "@/lib/branchData";
+import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -19,6 +21,8 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.message) { toast.error("กรุณากรอกชื่อและข้อความ"); return; }
+    if (form.phone && !isValidPhone(form.phone)) { toast.error(PHONE_ERROR); return; }
+    if (form.email && !isValidEmail(form.email)) { toast.error(EMAIL_ERROR); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/submit/contact", {
@@ -38,8 +42,16 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
       {/* Header */}
-      <div className="bg-[#0F172A] text-white py-16 lg:py-20">
-        <div className="container">
+      <div className="relative bg-[#0F172A] text-white py-16 lg:py-20 overflow-hidden">
+        <Image
+          src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/pages/contact-1"
+          alt=""
+          fill
+          className="object-cover object-center opacity-25"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#0F172A]/80 to-[#0F172A]/40" />
+        <div className="container relative z-10">
           <div className="max-w-2xl">
             <p className="text-white/65 text-sm font-medium tracking-wider uppercase mb-3">Contact</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">ติดต่อเรา</h1>
@@ -49,7 +61,7 @@ export default function ContactPage() {
       </div>
 
       <div className="container py-10 lg:py-14">
-        <div className="grid lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Contact Form */}
           <div className="lg:col-span-3">
             {submitted ? (
@@ -82,7 +94,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <Label htmlFor="phone" className="text-gray-600 text-sm">เบอร์โทรศัพท์</Label>
-                      <Input id="phone" type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
+                      <Input id="phone" type="tel" inputMode="numeric" maxLength={10} value={form.phone} onChange={e => setForm(f => ({ ...f, phone: sanitizePhone(e.target.value) }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
                     </div>
                   </div>
 
@@ -94,7 +106,7 @@ export default function ContactPage() {
                   <div>
                     <Label className="text-gray-600 text-sm">สาขาที่ต้องการติดต่อ</Label>
                     <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
-                      <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา (ไม่บังคับ)" /></SelectTrigger>
+                      <SelectTrigger className="mt-1.5 border-gray-200" aria-label="เลือกสาขา"><SelectValue placeholder="เลือกสาขา (ไม่บังคับ)" /></SelectTrigger>
                       <SelectContent>{branchList.map((b) => <SelectItem key={b.id} value={b.name}>{b.name}</SelectItem>)}</SelectContent>
                     </Select>
                   </div>

@@ -27,7 +27,7 @@ export default function CallToAction({
   const brandText = brand ? ` ${brand}` : "";
   const defaultHeading = heading ?? `สนใจรถ${brandText}? นัดทดลองขับฟรีวันนี้`;
   const defaultDesc = description ??
-    `ช.เอราวัณ ออโต้ กรุป ตัวแทนจำหน่าย${brandText}อย่างเป็นทางการ 7 สาขาในนครปฐม พร้อมบริการหลังการขายครบวงจร ศูนย์บริการมาตรฐาน Body & Paint มาตรฐาน OEM`;
+    `ช.เอราวัณ กรุ๊ป ตัวแทนจำหน่าย${brandText}อย่างเป็นทางการ 7 สาขาในนครปฐม พร้อมบริการหลังการขายครบวงจร ศูนย์บริการมาตรฐาน Body & Paint มาตรฐาน OEM`;
 
   if (variant === "inline") {
     return (
@@ -77,7 +77,7 @@ export default function CallToAction({
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <div className="w-8 h-px bg-[#DD5259]" />
-            <span className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.25em]">Ch.Erawan Auto Group</span>
+            <span className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.25em]">Ch.Erawan Group</span>
             <div className="w-8 h-px bg-[#DD5259]" />
           </div>
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">

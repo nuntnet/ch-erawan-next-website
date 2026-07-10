@@ -275,9 +275,9 @@ export const branches: Branch[] = [
   {
     id: "kia-nakhonpathom",
     brand: "Kia",
-    name: "Kia ช.เอราวัณ สามพราน",
+    name: "Kia ช.เอราวัณ นครปฐม",
     companyName: "บริษัท ช.เอราวัณ ออโตเซลล์ จำกัด",
-    shortName: "Kia สามพราน",
+    shortName: "Kia นครปฐม",
     isHQ: false,
     address: "232 ต.ยายชา อ.สามพราน จ.นครปฐม 73110",
     phone: "02-431-1000",
@@ -323,4 +323,16 @@ export function getBranchesByBrand(brand: string): Branch[] {
 
 export function getAllBrands(): string[] {
   return Array.from(new Set(branches.map((b) => b.brand)));
+}
+
+/**
+ * Resolve the contact phone + LINE for a selected branch name.
+ * Falls back to the HQ branch when no/unknown branch is given, so callers
+ * always have a valid number + LINE to show.
+ */
+export function getBranchContact(name?: string): { phone: string; lineUrl: string } {
+  const hq = branches.find((b) => b.isHQ) ?? branches[0];
+  const match = name ? branches.find((b) => b.name === name) : undefined;
+  const src = match ?? hq;
+  return { phone: src.phone, lineUrl: src.lineUrl };
 }

@@ -9,7 +9,7 @@ export const revalidate = 86400;
 
 export const metadata = pageMetadata({
   title: "ประกันภัยรถยนต์",
-  description: "บริการประกันภัยรถยนต์ครบวงจรจาก ช.เอราวัณ ออโต้ กรุป",
+  description: "บริการประกันภัยรถยนต์ครบวงจรจาก ช.เอราวัณ กรุ๊ป",
   path: "/insurance",
 });
 
@@ -105,8 +105,8 @@ export default function Insurance() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="rounded-2xl overflow-hidden">
             <img
-              src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245655/ch-erawan/awards/mazda-service-advisor.jpg"
-              alt="ทีมงานประกันภัย ช.เอราวัณ"
+              src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best,w_1200/ch-erawan/pages/insurance-5"
+              alt="ประกันภัยรถยนต์ ช.เอราวัณ กรุ๊ป"
               className="w-full h-[400px] object-cover"
             />
           </div>
@@ -217,10 +217,10 @@ export default function Insurance() {
                   className="flex items-center gap-2 border border-white/30 text-white px-6 py-3 rounded-xl hover:bg-white/10 transition-colors"
                 >
                   <Phone className="w-4 h-4" />
-                  034-305500
+                  034-305-500
                 </a>
                 <a
-                  href="https://lin.ee/erawan"
+                  href="https://lin.ee/NLeKZy6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-[#06C755] text-white px-6 py-3 rounded-xl hover:bg-[#05B04C] transition-colors"
@@ -232,8 +232,8 @@ export default function Insurance() {
             </div>
             <div className="hidden lg:block">
               <img
-                src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245670/ch-erawan/awards/ford-advisor-award.jpg"
-                alt="ทีมงาน ช.เอราวัณ"
+                src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best,w_1200/ch-erawan/pages/insurance-4"
+                alt="บริการเคลมประกันและซ่อมรถ"
                 className="w-full h-full object-cover"
               />
             </div>

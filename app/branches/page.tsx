@@ -128,7 +128,7 @@ export default function ServiceLocator() {
         <div className="container">
           <p className="text-[#0F172A] text-sm font-medium mb-2 tracking-wider uppercase">สาขาของเรา</p>
           <h1 className="text-3xl md:text-4xl font-bold mb-3">ค้นหาสาขาและศูนย์บริการ</h1>
-          <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุป มี 7 สาขาครอบคลุมจังหวัดนครปฐมและสามพราน พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
+          <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุ๊ป มี 7 สาขาครอบคลุมจังหวัดนครปฐมและสามพราน พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
         </div>
       </div>
 
@@ -150,7 +150,7 @@ export default function ServiceLocator() {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Branch List */}
           <div className="lg:col-span-2 space-y-3">
             {filtered.map(branch => {

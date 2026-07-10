@@ -7,7 +7,7 @@ export const revalidate = 86400;
 
 export const metadata = pageMetadata({
   title: "รับซื้อรถมือสอง",
-  description: "บริการรับซื้อรถมือสอง ประเมินราคายุติธรรม จาก ช.เอราวัณ ออโต้ กรุป",
+  description: "บริการรับซื้อรถมือสอง ประเมินราคายุติธรรม จาก ช.เอราวัณ กรุ๊ป",
   path: "/secondhand",
 });
 
@@ -64,7 +64,7 @@ export default function Secondhand() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="rounded-2xl overflow-hidden">
             <img
-              src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245661/ch-erawan/awards/deepal-top-spare-2025.jpg"
+              src="https://images.unsplash.com/photo-1600191763437-4262cefe23ab?q=80&w=1200&auto=format&fit=crop"
               alt="ซื้อ-ขาย รถมือสอง"
               className="w-full h-[400px] object-cover"
             />
@@ -121,7 +121,7 @@ export default function Secondhand() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="rounded-2xl overflow-hidden">
             <img
-              src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245646/ch-erawan/awards/mitsu-top-spare-part.jpg"
+              src="https://images.unsplash.com/photo-1761917904658-2a9ecb84a169?q=80&w=1200&auto=format&fit=crop"
               alt="การเทิร์นรถเก่า"
               className="w-full h-[350px] object-cover"
             />
@@ -170,8 +170,8 @@ export default function Secondhand() {
             </div>
             <div className="rounded-2xl overflow-hidden">
               <img
-                src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245668/ch-erawan/awards/ford-top-service-2024.jpg"
-                alt="รถยนต์ใหม่"
+                src="https://images.unsplash.com/photo-1600191763994-a5e80844476e?q=80&w=1200&auto=format&fit=crop"
+                alt="รถมือสองคุณภาพ"
                 className="w-full h-[400px] object-cover"
               />
             </div>
@@ -192,7 +192,7 @@ export default function Secondhand() {
               </div>
               <h3 className="text-white font-semibold mb-1">ติดต่อผ่านทางอีเมล</h3>
               <p className="text-white/50 text-sm mb-3">ส่งอีเมลหาเราได้เลย</p>
-              <p className="text-white text-sm">info@ch-erawan.com</p>
+              <p className="text-white text-sm">contactus@ch-erawan.com</p>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center">
               <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -208,7 +208,7 @@ export default function Secondhand() {
               </div>
               <h3 className="text-white font-semibold mb-1">Call us</h3>
               <p className="text-white/50 text-sm mb-3">08.00 - 17.00 น. ติดต่อสอบถามข้อมูลเพิ่มเติม</p>
-              <p className="text-white text-sm">034-305500</p>
+              <p className="text-white text-sm">034-305-500</p>
             </div>
           </div>
         </div>

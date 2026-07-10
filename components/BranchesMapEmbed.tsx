@@ -114,7 +114,7 @@ export default function BranchesMapEmbed() {
         <div className="hidden lg:flex w-[220px] shrink-0 border-r border-[#E2E8F0] flex-col bg-white">
           <div className="px-4 py-3 border-b border-[#E2E8F0]">
             <p className="text-[10px] text-[#94A3B8] uppercase tracking-widest font-medium">7 สาขา</p>
-            <p className="text-sm font-bold text-[#0F172A] mt-0.5">ช.เอราวัณ กรุป</p>
+            <p className="text-sm font-bold text-[#0F172A] mt-0.5">ช.เอราวัณ กรุ๊ป</p>
           </div>
           <div className="flex-1 overflow-y-auto py-1">
             {branches.map((b) => {
@@ -157,7 +157,7 @@ export default function BranchesMapEmbed() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title={`แผนที่ ${selected.name}`}
-              className="absolute inset-0 border-0 w-full h-full"
+              className="absolute inset-0 border-0 w-full h-full pointer-events-none"
             />
             {/* Custom marker overlay */}
             <BranchMarker brand={selected.brand} isHQ={selected.isHQ} />

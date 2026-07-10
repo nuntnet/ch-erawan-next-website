@@ -13,8 +13,8 @@ import type { Promotion } from "@/lib/notion-types";
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "โปรโมชั่น GWM — ช.เอราวัณ ออโต้ กรุป",
-  description: "โปรโมชั่นและแคมเปญสุดพิเศษจาก GWM ที่ ช.เอราวัณ ออโต้ กรุป จ.นครปฐม",
+  title: "โปรโมชั่น GWM — ช.เอราวัณ กรุ๊ป",
+  description: "โปรโมชั่นและแคมเปญสุดพิเศษจาก GWM ที่ ช.เอราวัณ กรุ๊ป จ.นครปฐม",
   path: "/gwm/promotions",
 });
 

@@ -29,19 +29,24 @@ const fuelLabel: Record<string, string> = {
 export default function CarsFilter({ cars }: { cars: Car[] }) {
   const searchParams = useSearchParams();
   const urlBrand = searchParams.get("brand");
+  const urlCondition = searchParams.get("condition");
 
   const [selectedBrand, setSelectedBrand] = useState(urlBrand || "ทั้งหมด");
   const [selectedType, setSelectedType] = useState("all");
+  const [selectedCondition, setSelectedCondition] = useState(
+    urlCondition === "used" ? "used" : urlCondition === "new" ? "new" : "all"
+  );
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
     return cars.filter((car) => {
       if (selectedBrand !== "ทั้งหมด" && car.brand !== selectedBrand) return false;
       if (selectedType !== "all" && car.type !== selectedType) return false;
+      if (selectedCondition !== "all" && car.condition !== selectedCondition) return false;
       if (search && !`${car.brand} ${car.model}`.toLowerCase().includes(search.toLowerCase())) return false;
       return true;
     });
-  }, [cars, selectedBrand, selectedType, search]);
+  }, [cars, selectedBrand, selectedType, selectedCondition, search]);
 
   return (
     <div className="container py-8 lg:py-12">
@@ -62,7 +67,7 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
             />
           </div>
           <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-            <SelectTrigger className="border-gray-200">
+            <SelectTrigger className="border-gray-200" aria-label="เลือกแบรนด์">
               <SelectValue placeholder="แบรนด์" />
             </SelectTrigger>
             <SelectContent>
@@ -72,7 +77,7 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
             </SelectContent>
           </Select>
           <Select value={selectedType} onValueChange={setSelectedType}>
-            <SelectTrigger className="border-gray-200">
+            <SelectTrigger className="border-gray-200" aria-label="เลือกประเภทรถ">
               <SelectValue placeholder="ประเภทรถ" />
             </SelectTrigger>
             <SelectContent>
@@ -81,6 +86,27 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
               ))}
             </SelectContent>
           </Select>
+        </div>
+        {/* Condition toggle (new / used) */}
+        <div className="mt-4 flex items-center gap-2">
+          {[
+            { value: "all", label: "ทั้งหมด" },
+            { value: "new", label: "รถใหม่" },
+            { value: "used", label: "รถมือสอง" },
+          ].map((c) => (
+            <button
+              key={c.value}
+              type="button"
+              onClick={() => setSelectedCondition(c.value)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                selectedCondition === c.value
+                  ? "bg-[#0F172A] text-white shadow-sm"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -141,9 +167,9 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
 
               {/* Info */}
               <div className="p-5">
-                <h3 className="font-bold text-[#0F172A] text-lg mb-1">
+                <h2 className="font-bold text-[#0F172A] text-lg mb-1">
                   {car.brand} {car.model}
-                </h3>
+                </h2>
                 <p className="text-gray-400 text-sm mb-3">{car.year}</p>
 
                 <div className="flex flex-wrap gap-3 text-xs text-gray-500 mb-4">

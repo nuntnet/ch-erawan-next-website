@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import {
   getAllCarsAdmin,
   getCarById,
@@ -74,6 +75,7 @@ export async function POST(req: NextRequest) {
       videoUrl: data.videoUrl || null,
     } as CarInput);
     revalidateCars(car.slug);
+    await auditFromSession({ action: "create", resource: "car", resourceId: car.id, details: { name: car.name } });
     return NextResponse.json(car);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -108,6 +110,7 @@ export async function PATCH(req: NextRequest) {
     if (flags && !data) {
       await setCarFlags(id, flags);
       await revalidateCarsByNotionId(id);
+      await auditFromSession({ action: "update", resource: "car", resourceId: id, details: { flags } });
       return NextResponse.json({ success: true });
     }
 
@@ -118,6 +121,7 @@ export async function PATCH(req: NextRequest) {
       };
       const car = await updateCar(id, payload);
       revalidateCars(car.slug);
+      await auditFromSession({ action: "update", resource: "car", resourceId: id, details: { name: car.name } });
       return NextResponse.json(car);
     }
 
@@ -140,6 +144,7 @@ export async function DELETE(req: NextRequest) {
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
     await archiveCar(id);
     await revalidateCarsByNotionId(id);
+    await auditFromSession({ action: "delete", resource: "car", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Admin cars DELETE error:", err);

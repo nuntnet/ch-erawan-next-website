@@ -169,7 +169,7 @@ export default function Navbar({
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/"
-              aria-label="ช.เอราวัณ ออโต้ กรุป — หน้าแรก"
+              aria-label="ช.เอราวัณ กรุ๊ป — หน้าแรก"
             >
               <CompanyLogo height={44} priority className="h-11 w-auto" />
             </Link>
@@ -333,7 +333,7 @@ export default function Navbar({
                 className="bg-[#131F3C] hover:bg-[#1a2a50] text-white font-semibold px-5 rounded-lg text-[13px] h-9 shadow-sm gap-1.5"
               >
                 <Phone className="w-3.5 h-3.5" />
-                034-305500
+                034-305-500
               </Button>
             </a>
           </div>
@@ -457,7 +457,7 @@ export default function Navbar({
               <a href="tel:034305500">
                 <Button className="w-full bg-[#131F3C] hover:bg-[#1a2a50] text-white font-semibold h-11 gap-2">
                   <Phone className="w-4 h-4" />
-                  034-305500
+                  034-305-500
                 </Button>
               </a>
             </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getFeaturedCars, getPublishedBlogPosts, getPublicStories } from "@/lib/notion";
+import { getActiveCars, getPublishedBlogPosts, getPublicStories, getActivePromotions } from "@/lib/notion";
 import { pageMetadata, SITE_NAME } from "@/lib/site";
 import { JsonLd, itemListJsonLd } from "@/lib/seo";
 import HomeClient from "./HomeClient";
@@ -18,12 +18,15 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function HomePage() {
   const results = await Promise.allSettled([
-    getFeaturedCars(),
+    // Home car-finder shows ALL active cars by brand (not only best-sellers),
+    // so brand tabs aren't empty when a brand has no best-seller flagged.
+    getActiveCars(),
     getPublishedBlogPosts(3),
     getPublicStories(3),
+    getActivePromotions(6),
   ]);
 
-  const labels = ["getFeaturedCars", "getPublishedBlogPosts", "getPublicStories"];
+  const labels = ["getActiveCars", "getPublishedBlogPosts", "getPublicStories", "getActivePromotions"];
   results.forEach((result, i) => {
     if (result.status === "rejected") {
       console.error(`[HomePage] ${labels[i]} failed:`, result.reason);
@@ -33,6 +36,7 @@ export default async function HomePage() {
   const featuredCars = results[0].status === "fulfilled" ? results[0].value : [];
   const recentPosts = results[1].status === "fulfilled" ? results[1].value : [];
   const publicStories = results[2].status === "fulfilled" ? results[2].value : [];
+  const promotions = results[3].status === "fulfilled" ? results[3].value : [];
 
   const featuredList =
     featuredCars.length > 0
@@ -58,6 +62,7 @@ export default async function HomePage() {
         featuredCars={featuredCars}
         recentPosts={recentPosts}
         publicStories={publicStories}
+        promotions={promotions}
       />
     </>
   );

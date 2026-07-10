@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import {
   getAllBlogPostsAdmin,
   getBlogPostForEdit,
@@ -67,6 +68,7 @@ export async function POST(req: NextRequest) {
       markdown
     );
     revalidateBlog(post.slug);
+    await auditFromSession({ action: "create", resource: "blog", resourceId: post.id, details: { title: post.title } });
     return NextResponse.json(post);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -94,6 +96,7 @@ export async function PATCH(req: NextRequest) {
     if (publish !== undefined && meta === undefined && markdown === undefined) {
       await setBlogPublished(id, publish);
       revalidateBlog();
+      await auditFromSession({ action: "update", resource: "blog", resourceId: id, details: { publish } });
       return NextResponse.json({ success: true });
     }
 
@@ -103,6 +106,7 @@ export async function PATCH(req: NextRequest) {
 
     const post = await updateBlogPost(id, metaPayload ?? {}, markdown);
     revalidateBlog(post.slug);
+    await auditFromSession({ action: "update", resource: "blog", resourceId: id, details: { title: post.title } });
     return NextResponse.json(post);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -122,6 +126,7 @@ export async function DELETE(req: NextRequest) {
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
     await archiveBlogPost(id);
     revalidateBlog();
+    await auditFromSession({ action: "delete", resource: "blog", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Admin blog DELETE error:", err);

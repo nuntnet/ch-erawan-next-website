@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "ศูนย์บริการ GWM — ช.เอราวัณ ออโต้ กรุป",
+  title: "ศูนย์บริการ GWM — ช.เอราวัณ กรุ๊ป",
   description:
     "ศูนย์บริการ GWM มาตรฐานโรงงาน ครบทุกบริการ — EV/HEV, แบตเตอรี่, ยาง, เฟิร์มแวร์, ฉุกเฉิน พร้อม Delivery & Pickup ที่ ช.เอราวัณ จ.นครปฐม",
   path: "/gwm/service",
@@ -249,9 +249,9 @@ export default function GwmServicePage() {
                       </Button>
                     </a>
                   </div>
-                  {branch.mapEmbed && (
+                  {branch.lat && branch.lng && (
                     <div className="mt-4 rounded-xl overflow-hidden h-44">
-                      <iframe src={branch.mapEmbed} width="100%" height="100%" loading="lazy"
+                      <iframe src={`https://maps.google.com/maps?q=${branch.lat},${branch.lng}&z=16&output=embed&hl=th`} width="100%" height="100%" loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade" title={`แผนที่ ${branch.name}`}
                         className="border-0 w-full h-full" />
                     </div>

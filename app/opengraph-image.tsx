@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "ช.เอราวัณ กรุป — ตัวแทนจำหน่ายรถยนต์";
+export const alt = "ช.เอราวัณ กรุ๊ป — ตัวแทนจำหน่ายรถยนต์";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -29,7 +29,7 @@ export default function OpenGraphImage() {
             marginBottom: 16,
           }}
         >
-          ช.เอราวัณ กรุป
+          ช.เอราวัณ กรุ๊ป
         </div>
         <div style={{ fontSize: 32, opacity: 0.85, textAlign: "center", maxWidth: 900 }}>
           ตัวแทนจำหน่ายรถยนต์ Mazda · Ford · Mitsubishi · GWM · Deepal · Kia

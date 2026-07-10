@@ -20,7 +20,7 @@ import {
   ArrowRight, Phone, MapPin, Calendar, Star,
   Shield, Wrench, Award, TrendingUp,
 } from "lucide-react";
-import type { Car, BlogPost, CustomerStory } from "@/lib/notion-types";
+import type { Car, BlogPost, CustomerStory, Promotion } from "@/lib/notion-types";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
 
@@ -42,26 +42,21 @@ const AWARD_SLIDES: { url: string; caption: string }[] = [
   { url: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best,w_1200/v1780233470/ch-erawan/awards/deepal-top-sale-spare-part.jpg", caption: "Deepal — Top Sale & Spare Part Award" },
 ];
 
+// Per-brand hero — dedicated desktop (landscape) + mobile (portrait) art from
+// Cloudinary (ch-erawan/hero/<brand>-hero-<variant>), so no cropping needed.
+const HERO_CLD = "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good";
 const heroSlides = [
-  {
-    bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245610/ch-erawan/hero/mazda-cx5-hero-2026.jpg",
-    brand: "Mazda", tagline: "FEEL ALIVE",
-    thaiTitle: "ขับเคลื่อนด้วยแรงบันดาลใจ",
-    desc: "Mazda CX-5 SUV สมรรถนะสมดุล ดีไซน์ Kodo เอกลักษณ์เฉพาะตัว พร้อม i-Activsense ช่วยเหลือผู้ขับขี่",
-  },
-  {
-    bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245615/ch-erawan/hero/gwm-haval-h6-hero.jpg",
-    brand: "GWM", tagline: "HAVAL H6 HEV",
-    thaiTitle: "SUV ไฮบริดยอดนิยม",
-    desc: "GWM HAVAL H6 HEV ประหยัดน้ำมัน ออพชั่นครบ ราคาเริ่มต้น 969,000 บาท จาก gwm.co.th",
-  },
-  {
-    bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245617/ch-erawan/hero/kia-ev5-hero.jpg",
-    brand: "Kia", tagline: "INSPIRATION DRIVEN",
-    thaiTitle: "SUV ไฟฟ้าแห่งอนาคต",
-    desc: "Kia EV5 ดีไซน์ Opposites United ห้องโดยสารกว้าง ราคาเริ่มต้น 1,399,000 บาท",
-  },
-];
+  { slug: "mazda",      brand: "Mazda",      tagline: "FEEL ALIVE",            thaiTitle: "มาสด้า" },
+  { slug: "ford",       brand: "Ford",       tagline: "Built Ford Tough",      thaiTitle: "ฟอร์ด" },
+  { slug: "mitsubishi", brand: "Mitsubishi", tagline: "Drive Your Ambition",   thaiTitle: "มิตซูบิชิ มอเตอร์ส" },
+  { slug: "gwm",        brand: "GWM",        tagline: "Great Wall Motor",      thaiTitle: "จีดับเบิลยูเอ็ม" },
+  { slug: "deepal",     brand: "Deepal",     tagline: "Electric Future",       thaiTitle: "ดีพอล" },
+  { slug: "kia",        brand: "Kia",        tagline: "Movement that inspires", thaiTitle: "เกีย" },
+].map((s) => ({
+  ...s,
+  desktop: `${HERO_CLD}/ch-erawan/hero/${s.slug}-hero-desktop`,
+  mobile: `${HERO_CLD}/ch-erawan/hero/${s.slug}-hero-mobile`,
+}));
 
 const brandTabs = ["ทั้งหมด", ...BRANDS.map((b) => b.notionBrand)];
 
@@ -69,6 +64,7 @@ interface Props {
   featuredCars: Car[];
   recentPosts: BlogPost[];
   publicStories: CustomerStory[];
+  promotions: Promotion[];
 }
 
 /** Auto-play award photo slideshow for the About section */
@@ -153,14 +149,37 @@ function AwardSlideshow() {
   );
 }
 
-export default function HomeClient({ featuredCars, recentPosts, publicStories }: Props) {
+export default function HomeClient({ featuredCars, recentPosts, publicStories, promotions }: Props) {
   const [activeBrandTab, setActiveBrandTab] = useState("ทั้งหมด");
   const [heroSlide, setHeroSlide] = useState(0);
+  // Only mount images for slides that have actually been shown. Without this all
+  // 6 brands × (desktop+mobile) = 12 hero images load on first paint (they sit
+  // in-viewport at opacity-0), which wrecks LCP. Start with slide 0 only.
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set([0]));
+  const heroPrimed = useRef(false);
 
   useEffect(() => {
     const timer = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 5000);
     return () => clearInterval(timer);
   }, []);
+
+  // Load the current slide + preload the next one for a smooth crossfade.
+  // Delay the very first preload so the priority slide-0 wins the LCP race.
+  useEffect(() => {
+    const next = (heroSlide + 1) % heroSlides.length;
+    const delay = heroPrimed.current ? 0 : 1200;
+    heroPrimed.current = true;
+    const t = setTimeout(() => {
+      setLoadedSlides((prev) => {
+        if (prev.has(heroSlide) && prev.has(next)) return prev;
+        const s = new Set(prev);
+        s.add(heroSlide);
+        s.add(next);
+        return s;
+      });
+    }, delay);
+    return () => clearTimeout(t);
+  }, [heroSlide]);
 
   const filteredCars = useMemo(() => {
     if (activeBrandTab === "ทั้งหมด") return featuredCars.slice(0, 6);
@@ -170,17 +189,31 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
   return (
     <div className="min-h-screen pt-[68px]">
       {/* HERO */}
-      <section className="relative overflow-hidden bg-black" style={{ height: "calc(100vh - 68px)" }}>
+      <section className="relative overflow-hidden bg-black h-[80svh] min-h-[540px] lg:h-[calc(100vh-68px)]">
         {heroSlides.map((slide, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === heroSlide ? "opacity-100" : "opacity-0"}`}>
-            <Image
-              src={slide.bg}
-              alt={slide.brand}
-              fill
-              priority={i === 0}
-              className="object-cover object-center"
-              sizes="100vw"
-            />
+            {loadedSlides.has(i) && (
+              <>
+                {/* Desktop: landscape art */}
+                <Image
+                  src={slide.desktop}
+                  alt={slide.brand}
+                  fill
+                  priority={i === 0}
+                  className="hidden md:block object-cover object-center"
+                  sizes="100vw"
+                />
+                {/* Mobile: dedicated portrait art */}
+                <Image
+                  src={slide.mobile}
+                  alt={slide.brand}
+                  fill
+                  priority={i === 0}
+                  className="md:hidden object-cover object-center"
+                  sizes="100vw"
+                />
+              </>
+            )}
           </div>
         ))}
         {/* Gradient overlays */}
@@ -195,7 +228,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
               <div className="flex items-center gap-2.5 mb-4">
                 <div className="w-8 h-px bg-[#DD5259]" />
                 <span className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.3em]">
-                  Ch.Erawan Auto Group
+                  Ch.Erawan Group
                 </span>
               </div>
 
@@ -358,6 +391,70 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
         </div>
       </section>
 
+      {/* PROMOTIONS */}
+      {promotions.length > 0 && (
+        <section className="py-16 lg:py-24 bg-[#F8FAFC]">
+          <div className="container">
+            <div className="text-center mb-10 max-w-2xl mx-auto">
+              <p className="text-[#DD5259] text-xs font-bold uppercase tracking-[0.25em] mb-3">Promotions</p>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">โปรโมชั่นและข้อเสนอพิเศษ</h2>
+              <p className="text-gray-500">ดีลล่าสุดจากทุกแบรนด์ ช.เอราวัณ กรุ๊ป</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {promotions.map((promo) => {
+                const brandSlug = BRANDS.find((b) => b.notionBrand === promo.brand)?.slug;
+                const href = promo.linkUrl || (brandSlug ? `/${brandSlug}/promotions` : "/contact");
+                const external = !!promo.linkUrl;
+                const endLabel = promo.endDate
+                  ? `ถึง ${new Date(promo.endDate).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}`
+                  : null;
+                const card = (
+                  <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full">
+                    <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+                      {promo.coverImageUrl ? (
+                        <Image
+                          src={cldUrl(promo.coverImageUrl, "quality")}
+                          alt={promo.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0C1C3E] via-[#1a2f52] to-[#334155]">
+                          <span className="text-white/10 text-5xl font-black select-none uppercase">{promo.brand}</span>
+                        </div>
+                      )}
+                      <Badge className="absolute top-3 left-3 bg-[#0F172A]/85 text-white text-[10px] font-semibold px-2.5 py-1 border-0 backdrop-blur-sm">
+                        {promo.brand}
+                      </Badge>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-semibold text-[#0F172A] leading-snug line-clamp-2 mb-3 group-hover:text-[#DD5259] transition-colors">
+                        {promo.title}
+                      </h3>
+                      {endLabel && (
+                        <div className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500 mb-3">
+                          <Calendar className="w-3 h-3 text-gray-400" />
+                          {endLabel}
+                        </div>
+                      )}
+                      <span className="flex items-center gap-1 text-sm font-medium text-[#DD5259]">
+                        ดูรายละเอียด <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                );
+                return external ? (
+                  <a key={promo.id} href={href} target="_blank" rel="noopener noreferrer">{card}</a>
+                ) : (
+                  <Link key={promo.id} href={href}>{card}</Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* QUOTE SECTION */}
       <section className="relative py-20 lg:py-28 bg-[#131F3C] overflow-hidden">
         <div className="absolute top-0 left-0 w-1 h-full bg-[#DD5259]" />
@@ -436,7 +533,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
             {[
               { icon: Calendar, title: "นัดหมายทดลองขับ", desc: "ทดลองขับรถรุ่นที่คุณสนใจ ที่ศูนย์บริการใกล้บ้าน", href: "/booking?type=test_drive", color: "bg-blue-50 text-blue-600" },
               { icon: Wrench, title: "ศูนย์บริการมาตรฐาน", desc: "บริการซ่อมบำรุงตามระยะ ด้วยช่างผู้เชี่ยวชาญ", href: "/booking?type=service", color: "bg-emerald-50 text-emerald-600" },
-              { icon: Shield, title: "ประกันภัยรถยนต์", desc: "เปรียบเทียบราคาจากบริษัทประกันชั้นนำ", href: "/booking?type=insurance_quote", color: "bg-amber-50 text-amber-600" },
+              { icon: Shield, title: "ประกันภัยรถยนต์", desc: "เปรียบเทียบราคาจากบริษัทประกันชั้นนำ", href: "/insurance", color: "bg-amber-50 text-amber-600" },
               { icon: Star, title: "ซ่อมตัวถังและสี", desc: "แจ้งซ่อมออนไลน์ พร้อมส่งเอกสารให้ประกันอนุมัติ", href: "/booking?type=body_paint", color: "bg-rose-50 text-rose-600" },
             ].map((service) => (
               <Link key={service.title} href={service.href}>
@@ -459,7 +556,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-4">ช.เอราวัณ ออโต้ กรุป</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-4">ช.เอราวัณ กรุ๊ป</h2>
               <p className="text-gray-500 leading-relaxed mb-6">
                 กลุ่มบริษัท ช.เอราวัณ ก่อตั้งขึ้นเมื่อปี พ.ศ. 2510 โดยคุณวิชัย จันทร์วาววาม
                 เริ่มต้นจากอู่ซ่อมรถเล็กๆ ในจังหวัดนครปฐม จนเติบโตเป็นกลุ่มธุรกิจยานยนต์ครบวงจร
@@ -520,7 +617,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-2">เสียงจากลูกค้าของเรา</h2>
               <p className="text-gray-500">เรื่องราวความประทับใจจากลูกค้าที่ไว้วางใจ ช.เอราวัณ</p>
             </div>
-            <Link href="/stories" aria-label="ดูรีวิวลูกค้าทั้งหมด" className="hidden md:block">
+            <Link href="/stories" aria-label="ดูทั้งหมด — รีวิวลูกค้า" className="hidden md:block">
               <Button variant="outline" className="flex border-gray-200 text-gray-600 hover:border-[#0F172A]">
                 ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -547,6 +644,13 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
               </div>
             ))}
           </div>
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/stories" aria-label="ดูทั้งหมด — รีวิวลูกค้า">
+              <Button variant="outline" className="border-gray-200 text-gray-600 hover:border-[#0F172A]">
+                ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -558,7 +662,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-2">ข่าวสารและกิจกรรมล่าสุด</h2>
               <p className="text-gray-500">ติดตามข่าวสาร โปรโมชั่น และกิจกรรมจาก ช.เอราวัณ</p>
             </div>
-            <Link href="/blog" aria-label="ดูบทความทั้งหมด" className="hidden md:block">
+            <Link href="/blog" aria-label="ดูทั้งหมด — บทความ" className="hidden md:block">
               <Button variant="outline" className="flex border-gray-200 text-gray-600 hover:border-[#0F172A]">
                 ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -590,6 +694,13 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories }:
                 </div>
               </Link>
             ))}
+          </div>
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/blog" aria-label="ดูทั้งหมด — บทความ">
+              <Button variant="outline" className="border-gray-200 text-gray-600 hover:border-[#0F172A]">
+                ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -21,7 +21,7 @@ const BRANCH_LABELS: Record<string, string> = {
   ford_omnoi:      "Ford อ้อมใหญ่",
   mitsubishi_npt:  "Mitsubishi นครปฐม",
   gwm_npt:         "GWM นครปฐม",
-  kia_sampran:     "Kia สามพราน",
+  kia_sampran:     "Kia นครปฐม",
   hq:              "สำนักงานใหญ่",
 };
 
@@ -214,7 +214,7 @@ export default function Career() {
           <p className="text-[#C8102E] text-sm font-medium tracking-widest uppercase mb-3">Join Our Team</p>
           <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">มาเป็นส่วนหนึ่งของทีมเรา</h1>
           <p className="text-white/60 max-w-xl leading-relaxed mb-6">
-            ร่วมงานกับ ช.เอราวัณ ออโต้ กรุป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ
+            ร่วมงานกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ
             {`ใน 7 สาขา จ.นครปฐม ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี`}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-white/50">
@@ -274,7 +274,7 @@ export default function Career() {
           <div className="mt-10 lg:mt-0 rounded-2xl overflow-hidden shadow-lg">
             <Image
               src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/pages/career-team-photo"
-              alt="ทีมงาน ช.เอราวัณ ออโต้ กรุป"
+              alt="ทีมงาน ช.เอราวัณ กรุ๊ป"
               width={900}
               height={600}
               className="w-full h-[420px] object-cover"
@@ -306,7 +306,7 @@ export default function Career() {
               </div>
               <h3 className="font-semibold text-[#0F172A] mb-1">LINE แผนก HR</h3>
               <p className="text-gray-400 text-xs mb-3">แชทสอบถามหรือส่ง Resume ได้เลย</p>
-              <a href="https://lin.ee/ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05B04C] transition-colors">
+              <a href="https://line.me/R/ti/p/@ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05B04C] transition-colors">
                 <MessageCircle className="w-4 h-4" />
                 @ads1599i
               </a>
@@ -458,7 +458,7 @@ export default function Career() {
             ทีม HR จะติดต่อกลับเมื่อมีตำแหน่งที่เหมาะสม
           </p>
           <a
-            href="mailto:cherawan.hr@gmail.com?subject=สมัครงาน ช.เอราวัณ ออโต้ กรุป"
+            href="mailto:cherawan.hr@gmail.com?subject=สมัครงาน ช.เอราวัณ กรุ๊ป"
             className="inline-flex items-center gap-2 bg-[#C8102E] hover:bg-[#a00d25] text-white font-medium px-6 py-3 rounded-xl transition-colors"
           >
             <Mail className="w-4 h-4" />

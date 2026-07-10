@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: PageProps) {
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug];
   return pageMetadata({
-    title: `โปรโมชั่น ${brand.displayName} — ช.เอราวัณ ออโต้ กรุป`,
-    description: `โปรโมชั่นและแคมเปญสุดพิเศษจาก ${brand.displayNameTh} ที่ ช.เอราวัณ ออโต้ กรุป จ.นครปฐม`,
+    title: `โปรโมชั่น ${brand.displayName} — ช.เอราวัณ กรุ๊ป`,
+    description: `โปรโมชั่นและแคมเปญสุดพิเศษจาก ${brand.displayNameTh} ที่ ช.เอราวัณ กรุ๊ป จ.นครปฐม`,
     path: `${brand.hubPath}/promotions`,
   });
 }

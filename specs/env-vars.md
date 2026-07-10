@@ -159,6 +159,7 @@ NEXT_PUBLIC_SITE_URL=https://ch-erawan.com
 SPS_BASE_URL=https://system.ch-erawan.com/sps
 SPS_API_KEY=your-sps-api-key
 
+
 # Appointment email fallback (per-brand emails are in Notion Settings DB)
 APPOINTMENT_NOTIFY_EMAIL=service@ch-erawan.com
 RESEND_API_KEY=re_xxxxxxxx

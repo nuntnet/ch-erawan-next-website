@@ -11,7 +11,7 @@ function getDb() {
 }
 
 export type AuditAction = "create" | "update" | "delete" | "login" | "invite" | "ban" | "role_change";
-export type AuditResource = "car" | "blog" | "user" | "promotion" | "appointment" | "feedback" | "story" | "video_review" | "social_link" | "service_content" | "insurance_partner";
+export type AuditResource = "car" | "blog" | "user" | "promotion" | "appointment" | "feedback" | "story" | "video_review" | "social_link" | "service_content" | "insurance_partner" | "faq";
 
 export async function logAudit(opts: {
   userId: string;
@@ -35,6 +35,30 @@ export async function logAudit(opts: {
     });
   } catch (err) {
     console.error("[Audit] Failed to log:", err);
+  }
+}
+
+/**
+ * Convenience wrapper for admin route handlers: resolves the current admin
+ * user from the session and writes an audit entry. No-op without a session,
+ * and never throws — auditing must not break the actual admin action.
+ */
+export async function auditFromSession(opts: {
+  action: AuditAction;
+  resource: AuditResource;
+  resourceId?: string;
+  details?: Record<string, unknown>;
+}) {
+  try {
+    const { auth } = await import("@/lib/auth");
+    if (!auth) return;
+    const { headers } = await import("next/headers");
+    const session = await auth.api.getSession({ headers: await headers() }).catch(() => null);
+    const u = session?.user;
+    if (!u) return;
+    await logAudit({ userId: u.id, userName: u.name ?? undefined, ...opts });
+  } catch (err) {
+    console.error("[Audit] auditFromSession failed:", err);
   }
 }
 

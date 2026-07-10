@@ -718,8 +718,8 @@ function pageToAppointment(page: NotionPage): Appointment {
     customerName: propTitle(page, "Customer Name") || propText(page, "Customer Name") || propTitle(page, "Name"),
     type: propSelect(page, "Type") as Appointment["type"],
     status: (propSelect(page, "Status") || "pending") as Appointment["status"],
-    customerPhone: propPhone(page, "Phone"),
-    customerEmail: propEmail(page, "Email"),
+    customerPhone: propPhone(page, "Customer Phone") || propPhone(page, "Phone"),
+    customerEmail: propEmail(page, "Customer Email") || propEmail(page, "Email"),
     carModel: propText(page, "Car Model"),
     branch: propText(page, "Branch"),
     preferredDate: propDate(page, "Preferred Date"),
@@ -773,7 +773,7 @@ export async function updateStoryStatus(
 function pageToPromotion(page: NotionPage): Promotion {
   return {
     id: page.id,
-    title: propTitle(page, "Title"),
+    title: propTitle(page, "Name"),
     brand: propSelect(page, "Brand") as Promotion["brand"],
     coverImageUrl: propText(page, "Cover Image URL") || null,
     linkUrl: propUrl(page, "Link URL"),
@@ -799,6 +799,18 @@ export async function getPromotionsByBrand(brand: Promotion["brand"]): Promise<P
   return response.results.map(pageToPromotion);
 }
 
+/** Active promotions across all brands — for the home page. */
+export async function getActivePromotions(limit = 6): Promise<Promotion[]> {
+  if (!DB.promotions) return [];
+  const response = await notion.databases.query({
+    database_id: DB.promotions,
+    filter: { property: "Is Active", checkbox: { equals: true } },
+    sorts: [{ timestamp: "created_time", direction: "descending" }],
+    page_size: limit,
+  });
+  return response.results.map(pageToPromotion);
+}
+
 /** Admin: all promotions (active + inactive). */
 export async function getAllPromotionsAdmin(): Promise<Promotion[]> {
   if (!DB.promotions) return [];
@@ -815,7 +827,7 @@ export async function createPromotion(data: Omit<Promotion, "id">): Promise<Prom
   const page = await notion.pages.create({
     parent: { database_id: DB.promotions },
     properties: {
-      Title: { title: [{ text: { content: data.title } }] },
+      Name: { title: [{ text: { content: data.title } }] },
       Brand: { select: { name: data.brand } },
       "Cover Image URL": data.coverImageUrl ? { rich_text: [{ text: { content: data.coverImageUrl } }] } : { rich_text: [] },
       "Link URL": data.linkUrl ? { url: data.linkUrl } : { url: null },
@@ -831,7 +843,7 @@ export async function createPromotion(data: Omit<Promotion, "id">): Promise<Prom
 export async function updatePromotion(id: string, data: Partial<Omit<Promotion, "id">>): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const props: Record<string, any> = {};
-  if (data.title !== undefined) props.Title = { title: [{ text: { content: data.title } }] };
+  if (data.title !== undefined) props.Name = { title: [{ text: { content: data.title } }] };
   if (data.brand !== undefined) props.Brand = { select: { name: data.brand } };
   if (data.coverImageUrl !== undefined) props["Cover Image URL"] = data.coverImageUrl ? { rich_text: [{ text: { content: data.coverImageUrl } }] } : { rich_text: [] };
   if (data.linkUrl !== undefined) props["Link URL"] = data.linkUrl ? { url: data.linkUrl } : { url: null };
@@ -1312,7 +1324,11 @@ export async function getFAQItems(brand: string, page: string): Promise<FAQItem[
     database_id: DB.faq,
     filter: {
       and: [
-        { property: "Brand", select: { equals: brand } },
+        // Match the brand's own FAQs plus cross-brand ("ทุกแบรนด์") ones.
+        { or: [
+          { property: "Brand", select: { equals: brand } },
+          { property: "Brand", select: { equals: "ทุกแบรนด์" } },
+        ] },
         { property: "Page", select: { equals: page } },
         { property: "IsActive", checkbox: { equals: true } },
       ],

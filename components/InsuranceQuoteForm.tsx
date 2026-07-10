@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
 const branches = [
   "มาสด้า ช.เอราวัณ นครปฐม",
@@ -41,6 +42,8 @@ export default function InsuranceQuoteForm() {
       toast.error("กรุณากรอกชื่อและเบอร์โทรศัพท์");
       return;
     }
+    if (!isValidPhone(form.customerPhone)) { toast.error(PHONE_ERROR); return; }
+    if (form.customerEmail && !isValidEmail(form.customerEmail)) { toast.error(EMAIL_ERROR); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/submit/booking", {
@@ -84,7 +87,7 @@ export default function InsuranceQuoteForm() {
         </div>
         <div>
           <Label htmlFor="ins-phone" className="text-gray-600 text-sm">เบอร์โทรศัพท์ *</Label>
-          <Input id="ins-phone" type="tel" value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: e.target.value }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" required />
+          <Input id="ins-phone" type="tel" inputMode="numeric" maxLength={10} value={form.customerPhone} onChange={e => setForm(f => ({ ...f, customerPhone: sanitizePhone(e.target.value) }))} placeholder="0xx-xxx-xxxx" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" required />
         </div>
       </div>
 
@@ -108,7 +111,7 @@ export default function InsuranceQuoteForm() {
         <div>
           <Label className="text-gray-600 text-sm">ประเภทความคุ้มครอง</Label>
           <Select value={form.coverageType} onValueChange={v => setForm(f => ({ ...f, coverageType: v }))}>
-            <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกประเภท" /></SelectTrigger>
+            <SelectTrigger className="mt-1.5 border-gray-200" aria-label="เลือกประเภทประกัน"><SelectValue placeholder="เลือกประเภท" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="type1">ชั้น 1</SelectItem>
               <SelectItem value="type2">ชั้น 2</SelectItem>
@@ -121,7 +124,7 @@ export default function InsuranceQuoteForm() {
         <div>
           <Label className="text-gray-600 text-sm">สาขา</Label>
           <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
-            <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
+            <SelectTrigger className="mt-1.5 border-gray-200" aria-label="เลือกสาขา"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
             <SelectContent>{branches.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
           </Select>
         </div>

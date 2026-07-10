@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { getBlogSitemapEntries, getCarSitemapEntries } from "@/lib/notion";
 import { SITE_URL } from "@/lib/site";
 
+// Cache the generated sitemap for 1h so we don't hit Notion on every crawl.
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [blogEntries, carEntries] = await Promise.all([
     getBlogSitemapEntries().catch(() => []),

@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps) {
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug];
   return pageMetadata({
-    title: `รีวิวรถ ${brand.displayName} — ช.เอราวัณ ออโต้ กรุป`,
-    description: `รีวิวรถ ${brand.displayNameTh} จาก YouTube และ TikTok ที่ ช.เอราวัณ ออโต้ กรุป จ.นครปฐม`,
+    title: `รีวิวรถ ${brand.displayName} — ช.เอราวัณ กรุ๊ป`,
+    description: `รีวิวรถ ${brand.displayNameTh} จาก YouTube และ TikTok ที่ ช.เอราวัณ กรุ๊ป จ.นครปฐม`,
     path: `${brand.hubPath}/reviews`,
   });
 }
@@ -180,7 +180,7 @@ export default async function BrandReviewsPage({ params }: PageProps) {
                     <h2 className="text-lg font-bold text-[#0F172A]">จากช่อง ช.เอราวัณ</h2>
                     <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Official</span>
                   </div>
-                  <p className="text-sm text-gray-500 mb-6">รีวิวและแนะนำรถยนต์โดยทีมงาน ช.เอราวัณ ออโต้ กรุป</p>
+                  <p className="text-sm text-gray-500 mb-6">รีวิวและแนะนำรถยนต์โดยทีมงาน ช.เอราวัณ กรุ๊ป</p>
                 </div>
 
                 {/* Own YouTube */}
@@ -242,12 +242,12 @@ export default async function BrandReviewsPage({ params }: PageProps) {
                       <div className="flex-1 h-px bg-gray-200" />
                       <span className="text-xs text-gray-400">{ownTt.length} วิดีโอ</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                       {ownTt.map((video) => {
                         const embedUrl = getTikTokEmbedUrl(video.videoUrl);
                         return (
                           <div key={video.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                            <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
+                            <div className="relative aspect-[9/19] bg-gray-900 overflow-hidden">
                               {embedUrl ? (
                                 <iframe src={embedUrl} className="w-full h-full border-0" allow="encrypted-media" allowFullScreen loading="lazy" title={video.title} />
                               ) : (
@@ -334,12 +334,12 @@ export default async function BrandReviewsPage({ params }: PageProps) {
                       <div className="flex-1 h-px bg-gray-200" />
                       <span className="text-xs text-gray-400">{extTt.length} วิดีโอ</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                       {extTt.map((video) => {
                         const embedUrl = getTikTokEmbedUrl(video.videoUrl);
                         return (
                           <div key={video.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                            <div className="relative aspect-[9/16] bg-gray-900 overflow-hidden">
+                            <div className="relative aspect-[9/19] bg-gray-900 overflow-hidden">
                               {embedUrl ? (
                                 <iframe src={embedUrl} className="w-full h-full border-0" allow="encrypted-media" allowFullScreen loading="lazy" title={video.title} />
                               ) : (

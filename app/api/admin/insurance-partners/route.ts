@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import {
   getAllInsurancePartnersAdmin, createInsurancePartner,
   updateInsurancePartner, archiveInsurancePartner,
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
   try {
     const { name, brand } = z.object({ name: z.string().min(1), brand: z.enum(BRANDS) }).parse(await req.json());
     const item = await createInsurancePartner(name, brand);
+    await auditFromSession({ action: "create", resource: "insurance_partner", resourceId: item.id, details: { name } });
     return NextResponse.json(item);
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -44,6 +46,7 @@ export async function PATCH(req: NextRequest) {
       sortOrder: z.number().optional(),
     }).parse(await req.json());
     await updateInsurancePartner(id, data);
+    await auditFromSession({ action: "update", resource: "insurance_partner", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -58,6 +61,7 @@ export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.searchParams.get("id");
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
     await archiveInsurancePartner(id);
+    await auditFromSession({ action: "delete", resource: "insurance_partner", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error(err);

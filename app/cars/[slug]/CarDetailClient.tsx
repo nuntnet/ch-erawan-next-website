@@ -126,7 +126,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
           <span className="text-[#0F172A] font-medium">{car.brand} {car.model}</span>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Images & Details */}
           <div className="lg:col-span-2">
             {/* Image Gallery */}
@@ -171,6 +171,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
                     <button
                       key={i}
                       onClick={() => setCurrentImage(i)}
+                      aria-label={`ดูรูปที่ ${i + 1}`}
                       className={`w-16 h-12 rounded-lg overflow-hidden border-2 shrink-0 ${i === currentImage ? "border-[#0F172A]" : "border-transparent"}`}
                     >
                       <img src={img} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
@@ -212,7 +213,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
                     </div>
                   ) : (
                     <p className="text-[#475569] text-sm leading-relaxed">
-                      {car.brand} {car.model} รถยนต์คุณภาพสูงจาก ช.เอราวัณ กรุป พร้อมบริการหลังการขายครบวงจร
+                      {car.brand} {car.model} รถยนต์คุณภาพสูงจาก ช.เอราวัณ กรุ๊ป พร้อมบริการหลังการขายครบวงจร
                     </p>
                   )}
 

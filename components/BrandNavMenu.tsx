@@ -45,9 +45,10 @@ function resolveNavModels(
   brand: BrandConfig,
   navModelsByBrand: NavModelsByBrand
 ): NavHighlightModel[] {
-  const fromNotion = navModelsByBrand[brand.notionBrand];
-  if (fromNotion?.length) return fromNotion;
-  return (brand.featuredModels ?? []).map((m) => ({ name: m.name, slug: m.slug }));
+  // Only show models backed by active cars (built from Notion in PublicLayoutServer).
+  // No hardcoded featuredModels fallback — a brand with no active cars must show
+  // no model links in the mega nav (otherwise stale demo models appear, R43).
+  return navModelsByBrand[brand.notionBrand] ?? [];
 }
 
 function resolveNavCount(
@@ -490,7 +491,7 @@ export function BrandMegaMenuPanel({
     <div className="container py-8">
       <div className="mb-6">
         <h3 className="text-lg font-bold text-[#131F3C]">
-          แบรนด์รถยนต์ที่ ช.เอราวัณ ออโต้ กรุป
+          แบรนด์รถยนต์ที่ ช.เอราวัณ กรุ๊ป
         </h3>
         <p className="text-sm text-gray-400 mt-1">
           เลือกแบรนด์เพื่อดูรุ่นรถทั้งหมด — ชี้เมาส์เพื่อดูไฮไลท์รุ่นแนะนำ / ใหม่
@@ -512,7 +513,7 @@ export function BrandMegaMenuPanel({
             ดูรถยนต์ทั้งหมด →
           </Link>
           <Link
-            href="/cars?condition=used"
+            href="/secondhand"
             className="inline-flex items-center min-h-[44px] py-2 text-sm text-gray-400 hover:text-[#131F3C] transition-colors"
           >
             รถยนต์มือสอง →

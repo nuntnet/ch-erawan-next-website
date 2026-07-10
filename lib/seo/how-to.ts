@@ -35,13 +35,13 @@ export function contactPageJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: "ติดต่อ ช.เอราวัณ ออโต้ กรุป",
+    name: "ติดต่อ ช.เอราวัณ กรุ๊ป",
     url: canonicalUrl("/contact"),
-    description: "ช่องทางติดต่อ ช.เอราวัณ ออโต้ กรุป 7 สาขาในนครปฐมและปริมณฑล",
+    description: "ช่องทางติดต่อ ช.เอราวัณ กรุ๊ป 7 สาขาในนครปฐมและปริมณฑล",
     mainEntity: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "ช.เอราวัณ ออโต้ กรุป",
+      name: "ช.เอราวัณ กรุ๊ป",
       telephone: DEFAULT_PHONE,
       address: {
         "@type": "PostalAddress",

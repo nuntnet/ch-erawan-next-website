@@ -112,7 +112,6 @@ export default function Footer() {
                   href={account.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`เพิ่มเพื่อน LINE OA ${account.brand} (${account.lineId})`}
                   className="flex items-center justify-between gap-3 bg-white/5 hover:bg-[#06C755]/15 border border-white/10 hover:border-[#06C755]/40 rounded-xl px-3.5 py-2.5 transition-all group"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">

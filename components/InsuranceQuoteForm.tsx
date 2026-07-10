@@ -111,7 +111,7 @@ export default function InsuranceQuoteForm() {
         <div>
           <Label className="text-gray-600 text-sm">ประเภทความคุ้มครอง</Label>
           <Select value={form.coverageType} onValueChange={v => setForm(f => ({ ...f, coverageType: v }))}>
-            <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกประเภท" /></SelectTrigger>
+            <SelectTrigger className="mt-1.5 border-gray-200" aria-label="เลือกประเภทประกัน"><SelectValue placeholder="เลือกประเภท" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="type1">ชั้น 1</SelectItem>
               <SelectItem value="type2">ชั้น 2</SelectItem>
@@ -124,7 +124,7 @@ export default function InsuranceQuoteForm() {
         <div>
           <Label className="text-gray-600 text-sm">สาขา</Label>
           <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
-            <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
+            <SelectTrigger className="mt-1.5 border-gray-200" aria-label="เลือกสาขา"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
             <SelectContent>{branches.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
           </Select>
         </div>

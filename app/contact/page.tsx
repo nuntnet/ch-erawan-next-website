@@ -106,7 +106,7 @@ export default function ContactPage() {
                   <div>
                     <Label className="text-gray-600 text-sm">สาขาที่ต้องการติดต่อ</Label>
                     <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
-                      <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา (ไม่บังคับ)" /></SelectTrigger>
+                      <SelectTrigger className="mt-1.5 border-gray-200" aria-label="เลือกสาขา"><SelectValue placeholder="เลือกสาขา (ไม่บังคับ)" /></SelectTrigger>
                       <SelectContent>{branchList.map((b) => <SelectItem key={b.id} value={b.name}>{b.name}</SelectItem>)}</SelectContent>
                     </Select>
                   </div>

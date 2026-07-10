@@ -208,7 +208,7 @@ export default function SearchPalette({ open, onOpenChange }: SearchPaletteProps
                   autoFocus
                 />
                 {query && (
-                  <button onClick={() => setQuery("")} className="p-1 rounded hover:bg-gray-100">
+                  <button onClick={() => setQuery("")} aria-label="ล้างการค้นหา" className="p-1 rounded hover:bg-gray-100">
                     <X className="w-3.5 h-3.5 text-gray-400" />
                   </button>
                 )}

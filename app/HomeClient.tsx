@@ -617,7 +617,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-2">เสียงจากลูกค้าของเรา</h2>
               <p className="text-gray-500">เรื่องราวความประทับใจจากลูกค้าที่ไว้วางใจ ช.เอราวัณ</p>
             </div>
-            <Link href="/stories" aria-label="ดูรีวิวลูกค้าทั้งหมด" className="hidden md:block">
+            <Link href="/stories" aria-label="ดูทั้งหมด — รีวิวลูกค้า" className="hidden md:block">
               <Button variant="outline" className="flex border-gray-200 text-gray-600 hover:border-[#0F172A]">
                 ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -645,7 +645,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
             ))}
           </div>
           <div className="mt-8 text-center md:hidden">
-            <Link href="/stories" aria-label="ดูรีวิวลูกค้าทั้งหมด">
+            <Link href="/stories" aria-label="ดูทั้งหมด — รีวิวลูกค้า">
               <Button variant="outline" className="border-gray-200 text-gray-600 hover:border-[#0F172A]">
                 ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -662,7 +662,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-2">ข่าวสารและกิจกรรมล่าสุด</h2>
               <p className="text-gray-500">ติดตามข่าวสาร โปรโมชั่น และกิจกรรมจาก ช.เอราวัณ</p>
             </div>
-            <Link href="/blog" aria-label="ดูบทความทั้งหมด" className="hidden md:block">
+            <Link href="/blog" aria-label="ดูทั้งหมด — บทความ" className="hidden md:block">
               <Button variant="outline" className="flex border-gray-200 text-gray-600 hover:border-[#0F172A]">
                 ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -696,7 +696,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
             ))}
           </div>
           <div className="mt-8 text-center md:hidden">
-            <Link href="/blog" aria-label="ดูบทความทั้งหมด">
+            <Link href="/blog" aria-label="ดูทั้งหมด — บทความ">
               <Button variant="outline" className="border-gray-200 text-gray-600 hover:border-[#0F172A]">
                 ดูทั้งหมด <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

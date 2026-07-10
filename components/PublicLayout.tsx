@@ -28,7 +28,7 @@ export default function PublicLayout({
         navModelsByBrand={navModelsByBrand}
         navCountsByBrand={navCountsByBrand}
       />
-      {children}
+      <main id="main-content">{children}</main>
       <Footer />
       <LineOAFloat />
     </>

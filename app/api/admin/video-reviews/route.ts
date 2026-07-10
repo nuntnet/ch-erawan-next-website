@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import { getAllVideoReviewsAdmin, createVideoReview, updateVideoReview, archiveVideoReview } from "@/lib/notion";
 import { revalidatePath } from "next/cache";
 
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
       description: data.description ?? "",
     });
     revalidateReviews(data.brand);
+    await auditFromSession({ action: "create", resource: "video_review", resourceId: item.id });
     return NextResponse.json(item);
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -67,6 +69,7 @@ export async function PATCH(req: NextRequest) {
     const { id, ...data } = z.object({ id: z.string().min(1) }).merge(schema.partial()).parse(await req.json());
     await updateVideoReview(id, data);
     if (data.brand) revalidateReviews(data.brand);
+    await auditFromSession({ action: "update", resource: "video_review", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -82,6 +85,7 @@ export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.searchParams.get("id");
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
     await archiveVideoReview(id);
+    await auditFromSession({ action: "delete", resource: "video_review", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error(err);

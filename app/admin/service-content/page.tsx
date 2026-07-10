@@ -317,13 +317,13 @@ const BRANDS_FAQ = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia", "ท�
 const PAGES_FAQ = ["body-repair", "service"] as const;
 
 type FAQForm = { question: string; answer: string; page: string; brand: string; isActive: boolean; sortOrder: number };
-const EMPTY_FAQ: FAQForm = { question: "", answer: "", page: "body-repair", brand: "GWM", isActive: true, sortOrder: 99 };
+const EMPTY_FAQ: FAQForm = { question: "", answer: "", page: "body-repair", brand: "ทุกแบรนด์", isActive: true, sortOrder: 99 };
 
 function FAQTab() {
   const [items, setItems] = useState<FAQItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [brandFilter, setBrandFilter] = useState("GWM");
-  const [pageFilter, setPageFilter] = useState("body-repair");
+  const [brandFilter, setBrandFilter] = useState("all");
+  const [pageFilter, setPageFilter] = useState("all");
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FAQForm>(EMPTY_FAQ);
@@ -340,7 +340,12 @@ function FAQTab() {
 
   const openAdd = () => {
     setEditingId(null);
-    setForm({ ...EMPTY_FAQ, page: pageFilter, brand: brandFilter });
+    // Filters can be "all" (not a valid FAQ value) — fall back to sane defaults.
+    setForm({
+      ...EMPTY_FAQ,
+      page: pageFilter === "all" ? EMPTY_FAQ.page : (pageFilter as FAQForm["page"]),
+      brand: brandFilter === "all" ? EMPTY_FAQ.brand : (brandFilter as FAQForm["brand"]),
+    });
     setFormOpen(true);
   };
   const openEdit = (item: FAQItem) => {

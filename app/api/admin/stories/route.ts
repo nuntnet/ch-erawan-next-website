@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getAllStories, updateStoryStatus } from "@/lib/notion";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 
 // GET /api/admin/stories — list all stories (admin view, all statuses)
 export async function GET(req: NextRequest) {
@@ -32,6 +33,7 @@ export async function PATCH(req: NextRequest) {
     const { id, action } = patchSchema.parse(body);
     const status = action === "approve" ? "approved" : "rejected";
     await updateStoryStatus(id, status, action === "approve");
+    await auditFromSession({ action: "update", resource: "story", resourceId: id, details: { status } });
     // Approved stories appear on /stories (and the home page) — refresh their ISR cache.
     revalidatePath("/stories");
     revalidatePath("/");

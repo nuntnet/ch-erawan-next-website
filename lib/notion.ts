@@ -1324,7 +1324,11 @@ export async function getFAQItems(brand: string, page: string): Promise<FAQItem[
     database_id: DB.faq,
     filter: {
       and: [
-        { property: "Brand", select: { equals: brand } },
+        // Match the brand's own FAQs plus cross-brand ("ทุกแบรนด์") ones.
+        { or: [
+          { property: "Brand", select: { equals: brand } },
+          { property: "Brand", select: { equals: "ทุกแบรนด์" } },
+        ] },
         { property: "Page", select: { equals: page } },
         { property: "IsActive", checkbox: { equals: true } },
       ],

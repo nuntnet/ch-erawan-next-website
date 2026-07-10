@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import {
   getAllPromotionsAdmin,
   createPromotion,
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
       endDate: data.endDate ?? null,
     });
     revalidatePromos(data.brand);
+    await auditFromSession({ action: "create", resource: "promotion", resourceId: promo.id, details: { title: data.title } });
     return NextResponse.json(promo);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -76,6 +78,7 @@ export async function PATCH(req: NextRequest) {
       linkUrl: rest.linkUrl || null,
     });
     revalidatePromos(rest.brand);
+    await auditFromSession({ action: "update", resource: "promotion", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -94,6 +97,7 @@ export async function DELETE(req: NextRequest) {
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
     await archivePromotion(id);
     revalidatePromos();
+    await auditFromSession({ action: "delete", resource: "promotion", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Admin promotions DELETE error:", err);

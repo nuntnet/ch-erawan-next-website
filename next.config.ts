@@ -28,6 +28,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@libsql/client", "drizzle-orm"],
+  // Tree-shake large barrel-file packages so only used exports ship to the client.
+  // (lucide-react / @radix-ui / recharts are already in Next's built-in default list.)
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react", "recharts"],
+  },
   images: {
     loaderFile: "./lib/image-loader.ts",
     formats: ["image/avif", "image/webp"],

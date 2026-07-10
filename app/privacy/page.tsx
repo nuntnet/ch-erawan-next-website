@@ -1,4 +1,11 @@
 import Link from "next/link";
+import { pageMetadata } from "@/lib/site";
+
+export const metadata = pageMetadata({
+  title: "นโยบายคุ้มครองข้อมูลส่วนบุคคล",
+  description: "นโยบายความเป็นส่วนตัวและการคุ้มครองข้อมูลส่วนบุคคล (PDPA) ของ ช.เอราวัณ กรุ๊ป",
+  path: "/privacy",
+});
 
 export default function PrivacyPolicy() {
   return (

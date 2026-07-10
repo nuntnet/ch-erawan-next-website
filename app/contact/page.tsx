@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,8 +42,16 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
       {/* Header */}
-      <div className="bg-[#0F172A] text-white py-16 lg:py-20">
-        <div className="container">
+      <div className="relative bg-[#0F172A] text-white py-16 lg:py-20 overflow-hidden">
+        <Image
+          src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/pages/contact-1"
+          alt=""
+          fill
+          className="object-cover object-center opacity-25"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#0F172A]/80 to-[#0F172A]/40" />
+        <div className="container relative z-10">
           <div className="max-w-2xl">
             <p className="text-white/65 text-sm font-medium tracking-wider uppercase mb-3">Contact</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">ติดต่อเรา</h1>

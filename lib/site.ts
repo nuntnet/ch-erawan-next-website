@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 
-export const SITE_URL =
+// Env values can carry stray whitespace/newlines (e.g. a pasted Vercel env var
+// with a trailing \n). Trim and strip any trailing slash so URLs built by plain
+// string concat (robots.txt Sitemap:, sitemap <loc>) stay valid.
+function cleanBaseUrl(u: string): string {
+  return u.trim().replace(/\/+$/, "");
+}
+
+export const SITE_URL = cleanBaseUrl(
   process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_BRANCH_URL ? `https://${process.env.VERCEL_BRANCH_URL}` : null) ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
-  "https://ch-erawan.com";
+    (process.env.VERCEL_BRANCH_URL ? `https://${process.env.VERCEL_BRANCH_URL}` : "") ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "") ||
+    "https://ch-erawan.com"
+);
 
 export const SITE_NAME = "ช.เอราวัณ กรุ๊ป";
 

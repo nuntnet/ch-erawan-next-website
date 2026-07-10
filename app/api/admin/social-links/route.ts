@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import { getAllSocialLinksAdmin, createSocialLink, updateSocialLink, archiveSocialLink } from "@/lib/notion";
 
 const PLATFORMS = ["Facebook", "TikTok", "YouTube", "LINE", "Instagram"] as const;
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
       label: data.label || `${data.brand} ${data.platform}`,
       platform: data.platform,
     });
+    await auditFromSession({ action: "create", resource: "social_link", resourceId: item.id });
     return NextResponse.json(item);
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -48,6 +50,7 @@ export async function PATCH(req: NextRequest) {
   try {
     const { id, ...data } = z.object({ id: z.string().min(1) }).merge(schema.partial()).parse(await req.json());
     await updateSocialLink(id, data);
+    await auditFromSession({ action: "update", resource: "social_link", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -62,6 +65,7 @@ export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.searchParams.get("id");
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
     await archiveSocialLink(id);
+    await auditFromSession({ action: "delete", resource: "social_link", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error(err);

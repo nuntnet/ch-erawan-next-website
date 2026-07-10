@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getAllAppointments, updateAppointmentStatus } from "@/lib/notion";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 
 // GET /api/admin/appointments — list all appointments
 export async function GET() {
@@ -29,6 +30,7 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     const { id, status } = patchSchema.parse(body);
     await updateAppointmentStatus(id, status);
+    await auditFromSession({ action: "update", resource: "appointment", resourceId: id, details: { status } });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) {

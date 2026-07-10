@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
+import { auditFromSession } from "@/lib/audit";
 import { getAllServiceSectionsAdmin, createServiceSection, updateServiceSection } from "@/lib/notion";
 
 const pageEnum = z.enum(["body-repair", "service", "one-stop"]);
@@ -29,6 +30,7 @@ export async function POST(req: NextRequest) {
       sortOrder: z.number().default(99),
     }).parse(await req.json());
     const section = await createServiceSection(data);
+    await auditFromSession({ action: "create", resource: "service_content", resourceId: section.id });
     return NextResponse.json(section);
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });
@@ -48,6 +50,7 @@ export async function PATCH(req: NextRequest) {
       isPublished: z.boolean().optional(),
     }).parse(await req.json());
     await updateServiceSection(id, data);
+    await auditFromSession({ action: "update", resource: "service_content", resourceId: id });
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors[0]?.message }, { status: 400 });

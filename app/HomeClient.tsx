@@ -152,11 +152,34 @@ function AwardSlideshow() {
 export default function HomeClient({ featuredCars, recentPosts, publicStories, promotions }: Props) {
   const [activeBrandTab, setActiveBrandTab] = useState("ทั้งหมด");
   const [heroSlide, setHeroSlide] = useState(0);
+  // Only mount images for slides that have actually been shown. Without this all
+  // 6 brands × (desktop+mobile) = 12 hero images load on first paint (they sit
+  // in-viewport at opacity-0), which wrecks LCP. Start with slide 0 only.
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set([0]));
+  const heroPrimed = useRef(false);
 
   useEffect(() => {
     const timer = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 5000);
     return () => clearInterval(timer);
   }, []);
+
+  // Load the current slide + preload the next one for a smooth crossfade.
+  // Delay the very first preload so the priority slide-0 wins the LCP race.
+  useEffect(() => {
+    const next = (heroSlide + 1) % heroSlides.length;
+    const delay = heroPrimed.current ? 0 : 1200;
+    heroPrimed.current = true;
+    const t = setTimeout(() => {
+      setLoadedSlides((prev) => {
+        if (prev.has(heroSlide) && prev.has(next)) return prev;
+        const s = new Set(prev);
+        s.add(heroSlide);
+        s.add(next);
+        return s;
+      });
+    }, delay);
+    return () => clearTimeout(t);
+  }, [heroSlide]);
 
   const filteredCars = useMemo(() => {
     if (activeBrandTab === "ทั้งหมด") return featuredCars.slice(0, 6);
@@ -169,24 +192,28 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
       <section className="relative overflow-hidden bg-black h-[80svh] min-h-[540px] lg:h-[calc(100vh-68px)]">
         {heroSlides.map((slide, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === heroSlide ? "opacity-100" : "opacity-0"}`}>
-            {/* Desktop: landscape art */}
-            <Image
-              src={slide.desktop}
-              alt={slide.brand}
-              fill
-              priority={i === 0}
-              className="hidden md:block object-cover object-center"
-              sizes="100vw"
-            />
-            {/* Mobile: dedicated portrait art */}
-            <Image
-              src={slide.mobile}
-              alt={slide.brand}
-              fill
-              priority={i === 0}
-              className="md:hidden object-cover object-center"
-              sizes="100vw"
-            />
+            {loadedSlides.has(i) && (
+              <>
+                {/* Desktop: landscape art */}
+                <Image
+                  src={slide.desktop}
+                  alt={slide.brand}
+                  fill
+                  priority={i === 0}
+                  className="hidden md:block object-cover object-center"
+                  sizes="100vw"
+                />
+                {/* Mobile: dedicated portrait art */}
+                <Image
+                  src={slide.mobile}
+                  alt={slide.brand}
+                  fill
+                  priority={i === 0}
+                  className="md:hidden object-cover object-center"
+                  sizes="100vw"
+                />
+              </>
+            )}
           </div>
         ))}
         {/* Gradient overlays */}

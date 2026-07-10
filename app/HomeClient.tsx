@@ -194,12 +194,14 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
           <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === heroSlide ? "opacity-100" : "opacity-0"}`}>
             {loadedSlides.has(i) && (
               <>
-                {/* Desktop: landscape art */}
+                {/* Desktop: landscape art. Slide 0 is preloaded via a
+                    media-scoped <link> in app/page.tsx (not `priority`, which
+                    would preload both orientations). */}
                 <Image
                   src={slide.desktop}
                   alt={slide.brand}
                   fill
-                  priority={i === 0}
+                  fetchPriority={i === 0 ? "high" : undefined}
                   className="hidden md:block object-cover object-center"
                   sizes="100vw"
                 />
@@ -208,7 +210,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
                   src={slide.mobile}
                   alt={slide.brand}
                   fill
-                  priority={i === 0}
+                  fetchPriority={i === 0 ? "high" : undefined}
                   className="md:hidden object-cover object-center"
                   sizes="100vw"
                 />

@@ -42,35 +42,21 @@ const AWARD_SLIDES: { url: string; caption: string }[] = [
   { url: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best,w_1200/v1780233470/ch-erawan/awards/deepal-top-sale-spare-part.jpg", caption: "Deepal — Top Sale & Spare Part Award" },
 ];
 
+// Per-brand hero — dedicated desktop (landscape) + mobile (portrait) art from
+// Cloudinary (ch-erawan/hero/<brand>-hero-<variant>), so no cropping needed.
+const HERO_CLD = "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good";
 const heroSlides = [
-  {
-    bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245610/ch-erawan/hero/mazda-cx5-hero-2026.jpg",
-    mobileGravity: "east", // car sits on the right half; g_auto picks the reflective glass on the left
-    brand: "Mazda", tagline: "FEEL ALIVE",
-    thaiTitle: "ขับเคลื่อนด้วยแรงบันดาลใจ",
-    desc: "Mazda CX-5 SUV สมรรถนะสมดุล ดีไซน์ Kodo เอกลักษณ์เฉพาะตัว พร้อม i-Activsense ช่วยเหลือผู้ขับขี่",
-  },
-  {
-    bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245615/ch-erawan/hero/gwm-haval-h6-hero.jpg",
-    mobileGravity: "auto",
-    brand: "GWM", tagline: "HAVAL H6 HEV",
-    thaiTitle: "SUV ไฮบริดยอดนิยม",
-    desc: "GWM HAVAL H6 HEV ประหยัดน้ำมัน ออพชั่นครบ ราคาเริ่มต้น 969,000 บาท จาก gwm.co.th",
-  },
-  {
-    bg: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245617/ch-erawan/hero/kia-ev5-hero.jpg",
-    mobileGravity: "auto",
-    brand: "Kia", tagline: "INSPIRATION DRIVEN",
-    thaiTitle: "SUV ไฟฟ้าแห่งอนาคต",
-    desc: "Kia EV5 ดีไซน์ Opposites United ห้องโดยสารกว้าง ราคาเริ่มต้น 1,399,000 บาท",
-  },
-];
-
-/** Portrait, car-focused crop for the mobile hero — Cloudinary content-aware
- * gravity keeps the vehicle in frame instead of centre-cropping a landscape shot. */
-function heroMobileSrc(bg: string, gravity = "auto"): string {
-  return bg.replace("f_auto,q_auto:good", `f_auto,q_auto:good,c_fill,g_${gravity},ar_4:5,w_800`);
-}
+  { slug: "mazda",      brand: "Mazda",      tagline: "FEEL ALIVE",            thaiTitle: "มาสด้า" },
+  { slug: "ford",       brand: "Ford",       tagline: "Built Ford Tough",      thaiTitle: "ฟอร์ด" },
+  { slug: "mitsubishi", brand: "Mitsubishi", tagline: "Drive Your Ambition",   thaiTitle: "มิตซูบิชิ มอเตอร์ส" },
+  { slug: "gwm",        brand: "GWM",        tagline: "Great Wall Motor",      thaiTitle: "จีดับเบิลยูเอ็ม" },
+  { slug: "deepal",     brand: "Deepal",     tagline: "Electric Future",       thaiTitle: "ดีพอล" },
+  { slug: "kia",        brand: "Kia",        tagline: "Movement that inspires", thaiTitle: "เกีย" },
+].map((s) => ({
+  ...s,
+  desktop: `${HERO_CLD}/ch-erawan/hero/${s.slug}-hero-desktop`,
+  mobile: `${HERO_CLD}/ch-erawan/hero/${s.slug}-hero-mobile`,
+}));
 
 const brandTabs = ["ทั้งหมด", ...BRANDS.map((b) => b.notionBrand)];
 
@@ -183,18 +169,18 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
       <section className="relative overflow-hidden bg-black h-[80svh] min-h-[540px] lg:h-[calc(100vh-68px)]">
         {heroSlides.map((slide, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === heroSlide ? "opacity-100" : "opacity-0"}`}>
-            {/* Desktop: original landscape */}
+            {/* Desktop: landscape art */}
             <Image
-              src={slide.bg}
+              src={slide.desktop}
               alt={slide.brand}
               fill
               priority={i === 0}
               className="hidden md:block object-cover object-center"
               sizes="100vw"
             />
-            {/* Mobile: portrait, car-focused crop (Cloudinary g_auto) */}
+            {/* Mobile: dedicated portrait art */}
             <Image
-              src={heroMobileSrc(slide.bg, slide.mobileGravity)}
+              src={slide.mobile}
               alt={slide.brand}
               fill
               priority={i === 0}

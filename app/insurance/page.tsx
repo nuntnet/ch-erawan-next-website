@@ -105,8 +105,8 @@ export default function Insurance() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="rounded-2xl overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1637763723578-79a4ca9225f7?q=80&w=1200&auto=format&fit=crop"
-              alt="ประกันภัยรถยนต์ ช.เอราวัณ"
+              src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best,w_1200/ch-erawan/pages/insurance-5"
+              alt="ประกันภัยรถยนต์ ช.เอราวัณ กรุ๊ป"
               className="w-full h-[400px] object-cover"
             />
           </div>
@@ -232,7 +232,7 @@ export default function Insurance() {
             </div>
             <div className="hidden lg:block">
               <img
-                src="https://images.unsplash.com/photo-1673187139211-1e7ec3dd60ec?q=80&w=1200&auto=format&fit=crop"
+                src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best,w_1200/ch-erawan/pages/insurance-4"
                 alt="บริการเคลมประกันและซ่อมรถ"
                 className="w-full h-full object-cover"
               />

@@ -130,7 +130,7 @@ export default function ServiceLocator() {
         <div className="container">
           <p className="text-[#0F172A] text-sm font-medium mb-2 tracking-wider uppercase">สาขาของเรา</p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">ค้นหาสาขาและศูนย์บริการ</h1>
-          <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุ๊ป มี 7 สาขาครอบคลุมจังหวัดนครปฐมและสามพราน พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
+          <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุ๊ป มี 9 สาขาครอบคลุมจังหวัดนครปฐมและสามพราน พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
         </div>
       </div>
 
@@ -368,8 +368,8 @@ export default function ServiceLocator() {
         {/* Summary Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
           {[
-            { value: "7", label: "สาขาทั่วนครปฐม" },
-            { value: "6", label: "แบรนด์รถยนต์" },
+            { value: "9", label: "สาขาทั่วนครปฐม" },
+            { value: "8", label: "แบรนด์รถยนต์" },
             { value: "4", label: "ศูนย์ Body & Paint" },
             { value: "034-305-500", label: "Call Center" },
           ].map(stat => (

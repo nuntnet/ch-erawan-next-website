@@ -27,7 +27,7 @@ export default function CallToAction({
   const brandText = brand ? ` ${brand}` : "";
   const defaultHeading = heading ?? `สนใจรถ${brandText}? นัดทดลองขับฟรีวันนี้`;
   const defaultDesc = description ??
-    `ช.เอราวัณ กรุ๊ป ตัวแทนจำหน่าย${brandText}อย่างเป็นทางการ 7 สาขาในนครปฐม พร้อมบริการหลังการขายครบวงจร ศูนย์บริการมาตรฐาน Body & Paint มาตรฐาน OEM`;
+    `ช.เอราวัณ กรุ๊ป ตัวแทนจำหน่าย${brandText}อย่างเป็นทางการ 9 สาขาในนครปฐม พร้อมบริการหลังการขายครบวงจร ศูนย์บริการมาตรฐาน Body & Paint มาตรฐาน OEM`;
 
   if (variant === "inline") {
     return (
@@ -99,7 +99,7 @@ export default function CallToAction({
             </Link>
             <Link href="/branches">
               <Button variant="outline" className="border-white/25 text-white hover:bg-white/10 bg-transparent px-6 py-3 text-base">
-                <MapPin className="w-4 h-4 mr-2" /> 7 สาขา
+                <MapPin className="w-4 h-4 mr-2" /> 9 สาขา
               </Button>
             </Link>
           </div>

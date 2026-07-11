@@ -247,7 +247,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
 
               {/* Description */}
               <p className="text-white/55 text-sm lg:text-base leading-relaxed max-w-xl mb-6">
-                {`ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม กว่า ${getYearsOfExperience()} ปี — 8 แบรนด์ 7 สาขา`}
+                {`ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม กว่า ${getYearsOfExperience()} ปี — 8 แบรนด์ 9 สาขา`}
                 ครอบคลุม ICE, Hybrid และ EV ด้วยทีมงานมืออาชีพกว่า 200 คน
               </p>
 
@@ -470,7 +470,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
                 "ช.เอราวัณ คือเพื่อนแท้ที่พร้อมดูแลรถคุณ ด้วยมาตรฐานระดับสากล และหัวใจของคนไทย"
               </blockquote>
               <div className="flex flex-wrap gap-6">
-                {[[getYearsLabel(), "ปีแห่งประสบการณ์"], ["7", "สาขาทั่วนครปฐม"], ["6", "แบรนด์ชั้นนำ"]].map(([num, label]) => (
+                {[[getYearsLabel(), "ปีแห่งประสบการณ์"], ["9", "สาขาทั่วนครปฐม"], ["8", "แบรนด์ชั้นนำ"]].map(([num, label]) => (
                   <div key={label} className="text-center">
                     <div className="text-3xl font-bold text-[#DD5259]">{num}</div>
                     <div className="text-xs text-white/65 mt-1">{label}</div>

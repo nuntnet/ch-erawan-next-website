@@ -124,7 +124,7 @@ const timeline: TimelineItem[] = [
   },
   {
     year: "ปัจจุบัน",
-    title: "8 แบรนด์ 7 สาขา",
+    title: "8 แบรนด์ 9 สาขา",
     desc: "ช.เอราวัณ กรุ๊ป เติบโตเป็นกลุ่มดีลเลอร์ชั้นนำในภาคตะวันตก ครอบคลุม ICE, Hybrid และ EV ครบทุกกลุ่ม ส่วนแบ่งตลาดรวม ~13.1%",
     milestone: "ผู้นำภาคตะวันตก",
     image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245672/ch-erawan/team/team-photo-2.jpg",
@@ -258,7 +258,7 @@ const management = [
 const stats = [
   { value: getYearsLabel(), label: "ปีแห่งประสบการณ์", sub: `ก่อตั้งปี ${FOUNDED_YEAR_BE}` },
   { value: "8", label: "แบรนด์รถยนต์", sub: "Mazda · Ford · Mitsubishi · GWM · Deepal · Kia · GAC · Lepas" },
-  { value: "7", label: "สาขาทั่วนครปฐม", sub: "ครอบคลุมทุกพื้นที่" },
+  { value: "9", label: "สาขาทั่วนครปฐม", sub: "ครอบคลุมทุกพื้นที่" },
   { value: "4", label: "ศูนย์ Body & Paint", sub: "มาตรฐาน OEM" },
   { value: "13.1%", label: "ส่วนแบ่งตลาดรวม", sub: "แบรนด์ในเครือ ปี 2568" },
   { value: "#1", label: "ผู้นำภาคตะวันตก", sub: "ดีลเลอร์อันดับ 1 ในภูมิภาค" },
@@ -385,7 +385,7 @@ export default function About() {
                 <span className="text-white/80">ที่พร้อมดูแลรถคุณ&rdquo;</span>
               </h1>
               <p className="text-white/55 text-base lg:text-lg leading-relaxed max-w-xl">
-                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 8 แบรนด์ 7 สาขา
+                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 8 แบรนด์ 9 สาขา
                 ครอบคลุม ICE, Hybrid และ EV ด้วยทีมงานมืออาชีพกว่า 200 คน
               </p>
 
@@ -393,7 +393,7 @@ export default function About() {
               <div className="grid grid-cols-3 gap-4 mt-8 mb-8">
                 {[
                   { value: getYearsLabel(), label: "ปี" },
-                  { value: "7", label: "สาขา" },
+                  { value: "9", label: "สาขา" },
                   { value: "200+", label: "ทีมงาน" },
                 ].map((s) => (
                   <div key={s.label} className="text-center bg-white/5 rounded-xl p-3 border border-white/10">
@@ -407,7 +407,7 @@ export default function About() {
                 <Link href="/branches">
                   <Button className="bg-[#DD5259] hover:bg-[#c9454c] text-white font-semibold">
                     <MapPin className="w-4 h-4 mr-1.5" />
-                    ดู 7 สาขา
+                    ดู 9 สาขา
                   </Button>
                 </Link>
                 <Link href="/awards">
@@ -693,12 +693,12 @@ export default function About() {
                   </h3>
                   <p className="text-white/60 leading-relaxed mb-5">
                     {`ตระกูลจันทร์วาววาม ผู้บุกเบิกธุรกิจยานยนต์นครปฐมกว่า ${getYearsOfExperience()} ปี`}
-                    ด้วยเครือข่ายดีลเลอร์ครบ 8 แบรนด์ 7 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
+                    ด้วยเครือข่ายดีลเลอร์ครบ 8 แบรนด์ 9 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
                   </p>
                   <div className="flex flex-wrap gap-5">
                     {[
-                      { value: "7", label: "สาขาในเครือ" },
-                      { value: "6", label: "แบรนด์ชั้นนำ" },
+                      { value: "9", label: "สาขาในเครือ" },
+                      { value: "8", label: "แบรนด์ชั้นนำ" },
                       { value: getYearsLabel(), label: "ปีแห่งประสบการณ์" },
                       { value: "200+", label: "ทีมงานทั่วสาขา" },
                     ].map((s) => (

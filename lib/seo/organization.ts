@@ -8,7 +8,7 @@ import {
 } from "./constants";
 
 const dealerDescription =
-  "ตัวแทนจำหน่ายรถยนต์ชั้นนำในจังหวัดนครปฐม Mazda, Ford, Mitsubishi, GWM, Deepal, Kia — 7 สาขา";
+  "ตัวแทนจำหน่ายรถยนต์ชั้นนำในจังหวัดนครปฐม Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas — 9 สาขา";
 
 /** Organization node for @graph */
 export function organizationNode() {

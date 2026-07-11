@@ -27,7 +27,7 @@ https://www.notion.so/workspace/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX?v=...
 | Variable | Required | คำอธิบาย |
 |----------|----------|----------|
 | `BETTER_AUTH_SECRET` | ✅ | Random secret สำหรับ sign sessions (generate: `openssl rand -base64 32`) |
-| `BETTER_AUTH_URL` | ✅ prod | URL ของเว็บ เช่น `https://ch-erawan.com` (ใช้ `http://localhost:3002` ใน dev — port 3002 แยกจากแอปอื่นที่ใช้ 3000) |
+| `BETTER_AUTH_URL` | ✅ prod | URL ของเว็บ เช่น `https://www.ch-erawan.com` (ใช้ `http://localhost:3002` ใน dev — port 3002 แยกจากแอปอื่นที่ใช้ 3000) |
 | `TURSO_DATABASE_URL` | ✅ | รูปแบบ: `libsql://[db-name].aws-[region].turso.io` |
 | `TURSO_AUTH_TOKEN` | ✅ | Auth token จาก Turso dashboard |
 
@@ -115,7 +115,7 @@ turso db tokens create ch-erawan
 
 | Variable | Required | คำอธิบาย |
 |----------|----------|----------|
-| `NEXT_PUBLIC_SITE_URL` | แนะนำ prod | Canonical/OG base URL (default: `https://ch-erawan.com`) |
+| `NEXT_PUBLIC_SITE_URL` | แนะนำ prod | Canonical/OG base URL (default: `https://www.ch-erawan.com`) |
 
 ## Revalidation
 
@@ -153,7 +153,7 @@ CLOUDINARY_API_SECRET=your-api-secret
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSy...
 
 # Site URL (canonical / OG)
-NEXT_PUBLIC_SITE_URL=https://ch-erawan.com
+NEXT_PUBLIC_SITE_URL=https://www.ch-erawan.com
 
 # SPS (Service Booking System)
 SPS_BASE_URL=https://system.ch-erawan.com/sps
@@ -175,5 +175,5 @@ RESEND_FROM_EMAIL=notifications@ch-erawan.com
 
 ใน Vercel dashboard → Project → Settings → Environment Variables:
 - ใส่ทุกตัวข้างบน
-- `BETTER_AUTH_URL` ต้องเป็น production URL: `https://ch-erawan.com`
+- `BETTER_AUTH_URL` ต้องเป็น production URL: `https://www.ch-erawan.com`
 - `NEXT_PUBLIC_*` จะถูก expose ไปยัง browser — ไม่ควรใส่ secret

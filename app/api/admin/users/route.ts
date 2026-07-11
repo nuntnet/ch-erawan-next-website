@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin-auth";
 import { auth } from "@/lib/auth";
+import { APIError } from "better-auth/api";
 import { headers } from "next/headers";
 import { logAudit } from "@/lib/audit";
 import { drizzle } from "drizzle-orm/libsql";
@@ -67,6 +68,10 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ success: true, userId: created?.user?.id });
   } catch (err) {
+    if (err instanceof APIError) {
+      const message = err.body?.message ?? "Failed to create user";
+      return NextResponse.json({ error: message }, { status: err.statusCode });
+    }
     console.error("Create user error:", err);
     return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
   }

@@ -173,6 +173,7 @@ function SubLineLinks({
               size="xs"
               width={48}
               height={16}
+              containerClassName="w-auto"
               className="opacity-80"
             />
             {line.displayName}

@@ -212,6 +212,7 @@ export function BrandHeroSubLineLinks({
               white={!isActive}
               width={56}
               height={20}
+              containerClassName="w-auto"
               className={isActive ? "brightness-0" : "opacity-90"}
             />
             {line.displayName}

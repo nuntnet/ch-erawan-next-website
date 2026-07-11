@@ -241,6 +241,7 @@ export default function BrandHallCard({ brand, className }: BrandHallCardProps) 
                   width={40}
                   height={14}
                   white
+                  containerClassName="w-auto"
                   className="opacity-90"
                 />
                 {line.displayName}

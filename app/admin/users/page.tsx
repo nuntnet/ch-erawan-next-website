@@ -51,7 +51,13 @@ export default function AdminUsersPage() {
         if (!form.email || !form.password) { toast.error("กรุณากรอก email และ password"); return; }
         const res = await fetch("/api/admin/users", { method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form) });
-        if (!res.ok) { toast.error("สร้างผู้ใช้ไม่สำเร็จ"); return; }
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          toast.error(data?.error === "User already exists. Use another email."
+            ? "อีเมลนี้มีผู้ใช้อยู่แล้วในระบบ"
+            : data?.error || "สร้างผู้ใช้ไม่สำเร็จ");
+          return;
+        }
         toast.success("สร้างผู้ใช้สำเร็จ");
       }
       setFormOpen(false); load();

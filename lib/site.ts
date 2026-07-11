@@ -11,7 +11,7 @@ export const SITE_URL = cleanBaseUrl(
   process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_BRANCH_URL ? `https://${process.env.VERCEL_BRANCH_URL}` : "") ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "") ||
-    "https://ch-erawan.com"
+    "https://www.ch-erawan.com"
 );
 
 export const SITE_NAME = "ช.เอราวัณ กรุ๊ป";

@@ -14,7 +14,7 @@
 ```
 feature/* ──→ staging ──→ master (production)
                 ↓              ↓
-         staging.vercel.app   newweb.ch-erawan.com
+         staging.vercel.app   www.ch-erawan.com
          Staging Notion DBs   Production Notion DBs
          Staging Turso DB     Production Turso DB
 ```

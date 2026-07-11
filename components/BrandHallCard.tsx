@@ -5,10 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import BrandLogo from "@/components/BrandLogo";
-import {
-  getGwmLineHref,
-  type BrandConfig,
-} from "@/lib/brandConfig";
+import type { BrandConfig } from "@/lib/brandConfig";
 import { BRAND_IMAGES } from "@/lib/brandImages";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
@@ -234,7 +231,7 @@ export default function BrandHallCard({ brand, className }: BrandHallCardProps) 
             {brand.subLines.map((line) => (
               <Link
                 key={line.slug}
-                href={getGwmLineHref(line.slug)}
+                href={`${brand.hubPath}/${line.slug}`}
                 className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-2.5 py-1 min-h-[32px] text-[10px] font-medium text-white/70 hover:border-white/30 hover:bg-white/10 hover:text-white transition-all"
               >
                 <BrandLogo

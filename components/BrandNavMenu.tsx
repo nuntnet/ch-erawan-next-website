@@ -15,7 +15,7 @@ import {
 } from "@/lib/brandConfig";
 
 // All brands now have sub-pages via generic [brand]/* routes
-const HAS_SUB_PAGES = new Set<string>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia"]);
+const HAS_SUB_PAGES = new Set<string>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia", "gac", "lepas"]);
 
 const BRAND_SUB_LINKS = [
   { label: "ศูนย์บริการ",    section: "service" },
@@ -65,7 +65,7 @@ interface BrandNavTileProps {
   navTotalCount?: number;
   compact?: boolean;
   showFeatured?: boolean;
-  showGwmSubLines?: boolean;
+  showSubLines?: boolean;
   className?: string;
 }
 
@@ -138,14 +138,16 @@ function FeaturedModelLinks({
   );
 }
 
-function GwmSubLineLinks({
+function SubLineLinks({
+  brand,
   compact = false,
   visible = true,
 }: {
+  brand: BrandConfig;
   compact?: boolean;
   visible?: boolean;
 }) {
-  if (!visible) return null;
+  if (!visible || !brand.subLines?.length) return null;
 
   return (
     <motion.div
@@ -156,13 +158,13 @@ function GwmSubLineLinks({
       className={cn("overflow-hidden", compact ? "mt-2" : "mt-3")}
     >
       <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5 px-1">
-        สายย่อย GWM
+        สายย่อย {brand.displayNameTh}
       </p>
       <div className={cn("flex flex-wrap gap-1.5", compact ? "" : "justify-center")}>
-        {GWM_SUB_LINES.map((line) => (
+        {brand.subLines.map((line) => (
           <Link
             key={line.slug}
-            href={getGwmLineHref(line.slug)}
+            href={`${brand.hubPath}/${line.slug}`}
             className="inline-flex items-center gap-1.5 rounded-md border border-gray-100 hover:border-[#DD5259]/40 px-2 py-1 min-h-[32px] bg-gray-50/80 hover:bg-white transition-all text-xs font-medium text-gray-600 hover:text-[#0F172A]"
           >
             <BrandLogo
@@ -187,7 +189,7 @@ export function BrandNavTile({
   navTotalCount,
   compact = false,
   showFeatured = false,
-  showGwmSubLines = false,
+  showSubLines = false,
   className,
 }: BrandNavTileProps) {
   const [hovered, setHovered] = useState(false);
@@ -217,7 +219,7 @@ export function BrandNavTile({
     setPointer({ x: 50, y: 50, tiltX: 0, tiltY: 0 });
   }, []);
 
-  const active = hovered || showFeatured || showGwmSubLines;
+  const active = hovered || showFeatured || showSubLines;
   const logoRotateY = ((pointer.x - 50) / 50) * 10;
   const logoRotateX = ((pointer.y - 50) / 50) * -4;
 
@@ -359,15 +361,15 @@ export function BrandNavTile({
           ) : null}
         </AnimatePresence>
 
-        {brand.slug === "gwm" && (
+        {brand.subLines?.length ? (
           <AnimatePresence>
-            {showGwmSubLines ? (
+            {showSubLines ? (
               <div className="pointer-events-auto relative z-20">
-                <GwmSubLineLinks key="gwm-sublines" compact={compact} visible />
+                <SubLineLinks key={`${brand.slug}-sublines`} brand={brand} compact={compact} visible />
               </div>
             ) : null}
           </AnimatePresence>
-        )}
+        ) : null}
 
       </div>
     </div>
@@ -434,7 +436,7 @@ export function BrandMegaMenuGrid({
               navModels={resolveNavModels(brand, navModelsByBrand)}
               navTotalCount={resolveNavCount(brand, navCountsByBrand)}
               showFeatured={hoveredSlug === brand.slug}
-              showGwmSubLines={false}
+              showSubLines={false}
             />
           </div>
         ))}

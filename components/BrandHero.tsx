@@ -197,7 +197,7 @@ export function BrandHeroSubLineLinks({
         return (
           <Link
             key={line.slug}
-            href={`/gwm/${line.slug}`}
+            href={`${brand.hubPath}/${line.slug}`}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 min-h-[44px] text-sm font-medium transition-colors backdrop-blur-sm ${
               isActive
                 ? "bg-white text-[#0F172A]"

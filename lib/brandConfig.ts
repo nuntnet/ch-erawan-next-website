@@ -328,6 +328,8 @@ export const BRANDS: BrandConfig[] = [
     accentColor: "#0E8C7F",
     navBgImage:
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783779581/ch-erawan/brands/lepas-hero-leopard.jpg",
+    showroomImageUrl:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783785401/ch-erawan/brands/lepas-showroom.jpg",
     hubPath: "/lepas",
     featuredModels: [
       { name: "L8", slug: "lepas-l8-2026" },

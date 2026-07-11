@@ -423,7 +423,7 @@ export function BrandMegaMenuGrid({
         aria-hidden
       />
 
-      <div className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="relative grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
         {BRANDS.map((brand) => (
           // Only onMouseEnter here — NO onMouseLeave on individual tiles.
           // Clearing hoveredSlug is handled solely by the outer panelRef onMouseLeave.
@@ -436,6 +436,7 @@ export function BrandMegaMenuGrid({
               brand={brand}
               navModels={resolveNavModels(brand, navModelsByBrand)}
               navTotalCount={resolveNavCount(brand, navCountsByBrand)}
+              compact
               showFeatured={hoveredSlug === brand.slug}
               showSubLines={false}
             />

@@ -99,7 +99,14 @@ export default async function BrandHubPage({ params }: PageProps) {
             </Link>
           </div>
 
-          <BrandCarGrid cars={cars} />
+          <BrandCarGrid
+            cars={cars}
+            emptyMessage={
+              brand.comingSoonLabel
+                ? `รุ่นรถ ${brand.displayNameTh} เร็วๆ นี้ — ${brand.comingSoonLabel}`
+                : undefined
+            }
+          />
 
           {/* Social links — from Notion CMS */}
           {(socialLinks.length > 0 || brand.social) && (

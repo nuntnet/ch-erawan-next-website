@@ -61,6 +61,8 @@ export interface BrandConfig {
    * Shape: https://res.cloudinary.com/n5llrdnq/image/upload/...
    */
   showroomImageUrl?: string;
+  /** Shown as a pill badge on the brand hero when the showroom isn't open yet */
+  comingSoonLabel?: string;
   /** Social media links for this brand */
   social?: {
     facebook?: string;
@@ -310,6 +312,7 @@ export const BRANDS: BrandConfig[] = [
     ],
     showroomImageUrl:
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1783781107/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
+    comingSoonLabel: "โชว์รูมเปิดเร็วๆ นี้ · Coming Soon ตุลาคม 2569",
     social: {
       // No LINE OA yet — shares the Nakhon Pathom front desk with Mitsubishi until GAC's own is created.
       line: "https://lin.ee/N7UjCTE",
@@ -330,6 +333,7 @@ export const BRANDS: BrandConfig[] = [
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783779581/ch-erawan/brands/lepas-hero-leopard.jpg",
     showroomImageUrl:
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783785401/ch-erawan/brands/lepas-showroom.jpg",
+    comingSoonLabel: "เตรียมเปิดตัวในไทย · Coming Soon กลางปี 2569",
     hubPath: "/lepas",
     featuredModels: [
       { name: "L8", slug: "lepas-l8-2026" },

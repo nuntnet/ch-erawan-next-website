@@ -4,6 +4,7 @@ import { admin } from "better-auth/plugins";
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client";
 import * as schema from "@/lib/db/schema";
+import { sendPasswordResetEmail } from "@/lib/email";
 
 function createAuth() {
   const url = process.env.TURSO_DATABASE_URL;
@@ -27,6 +28,9 @@ function createAuth() {
     emailAndPassword: {
       enabled: true,
       minPasswordLength: 8,
+      sendResetPassword: async ({ user, url }) => {
+        await sendPasswordResetEmail(user.email, url);
+      },
     },
     plugins: [admin()],
     trustedOrigins: [

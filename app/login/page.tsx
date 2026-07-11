@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,7 +73,12 @@ function LoginForm() {
               />
             </div>
             <div>
-              <Label htmlFor="password" className="text-gray-600 text-sm">รหัสผ่าน</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="text-gray-600 text-sm">รหัสผ่าน</Label>
+                <Link href="/forgot-password" className="text-xs text-gray-400 hover:text-[#0F172A] transition-colors">
+                  ลืมรหัสผ่าน?
+                </Link>
+              </div>
               <Input
                 id="password"
                 type="password"

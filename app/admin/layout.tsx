@@ -1,15 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
-import { BarChart3, BookOpen, Calendar, Car, LogOut, Mail, MessageSquare, Tag, Wrench, MessageSquareWarning, Share2, Video, TrendingUp, Users, ScrollText } from "lucide-react";
+import { BarChart3, BookOpen, Calendar, Car, KeyRound, LogOut, Mail, MessageSquare, Tag, Wrench, MessageSquareWarning, Share2, Video, TrendingUp, Users, ScrollText } from "lucide-react";
 import CompanyLogo from "@/components/CompanyLogo";
+import ChangePasswordDialog from "@/components/admin/ChangePasswordDialog";
 import {
   Avatar, AvatarFallback,
 } from "@/components/ui/avatar";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 const menuItems = [
@@ -39,6 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const { data: session, isPending } = useSession();
   const user = session?.user;
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -107,6 +110,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuItem onClick={() => setChangePasswordOpen(true)} className="cursor-pointer">
+                <KeyRound className="mr-2 h-4 w-4" />
+                เปลี่ยนรหัสผ่าน
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-600 focus:text-red-600">
                 <LogOut className="mr-2 h-4 w-4" />
                 ออกจากระบบ
@@ -120,6 +128,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <main className="flex-1 ml-56 min-h-screen p-6 lg:p-8">
         {children}
       </main>
+
+      <ChangePasswordDialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen} />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import LineOAFloat from "./LineOAFloat";
 import type { NavCountsByBrand, NavModelsByBrand } from "@/lib/navModels";
 
-const NO_LAYOUT_PREFIXES = ["/admin", "/login"];
+const NO_LAYOUT_PREFIXES = ["/admin", "/login", "/forgot-password", "/reset-password"];
 
 export default function PublicLayout({
   children,

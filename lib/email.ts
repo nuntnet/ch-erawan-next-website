@@ -139,6 +139,33 @@ function buildFormNotificationBody(data: FormNotificationPayload): string {
   return lines.join("\n");
 }
 
+/** Send a password reset link to an admin user. */
+export async function sendPasswordResetEmail(
+  to: string,
+  resetUrl: string
+): Promise<{ sent: boolean; channel?: "resend" | "smtp" | "none" }> {
+  const subject = "รีเซ็ตรหัสผ่าน — ช.เอราวัณ กรุ๊ป Admin Panel";
+  const text = [
+    "มีการขอรีเซ็ตรหัสผ่านสำหรับบัญชี Admin Panel ของคุณ",
+    "",
+    "กดลิงก์ด้านล่างเพื่อตั้งรหัสผ่านใหม่ (ลิงก์มีอายุ 1 ชั่วโมง):",
+    resetUrl,
+    "",
+    "หากคุณไม่ได้เป็นผู้ขอรีเซ็ตรหัสผ่าน กรุณาเพิกเฉยต่ออีเมลนี้",
+  ].join("\n");
+
+  try {
+    if (await sendViaResend(to, subject, text)) return { sent: true, channel: "resend" };
+    if (await sendViaSmtp(to, subject, text)) return { sent: true, channel: "smtp" };
+    console.warn("[email] No provider configured — password reset link logged only");
+    console.info("[email] Password reset URL for", to, ":", resetUrl);
+    return { sent: false, channel: "none" };
+  } catch (err) {
+    console.error("[email] Failed to send password reset email:", err);
+    return { sent: false, channel: "none" };
+  }
+}
+
 /** Notify admin of a new form submission (contact, feedback, story). */
 export async function sendFormNotification(
   data: FormNotificationPayload

@@ -33,11 +33,11 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // ── Rate limit auth endpoints (sign-in / sign-up) ──────────────────────────
+  // ── Rate limit auth endpoints (sign-in / sign-up / password reset request) ──
   if (pathname.startsWith("/api/auth")) {
     if (
       req.method === "POST" &&
-      (pathname.includes("sign-in") || pathname.includes("sign-up"))
+      (pathname.includes("sign-in") || pathname.includes("sign-up") || pathname.includes("request-password-reset"))
     ) {
       const { success } = await checkAuthRateLimit(getClientIp(req));
       if (!success) {

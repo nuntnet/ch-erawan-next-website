@@ -299,6 +299,8 @@ export const BRANDS: BrandConfig[] = [
     logoPath: "/brands/gac.png",
     logoScale: 1,
     accentColor: "#E31E24",
+    navBgImage:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783778044/ch-erawan/cars/gac-aion-y-plus.png",
     hubPath: "/gac",
     subLines: GAC_SUB_LINES,
     featuredModels: [
@@ -323,6 +325,8 @@ export const BRANDS: BrandConfig[] = [
     logoPath: "/brands/lepas.svg",
     logoScale: 1,
     accentColor: "#0E8C7F",
+    navBgImage:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783779581/ch-erawan/brands/lepas-hero-leopard.jpg",
     hubPath: "/lepas",
     featuredModels: [
       { name: "L8", slug: "lepas-l8-2026" },

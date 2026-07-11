@@ -278,7 +278,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
       {/* BRAND LOGOS BAR */}
       <section className="bg-white border-b border-gray-100">
         <div className="container py-6">
-          <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2">
             {BRANDS.map((brand) => (
               <Link
                 key={brand.slug}

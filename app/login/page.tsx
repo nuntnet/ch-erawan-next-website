@@ -46,7 +46,7 @@ function LoginForm() {
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
           <CompanyLogo height={56} priority className="h-14 w-auto mb-3" />
-          <h1 className="text-xl font-bold text-[#131F3C]">Admin Panel</h1>
+          <h1 className="text-xl font-bold text-[#0F172A]">Admin Panel</h1>
           <p className="text-sm text-gray-500 mt-1">เข้าสู่ระบบเพื่อจัดการเว็บไซต์</p>
         </div>
 
@@ -87,7 +87,7 @@ function LoginForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#131F3C] hover:bg-[#1a2a50] text-white font-semibold h-11"
+              className="w-full bg-[#0F172A] hover:bg-[#1a2a50] text-white font-semibold h-11"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -110,7 +110,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F8F9FB] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" /></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#F8F9FB] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" /></div>}>
       <LoginForm />
     </Suspense>
   );

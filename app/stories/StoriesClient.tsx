@@ -101,7 +101,7 @@ export default function StoriesClient({ stories }: { stories: CustomerStory[] })
               <Label htmlFor="story">เรื่องราวของคุณ *</Label>
               <Textarea id="story" value={form.story} onChange={e => setForm(f => ({ ...f, story: e.target.value }))} placeholder="เล่าประสบการณ์การซื้อรถหรือใช้บริการที่ ช.เอราวัณ..." rows={5} className="mt-1" />
             </div>
-            <Button type="submit" disabled={loading} className="bg-[#0F172A] text-white hover:bg-[#0B1120]">
+            <Button type="submit" disabled={loading} className="bg-[#0F172A] text-white hover:bg-[#1E293B]">
               {loading ? "กำลังส่ง..." : "ส่งเรื่องราว"}
             </Button>
           </form>

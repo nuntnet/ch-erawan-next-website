@@ -10,7 +10,7 @@ export default function PrivacyCCTV() {
   return (
     <div className="min-h-screen bg-white pt-[68px]">
       {/* Header */}
-      <div className="bg-[#131F3C]">
+      <div className="bg-[#0F172A]">
         <div className="container py-12">
           <p className="text-white/40 text-sm font-medium tracking-wider uppercase mb-2">Legal</p>
           <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">นโยบายคุ้มครองข้อมูลส่วนบุคคลสำหรับ CCTV</h1>
@@ -76,11 +76,11 @@ export default function PrivacyCCTV() {
             <div className="bg-gray-50 rounded-xl p-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="font-semibold text-[#131F3C] mb-2">ระยะเวลาทั่วไป</p>
+                  <p className="font-semibold text-[#0F172A] mb-2">ระยะเวลาทั่วไป</p>
                   <p>บันทึกภาพจะถูกเก็บไว้ <strong>ไม่เกิน 30 วัน</strong> นับจากวันที่บันทึก จากนั้นจะถูกลบทับโดยอัตโนมัติ</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-[#131F3C] mb-2">กรณีพิเศษ</p>
+                  <p className="font-semibold text-[#0F172A] mb-2">กรณีพิเศษ</p>
                   <p>หากมีเหตุการณ์หรือข้อพิพาทที่ต้องสืบสวน บริษัทอาจเก็บภาพไว้นานกว่านี้ตามความจำเป็นทางกฎหมาย</p>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default function PrivacyCCTV() {
 function CCTVSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="text-lg font-bold text-[#131F3C] mb-3 pb-2 border-b border-gray-100">{title}</h2>
+      <h2 className="text-lg font-bold text-[#0F172A] mb-3 pb-2 border-b border-gray-100">{title}</h2>
       <div className="text-sm text-[#4B5563] space-y-2 leading-relaxed">{children}</div>
     </section>
   );

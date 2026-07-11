@@ -103,7 +103,7 @@ export default function AdminBlogPage() {
     <div className="p-6 space-y-5">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#131F3C]">บทความ</h1>
+          <h1 className="text-2xl font-bold text-[#0F172A]">บทความ</h1>
           <p className="text-sm text-gray-500 mt-0.5">จัดการบทความและข่าวสารทั้งหมด</p>
         </div>
         <button
@@ -111,7 +111,7 @@ export default function AdminBlogPage() {
             setEditingId(null);
             setFormOpen(true);
           }}
-          className="flex items-center gap-2 bg-[#131F3C] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors"
+          className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors"
         >
           <Plus className="w-4 h-4" />
           เขียนบทความ
@@ -127,13 +127,13 @@ export default function AdminBlogPage() {
             placeholder="ค้นหาบทความ..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); resetPage(); }}
-            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20 w-56"
+            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 w-56"
           />
         </div>
         <select
           value={categoryFilter}
           onChange={(e) => { setCategoryFilter(e.target.value); resetPage(); }}
-          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
         >
           <option value="all">ทุกหมวด</option>
           {Object.entries(CATEGORY_LABEL).map(([k, v]) => (
@@ -143,7 +143,7 @@ export default function AdminBlogPage() {
         <select
           value={publishedFilter}
           onChange={(e) => { setPublishedFilter(e.target.value); resetPage(); }}
-          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
         >
           <option value="all">ทั้งเผยแพร่และฉบับร่าง</option>
           <option value="published">เผยแพร่แล้ว</option>
@@ -163,7 +163,7 @@ export default function AdminBlogPage() {
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="py-16 flex justify-center">
-            <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
@@ -187,7 +187,7 @@ export default function AdminBlogPage() {
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-gray-300 shrink-0" />
-                      <Link href={`/blog/${post.slug}`} target="_blank" className="text-sm font-medium text-[#131F3C] hover:underline line-clamp-1">
+                      <Link href={`/blog/${post.slug}`} target="_blank" className="text-sm font-medium text-[#0F172A] hover:underline line-clamp-1">
                         {post.title}
                       </Link>
                     </div>
@@ -217,7 +217,7 @@ export default function AdminBlogPage() {
                           setEditingId(post.id);
                           setFormOpen(true);
                         }}
-                        className="p-2 text-gray-500 hover:text-[#131F3C] hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-2 text-gray-500 hover:text-[#0F172A] hover:bg-gray-100 rounded-lg transition-colors"
                         aria-label="แก้ไข"
                       >
                         <Pencil className="w-4 h-4" />

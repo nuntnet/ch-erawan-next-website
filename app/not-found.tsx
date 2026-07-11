@@ -27,7 +27,7 @@ export default function NotFound() {
           </div>
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#111B36] px-[18px] py-3 text-white font-semibold text-base shadow-sm hover:bg-[#1d2a4d] transition-colors min-h-[44px]"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#111B36] px-[18px] py-3 text-white font-semibold text-base shadow-sm hover:bg-[#1d2a4d] transition-colors min-h-[44px]"
           >
             <Home className="w-5 h-5" />
             กลับหน้าแรก

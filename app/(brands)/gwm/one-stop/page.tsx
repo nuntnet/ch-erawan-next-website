@@ -88,7 +88,7 @@ export default function GwmOneStopPage() {
         <BrandSubNav brand={brand} currentSection="one-stop" scrollPastHero />
 
         {/* Tagline */}
-        <section className="bg-[#0C1C3E] py-10">
+        <section className="bg-[#0F172A] py-10">
           <div className="container text-center">
             <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">
               One Stop Service GWM
@@ -135,7 +135,7 @@ export default function GwmOneStopPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {steps.map((s) => (
                 <div key={s.num} className="text-center">
-                  <div className="w-14 h-14 rounded-full bg-[#0C1C3E] text-white text-xl font-black flex items-center justify-center mx-auto mb-4">
+                  <div className="w-14 h-14 rounded-full bg-[#0F172A] text-white text-xl font-black flex items-center justify-center mx-auto mb-4">
                     {s.num}
                   </div>
                   <h3 className="font-semibold text-[#0F172A] mb-1">{s.title}</h3>
@@ -153,7 +153,7 @@ export default function GwmOneStopPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               {gwmBranches.map((b) => (
                 <div key={b.id} className="bg-white rounded-xl border border-gray-100 p-5 flex items-start gap-4 shadow-sm">
-                  <div className="w-10 h-10 rounded-full bg-[#0C1C3E] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-[#0F172A] flex items-center justify-center shrink-0">
                     <span className="text-white text-xs font-bold">GWM</span>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -170,7 +170,7 @@ export default function GwmOneStopPage() {
         )}
 
         {/* CTA */}
-        <section className="bg-[#0C1C3E] py-12">
+        <section className="bg-[#0F172A] py-12">
           <div className="container text-center">
             <h3 className="text-2xl font-bold text-white mb-3">เริ่มต้นง่ายๆ — นัดหมายออนไลน์</h3>
             <p className="text-white/60 mb-6">ทีมงานพร้อมดูแลคุณตั้งแต่ต้นจนจบ</p>

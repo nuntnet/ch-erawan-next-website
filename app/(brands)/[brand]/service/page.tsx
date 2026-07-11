@@ -100,7 +100,7 @@ export default async function BrandServicePage({ params }: PageProps) {
 
         {/* ── สาขา ── */}
         {brandBranches.length > 0 && (
-          <section className="py-14" style={{ backgroundColor: "#0C1C3E" }}>
+          <section className="py-14" style={{ backgroundColor: "#0F172A" }}>
             <div className="container">
               <div className="text-center mb-10">
                 <p

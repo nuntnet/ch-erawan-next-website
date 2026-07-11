@@ -444,7 +444,7 @@ function BookingForm() {
                       <a href={`tel:${branchContact.phone.replace(/[^0-9]/g, "")}`} className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
                         <Phone className="w-3.5 h-3.5" /> {branchContact.phone}
                       </a>
-                      <a href={branchContact.lineUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05B04C] transition-colors">
+                      <a href={branchContact.lineUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05a847] transition-colors">
                         <MessageCircle className="w-3.5 h-3.5" /> LINE
                       </a>
                     </div>

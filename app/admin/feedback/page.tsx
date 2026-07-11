@@ -73,7 +73,7 @@ export default function AdminFeedbackPage() {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-[#131F3C]">Feedback</h1>
+            <h1 className="text-2xl font-bold text-[#0F172A]">Feedback</h1>
             {newCount > 0 && (
               <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                 {newCount} ใหม่
@@ -100,7 +100,7 @@ export default function AdminFeedbackPage() {
             placeholder="ค้นหาชื่อ เบอร์ ข้อความ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20 w-64"
+            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 w-64"
           />
         </div>
         <select
@@ -126,7 +126,7 @@ export default function AdminFeedbackPage() {
       {/* List */}
       {loading ? (
         <div className="py-16 flex justify-center">
-          <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 flex flex-col items-center gap-3 text-gray-400 bg-white rounded-xl border border-gray-100">
@@ -151,7 +151,7 @@ export default function AdminFeedbackPage() {
                   {/* Main info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="font-semibold text-sm text-[#131F3C]">{item.name}</span>
+                      <span className="font-semibold text-sm text-[#0F172A]">{item.name}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[item.type] ?? "bg-gray-100 text-gray-600"}`}>
                         {item.type}
                       </span>

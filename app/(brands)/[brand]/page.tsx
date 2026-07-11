@@ -106,7 +106,7 @@ export default async function BrandHubPage({ params }: PageProps) {
             <div className="mt-10 flex items-center justify-between bg-gray-50 rounded-2xl px-6 py-4 border border-gray-100">
               <div>
                 <p className="text-sm font-semibold text-[#0F172A]">ติดตาม {brand.displayNameTh}</p>
-                <p className="text-xs text-gray-400 mt-0.5">ข่าวสาร โปรโมชั่น และ content ล่าสุด</p>
+                <p className="text-xs text-gray-400 mt-0.5">ข่าวสาร โปรโมชั่น และคอนเทนต์ล่าสุด</p>
               </div>
               <BrandSocialLinks links={socialLinks} brand={brand} variant="light" />
             </div>

@@ -50,7 +50,7 @@ export default function AdminStories() {
   return (
     <div className="p-6 space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#131F3C]">รีวิวลูกค้า</h1>
+        <h1 className="text-2xl font-bold text-[#0F172A]">รีวิวลูกค้า</h1>
         <p className="text-sm text-gray-500 mt-0.5">ตรวจสอบและอนุมัติรีวิวจากลูกค้า</p>
       </div>
 
@@ -62,7 +62,7 @@ export default function AdminStories() {
             onClick={() => setActiveTab(tab.value)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.value
-                ? "bg-white text-[#131F3C] shadow-sm"
+                ? "bg-white text-[#0F172A] shadow-sm"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -74,7 +74,7 @@ export default function AdminStories() {
       {/* Cards */}
       {loading ? (
         <div className="py-16 flex justify-center">
-          <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
         </div>
       ) : stories.length === 0 ? (
         <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
@@ -87,7 +87,7 @@ export default function AdminStories() {
             <div key={story.id} className="bg-white rounded-xl border border-gray-100 p-5 space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="font-semibold text-sm text-[#131F3C]">{story.customerName}</p>
+                  <p className="font-semibold text-sm text-[#0F172A]">{story.customerName}</p>
                   <p className="text-xs text-gray-400 mt-0.5">{story.carModel || "—"}</p>
                 </div>
                 <div className="flex gap-0.5 shrink-0">

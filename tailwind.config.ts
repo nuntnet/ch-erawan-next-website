@@ -30,6 +30,19 @@ const config: Config = {
         inter: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       colors: {
+        // Canonical brand tokens — use these instead of raw hex in new code.
+        // (Existing bg-[#0F172A] etc. were unified to these exact values.)
+        brand: {
+          navy: "#0F172A",        // primary dark — headers, bands, primary buttons
+          "navy-deep": "#0B1220", // darker tier — hero/about sections
+          "navy-hover": "#1E293B",
+          red: "#C8102E",         // strong CTA red (brand pages)
+          "red-hover": "#A00D25",
+          accent: "#DD5259",      // soft accent red (home, links, stars)
+          "accent-hover": "#c9454c",
+          line: "#06C755",        // LINE green
+          "line-hover": "#05a847",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

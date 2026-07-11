@@ -227,8 +227,8 @@ export default function Navbar({
                     id={`nav-trigger-${item.label}`}
                     className={`flex items-center gap-1 px-3.5 py-2 text-[13px] font-medium transition-all whitespace-nowrap relative ${
                       isActive(item.href)
-                        ? "text-[#131F3C] font-semibold"
-                        : "text-[#4A5568] hover:text-[#131F3C]"
+                        ? "text-[#0F172A] font-semibold"
+                        : "text-[#4A5568] hover:text-[#0F172A]"
                     }`}
                     aria-expanded={megaMenuOpen}
                     aria-haspopup="true"
@@ -254,8 +254,8 @@ export default function Navbar({
                     id={`nav-trigger-${item.label}`}
                     className={`flex items-center gap-1 px-3.5 py-2 text-[13px] font-medium transition-all whitespace-nowrap relative ${
                       isActive(item.href)
-                        ? "text-[#131F3C] font-semibold"
-                        : "text-[#4A5568] hover:text-[#131F3C]"
+                        ? "text-[#0F172A] font-semibold"
+                        : "text-[#4A5568] hover:text-[#0F172A]"
                     }`}
                     aria-expanded={activeDropdown === item.label}
                     aria-haspopup="true"
@@ -280,8 +280,8 @@ export default function Navbar({
                     <span
                       className={`flex items-center gap-1 px-3.5 py-2 text-[13px] font-medium transition-all whitespace-nowrap relative ${
                         isActive(item.href)
-                          ? "text-[#131F3C] font-semibold"
-                          : "text-[#4A5568] hover:text-[#131F3C]"
+                          ? "text-[#0F172A] font-semibold"
+                          : "text-[#4A5568] hover:text-[#0F172A]"
                       }`}
                     >
                       {item.label}
@@ -304,7 +304,7 @@ export default function Navbar({
                       <Link
                         key={child.label}
                         href={child.href}
-                        className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#131F3C] transition-colors font-medium"
+                        className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#0F172A] transition-colors font-medium"
                       >
                         {child.label}
                       </Link>
@@ -330,7 +330,7 @@ export default function Navbar({
             <a href="tel:034305500">
               <Button
                 size="sm"
-                className="bg-[#131F3C] hover:bg-[#1a2a50] text-white font-semibold px-5 rounded-lg text-[13px] h-9 shadow-sm gap-1.5"
+                className="bg-[#0F172A] hover:bg-[#1a2a50] text-white font-semibold px-5 rounded-lg text-[13px] h-9 shadow-sm gap-1.5"
               >
                 <Phone className="w-3.5 h-3.5" />
                 034-305-500
@@ -387,7 +387,7 @@ export default function Navbar({
                       onClick={() => setMobileBrandOpen((open) => !open)}
                       className={`flex w-full items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                         isActive(item.href)
-                          ? "text-[#131F3C] bg-gray-50 font-semibold"
+                          ? "text-[#0F172A] bg-gray-50 font-semibold"
                           : "text-gray-600 hover:bg-gray-50"
                       }`}
                       aria-expanded={mobileBrandOpen}
@@ -413,7 +413,7 @@ export default function Navbar({
                       onClick={() => setMobileAboutOpen((open) => !open)}
                       className={`flex w-full items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                         isActive(item.href)
-                          ? "text-[#131F3C] bg-gray-50 font-semibold"
+                          ? "text-[#0F172A] bg-gray-50 font-semibold"
                           : "text-gray-600 hover:bg-gray-50"
                       }`}
                       aria-expanded={mobileAboutOpen}
@@ -431,7 +431,7 @@ export default function Navbar({
                           <Link
                             key={child.label}
                             href={child.href}
-                            className="block px-4 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-gray-50 hover:text-[#131F3C]"
+                            className="block px-4 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-gray-50 hover:text-[#0F172A]"
                           >
                             {child.label}
                           </Link>
@@ -444,7 +444,7 @@ export default function Navbar({
                     href={item.href}
                     className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                       isActive(item.href)
-                        ? "text-[#131F3C] bg-gray-50 font-semibold"
+                        ? "text-[#0F172A] bg-gray-50 font-semibold"
                         : "text-gray-600 hover:bg-gray-50"
                     }`}
                   >
@@ -455,7 +455,7 @@ export default function Navbar({
             ))}
             <div className="pt-4 border-t border-gray-100">
               <a href="tel:034305500">
-                <Button className="w-full bg-[#131F3C] hover:bg-[#1a2a50] text-white font-semibold h-11 gap-2">
+                <Button className="w-full bg-[#0F172A] hover:bg-[#1a2a50] text-white font-semibold h-11 gap-2">
                   <Phone className="w-4 h-4" />
                   034-305-500
                 </Button>

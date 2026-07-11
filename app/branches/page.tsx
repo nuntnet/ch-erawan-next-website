@@ -127,7 +127,7 @@ export default function ServiceLocator() {
       <div className="bg-[#0F172A] text-white py-14">
         <div className="container">
           <p className="text-[#0F172A] text-sm font-medium mb-2 tracking-wider uppercase">สาขาของเรา</p>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">ค้นหาสาขาและศูนย์บริการ</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">ค้นหาสาขาและศูนย์บริการ</h1>
           <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุ๊ป มี 7 สาขาครอบคลุมจังหวัดนครปฐมและสามพราน พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
         </div>
       </div>
@@ -286,7 +286,7 @@ export default function ServiceLocator() {
                       {/* Actions */}
                       <div className="grid grid-cols-3 gap-2">
                         <Link href={`/booking?branch=${selected.id}&type=test_drive`}>
-                          <Button size="sm" className="w-full bg-[#0F172A] hover:bg-[#0B1120] text-white text-xs">
+                          <Button size="sm" className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white text-xs">
                             <Car className="w-3.5 h-3.5 mr-1" />
                             ทดลองขับ
                           </Button>
@@ -328,7 +328,7 @@ export default function ServiceLocator() {
                       ))}
                       <div className="pt-3 border-t border-[#E2E8F0]">
                         <Link href={`/booking?branch=${selected.id}&type=service`}>
-                          <Button size="sm" className="w-full bg-[#0F172A] hover:bg-[#0B1120] text-white text-xs">
+                          <Button size="sm" className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white text-xs">
                             <Wrench className="w-3.5 h-3.5 mr-1.5" />
                             จองนัดหมายบริการ
                           </Button>

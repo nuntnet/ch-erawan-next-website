@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-white pt-[68px]">
       {/* Header */}
-      <div className="bg-[#131F3C]">
+      <div className="bg-[#0F172A]">
         <div className="container py-12">
           <p className="text-white/40 text-sm font-medium tracking-wider uppercase mb-2">Legal</p>
           <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">นโยบายคุ้มครองข้อมูลส่วนบุคคล</h1>
@@ -138,7 +138,7 @@ export default function PrivacyPolicy() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="text-lg font-bold text-[#131F3C] mb-3 pb-2 border-b border-gray-100">{title}</h2>
+      <h2 className="text-lg font-bold text-[#0F172A] mb-3 pb-2 border-b border-gray-100">{title}</h2>
       <div className="text-sm text-[#4B5563] space-y-2 leading-relaxed">{children}</div>
     </section>
   );
@@ -149,7 +149,7 @@ function PolicyItem({ num, title, desc }: { num: string; title: string; desc: st
     <div className="flex gap-3">
       <span className="text-[#DD5259] font-semibold shrink-0">{num}</span>
       <div>
-        <span className="font-semibold text-[#131F3C]">{title}: </span>
+        <span className="font-semibold text-[#0F172A]">{title}: </span>
         <span>{desc}</span>
       </div>
     </div>

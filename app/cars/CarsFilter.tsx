@@ -121,7 +121,7 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
           <Link key={car.id} href={`/cars/${car.slug || car.id}`}>
             <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
               {/* Image */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative">
+              <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative img-shimmer">
                 {car.imageUrls[0] ? (
                   <img
                     src={cldUrl(car.imageUrls[0])}
@@ -217,7 +217,20 @@ export default function CarsFilter({ cars }: { cars: Car[] }) {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-20 text-gray-400">ไม่พบรถที่ตรงกับเงื่อนไข</div>
+        <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
+          <div className="w-12 h-12 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center mx-auto mb-4">
+            <Search className="w-5 h-5 text-gray-400" />
+          </div>
+          <p className="font-semibold text-[#0F172A] mb-1">ไม่พบรถที่ตรงกับเงื่อนไข</p>
+          <p className="text-sm text-gray-500 mb-5">ลองปรับตัวกรอง หรือดูรถทั้งหมดอีกครั้ง</p>
+          <button
+            type="button"
+            onClick={() => { setSelectedBrand("ทั้งหมด"); setSelectedType("all"); setSelectedCondition("all"); setSearch(""); }}
+            className="inline-flex items-center gap-2 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+          >
+            ล้างตัวกรองทั้งหมด
+          </button>
+        </div>
       )}
     </div>
   );

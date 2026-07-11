@@ -78,7 +78,7 @@ export default function BrandSubNav({ brand, scrollPastHero }: BrandSubNavProps)
       <div ref={sentinelRef} className="h-0 w-full" aria-hidden />
       <div
         ref={navRef}
-        className="sticky top-[68px] z-30 bg-[#0C1C3E]/95 backdrop-blur-sm border-b border-white/10"
+        className="sticky top-[68px] z-30 bg-[#0F172A]/95 backdrop-blur-sm border-b border-white/10"
       >
       <div className="container overflow-x-auto">
         <nav className="flex items-center gap-1 py-1 min-w-max">

@@ -163,7 +163,7 @@ export default function ContactPage() {
           </div>
           <Link
             href="/feedback"
-            className="shrink-0 inline-flex items-center gap-2 bg-[#DD5259] hover:bg-[#c0404a] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+            className="shrink-0 inline-flex items-center gap-2 bg-[#DD5259] hover:bg-[#c9454c] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
           >
             แนะนำ–ติชม →
           </Link>

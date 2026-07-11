@@ -87,7 +87,7 @@ export default async function GwmBodyRepairPage() {
         <BrandSubNav brand={brand} currentSection="body-repair" scrollPastHero />
 
         {/* Stats */}
-        <section className="bg-[#0C1C3E] py-10">
+        <section className="bg-[#0F172A] py-10">
           <div className="container">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
               {[
@@ -202,7 +202,7 @@ export default async function GwmBodyRepairPage() {
         </section>
 
         {/* นัดหมายเข้าซ่อม */}
-        <section className="bg-[#0C1C3E] py-12 lg:py-14">
+        <section className="bg-[#0F172A] py-12 lg:py-14">
           <div className="container max-w-2xl text-center">
             <p className="text-sm font-medium text-[#C8102E] uppercase tracking-wider mb-3">ติดต่อเรา</p>
             <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">
@@ -242,7 +242,7 @@ export default async function GwmBodyRepairPage() {
               <p className="text-sm text-gray-500 mt-2">เปรียบเทียบค่าใช้จ่ายระหว่างการเคลมประกันภัยและจ่ายเอง</p>
             </div>
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <div className="grid grid-cols-3 bg-[#0C1C3E] text-white text-sm font-semibold">
+              <div className="grid grid-cols-3 bg-[#0F172A] text-white text-sm font-semibold">
                 <div className="px-5 py-3 col-span-1">รายการ</div>
                 <div className="px-4 py-3 text-center border-l border-white/10">ประกันภัย</div>
                 <div className="px-4 py-3 text-center border-l border-white/10">จ่ายเอง</div>
@@ -290,7 +290,7 @@ export default async function GwmBodyRepairPage() {
         </Suspense>
 
         {/* CTA */}
-        <section className="bg-[#0C1C3E] py-12">
+        <section className="bg-[#0F172A] py-12">
           <div className="container text-center">
             <h3 className="text-2xl font-bold text-white mb-3">พร้อมให้บริการซ่อมสี/ตัวถัง</h3>
             <p className="text-white/60 mb-6">

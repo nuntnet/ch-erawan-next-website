@@ -107,10 +107,10 @@ export default function AdminSocialLinksPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#131F3C]">Social Links</h1>
+          <h1 className="text-2xl font-bold text-[#0F172A]">Social Links</h1>
           <p className="text-sm text-gray-500 mt-0.5">จัดการ social media ของแต่ละแบรนด์</p>
         </div>
-        <button onClick={openAdd} className="flex items-center gap-2 bg-[#131F3C] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors">
+        <button onClick={openAdd} className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors">
           <Plus className="w-4 h-4" /> เพิ่ม Link
         </button>
       </div>
@@ -120,7 +120,7 @@ export default function AdminSocialLinksPage() {
         {["all", ...BRANDS].map(b => (
           <button key={b} onClick={() => setBrandFilter(b)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-              brandFilter === b ? "bg-[#131F3C] text-white border-[#131F3C]" : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
+              brandFilter === b ? "bg-[#0F172A] text-white border-[#0F172A]" : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
             }`}>
             {b === "all" ? "ทุกแบรนด์" : b}
           </button>
@@ -128,7 +128,7 @@ export default function AdminSocialLinksPage() {
       </div>
 
       {loading ? (
-        <div className="py-12 flex justify-center"><div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" /></div>
+        <div className="py-12 flex justify-center"><div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" /></div>
       ) : (
         <div className="space-y-4">
           {BRANDS.filter(b => brandFilter === "all" || brandFilter === b).map(brand => {
@@ -158,7 +158,7 @@ export default function AdminSocialLinksPage() {
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
                         <Switch checked={item.isActive} disabled={busyId === item.id} onCheckedChange={v => toggle(item, v)} />
-                        <button onClick={() => openEdit(item)} className="p-1.5 text-gray-400 hover:text-[#131F3C] hover:bg-gray-100 rounded-lg transition-colors">
+                        <button onClick={() => openEdit(item)} className="p-1.5 text-gray-400 hover:text-[#0F172A] hover:bg-gray-100 rounded-lg transition-colors">
                           <Pencil className="w-3.5 h-3.5" />
                         </button>
                         <button onClick={() => setDeleting(item)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
@@ -179,7 +179,7 @@ export default function AdminSocialLinksPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-[#131F3C]">{editingId ? "แก้ไข" : "เพิ่ม"} Social Link</h2>
+              <h2 className="text-lg font-bold text-[#0F172A]">{editingId ? "แก้ไข" : "เพิ่ม"} Social Link</h2>
               <button onClick={() => setFormOpen(false)} className="p-1 rounded-lg hover:bg-gray-100">
                 <X className="w-5 h-5 text-gray-500" />
               </button>
@@ -205,7 +205,7 @@ export default function AdminSocialLinksPage() {
                 <label className="text-xs font-semibold text-gray-500 mb-1.5 block">URL *</label>
                 <input type="url" value={form.url} onChange={e => setForm(f => ({ ...f, url: e.target.value }))}
                   placeholder="https://www.facebook.com/..." autoFocus
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20" />
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20" />
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <Switch checked={form.isActive} onCheckedChange={v => setForm(f => ({ ...f, isActive: v }))} />
@@ -214,7 +214,7 @@ export default function AdminSocialLinksPage() {
             </div>
             <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
               <button onClick={() => setFormOpen(false)} className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 rounded-xl hover:bg-gray-100">ยกเลิก</button>
-              <button onClick={save} disabled={saving} className="px-5 py-2 text-sm font-medium bg-[#131F3C] text-white rounded-xl hover:bg-[#1a2a50] disabled:opacity-50 flex items-center gap-2">
+              <button onClick={save} disabled={saving} className="px-5 py-2 text-sm font-medium bg-[#0F172A] text-white rounded-xl hover:bg-[#1a2a50] disabled:opacity-50 flex items-center gap-2">
                 {saving && <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />}
                 <Check className="w-4 h-4" />
                 {editingId ? "บันทึก" : "เพิ่ม"}

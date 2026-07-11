@@ -100,7 +100,7 @@ function FeaturedModelLinks({
           <li key={model.slug}>
             <Link
               href={`/cars/${model.slug}`}
-              className="group/model flex items-center justify-between gap-2 rounded-md px-2 py-1.5 min-h-[32px] text-xs text-gray-500 hover:bg-[#131F3C]/5 hover:text-[#131F3C] transition-colors"
+              className="group/model flex items-center justify-between gap-2 rounded-md px-2 py-1.5 min-h-[32px] text-xs text-gray-500 hover:bg-[#0F172A]/5 hover:text-[#0F172A] transition-colors"
             >
               <span className="flex min-w-0 items-center gap-1.5 truncate">
                 <span className="truncate">{model.name}</span>
@@ -125,7 +125,7 @@ function FeaturedModelLinks({
       <Link
         href={brand.hubPath}
         className={cn(
-          "mt-2 flex items-center justify-between gap-2 rounded-md px-2 py-1.5 min-h-[32px] text-xs font-semibold text-[#131F3C] hover:bg-[#131F3C]/5 hover:text-[#DD5259] transition-colors",
+          "mt-2 flex items-center justify-between gap-2 rounded-md px-2 py-1.5 min-h-[32px] text-xs font-semibold text-[#0F172A] hover:bg-[#0F172A]/5 hover:text-[#DD5259] transition-colors",
           compact ? "" : "border border-gray-100/80 bg-white/60"
         )}
       >
@@ -163,7 +163,7 @@ function GwmSubLineLinks({
           <Link
             key={line.slug}
             href={getGwmLineHref(line.slug)}
-            className="inline-flex items-center gap-1.5 rounded-md border border-gray-100 hover:border-[#DD5259]/40 px-2 py-1 min-h-[32px] bg-gray-50/80 hover:bg-white transition-all text-xs font-medium text-gray-600 hover:text-[#131F3C]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-gray-100 hover:border-[#DD5259]/40 px-2 py-1 min-h-[32px] bg-gray-50/80 hover:bg-white transition-all text-xs font-medium text-gray-600 hover:text-[#0F172A]"
           >
             <BrandLogo
               src={line.logoPath}
@@ -324,7 +324,7 @@ export function BrandNavTile({
           />
         </motion.div>
 
-        <div className="font-semibold text-sm text-[#131F3C]">
+        <div className="font-semibold text-sm text-[#0F172A]">
           {brand.displayNameTh}
         </div>
         <div className="text-[11px] text-gray-400 font-medium tracking-wide">
@@ -490,7 +490,7 @@ export function BrandMegaMenuPanel({
   return (
     <div className="container py-8">
       <div className="mb-6">
-        <h3 className="text-lg font-bold text-[#131F3C]">
+        <h3 className="text-lg font-bold text-[#0F172A]">
           แบรนด์รถยนต์ที่ ช.เอราวัณ กรุ๊ป
         </h3>
         <p className="text-sm text-gray-400 mt-1">
@@ -508,13 +508,13 @@ export function BrandMegaMenuPanel({
         <div className="border-t border-gray-100 pt-5 flex items-center justify-between gap-4">
           <Link
             href="/cars"
-            className="inline-flex items-center min-h-[44px] py-2 text-sm text-[#131F3C] font-semibold hover:text-[#DD5259] transition-colors"
+            className="inline-flex items-center min-h-[44px] py-2 text-sm text-[#0F172A] font-semibold hover:text-[#DD5259] transition-colors"
           >
             ดูรถยนต์ทั้งหมด →
           </Link>
           <Link
             href="/secondhand"
-            className="inline-flex items-center min-h-[44px] py-2 text-sm text-gray-400 hover:text-[#131F3C] transition-colors"
+            className="inline-flex items-center min-h-[44px] py-2 text-sm text-gray-400 hover:text-[#0F172A] transition-colors"
           >
             รถยนต์มือสอง →
           </Link>
@@ -557,7 +557,7 @@ export function GwmSubLineRow({ compact = false }: { compact?: boolean }) {
       ))}
       <Link
         href={getBrandHref("gwm" as BrandSlug)}
-        className="inline-flex items-center px-3 py-2 min-h-[44px] text-xs font-medium text-[#131F3C] hover:text-[#DD5259]"
+        className="inline-flex items-center px-3 py-2 min-h-[44px] text-xs font-medium text-[#0F172A] hover:text-[#DD5259]"
       >
         GWM ทั้งหมด →
       </Link>
@@ -582,7 +582,7 @@ function MobileBrandTile({
       <div className="flex items-stretch min-h-[44px]">
         <Link
           href={brand.hubPath}
-          className="flex flex-1 items-center gap-2 px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#131F3C] min-h-[44px]"
+          className="flex flex-1 items-center gap-2 px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#0F172A] min-h-[44px]"
         >
           <BrandLogo
             src={brand.logoPath}
@@ -599,7 +599,7 @@ function MobileBrandTile({
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="px-3 border-l border-gray-100 text-gray-400 hover:text-[#131F3C] hover:bg-gray-50 min-w-[44px]"
+            className="px-3 border-l border-gray-100 text-gray-400 hover:text-[#0F172A] hover:bg-gray-50 min-w-[44px]"
             aria-expanded={expanded}
             aria-label={
               expanded
@@ -679,7 +679,7 @@ export function MobileBrandLinks({
       </div>
       <Link
         href="/cars"
-        className="block px-3 py-2.5 text-sm font-semibold text-[#131F3C] hover:text-[#DD5259] min-h-[44px]"
+        className="block px-3 py-2.5 text-sm font-semibold text-[#0F172A] hover:text-[#DD5259] min-h-[44px]"
       >
         ดูรถยนต์ทั้งหมด →
       </Link>

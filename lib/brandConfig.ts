@@ -298,6 +298,7 @@ export const BRANDS: BrandConfig[] = [
       "ตัวแทนจำหน่าย GAC อย่างเป็นทางการ ครบทั้ง AION, HYPTEC และ GAC MOTOR — รถยนต์ไฟฟ้าและ PHEV จากผู้ผลิตรถยนต์รายใหญ่ของจีน กำลังก่อสร้างโชว์รูมที่นครปฐม เปิดให้บริการตุลาคม 2569",
     logoPath: "/brands/gac.png",
     logoScale: 1,
+    logoOnDark: "native",
     accentColor: "#E31E24",
     navBgImage:
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783782707/ch-erawan/cars/gac-aion-y-plus.jpg",

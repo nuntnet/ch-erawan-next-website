@@ -10,7 +10,7 @@ export default function CookiePolicy() {
   return (
     <div className="min-h-screen bg-white pt-[68px]">
       {/* Header */}
-      <div className="bg-[#131F3C]">
+      <div className="bg-[#0F172A]">
         <div className="container py-12">
           <p className="text-white/40 text-sm font-medium tracking-wider uppercase mb-2">Legal</p>
           <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">นโยบายการใช้คุกกี้</h1>
@@ -44,7 +44,7 @@ export default function CookiePolicy() {
               <CookieType
                 name="คุกกี้ที่จำเป็น (Strictly Necessary Cookies)"
                 badge="จำเป็น"
-                badgeColor="bg-[#131F3C] text-white"
+                badgeColor="bg-[#0F172A] text-white"
                 canDisable={false}
                 examples={["Session ID", "ข้อมูลความปลอดภัย CSRF Token", "สถานะการล็อกอิน"]}
               >
@@ -96,9 +96,9 @@ export default function CookiePolicy() {
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="bg-gray-50">
-                    <th className="text-left p-3 font-semibold text-[#131F3C] border border-gray-200">บริการ</th>
-                    <th className="text-left p-3 font-semibold text-[#131F3C] border border-gray-200">วัตถุประสงค์</th>
-                    <th className="text-left p-3 font-semibold text-[#131F3C] border border-gray-200">นโยบายความเป็นส่วนตัว</th>
+                    <th className="text-left p-3 font-semibold text-[#0F172A] border border-gray-200">บริการ</th>
+                    <th className="text-left p-3 font-semibold text-[#0F172A] border border-gray-200">วัตถุประสงค์</th>
+                    <th className="text-left p-3 font-semibold text-[#0F172A] border border-gray-200">นโยบายความเป็นส่วนตัว</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -124,7 +124,7 @@ export default function CookiePolicy() {
 
             <div className="mt-4 space-y-4">
               <div className="bg-gray-50 rounded-xl p-5">
-                <h4 className="font-semibold text-[#131F3C] mb-2">ผ่านเบราว์เซอร์</h4>
+                <h4 className="font-semibold text-[#0F172A] mb-2">ผ่านเบราว์เซอร์</h4>
                 <p className="text-sm text-gray-600 mb-3">ท่านสามารถตั้งค่าเบราว์เซอร์เพื่อปฏิเสธหรือลบคุกกี้ได้</p>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   {[
@@ -134,7 +134,7 @@ export default function CookiePolicy() {
                     { name: "Microsoft Edge", path: "Settings → Privacy → Cookies" },
                   ].map((b) => (
                     <div key={b.name} className="bg-white rounded-lg p-3 border border-gray-100">
-                      <p className="font-medium text-[#131F3C]">{b.name}</p>
+                      <p className="font-medium text-[#0F172A]">{b.name}</p>
                       <p className="text-xs text-gray-500 mt-0.5">{b.path}</p>
                     </div>
                   ))}
@@ -154,11 +154,11 @@ export default function CookiePolicy() {
           <CookieSection title="5. ระยะเวลาการเก็บคุกกี้">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div className="bg-gray-50 rounded-xl p-4">
-                <p className="font-semibold text-[#131F3C] mb-1">Session Cookies</p>
+                <p className="font-semibold text-[#0F172A] mb-1">Session Cookies</p>
                 <p className="text-gray-600">ถูกลบโดยอัตโนมัติเมื่อท่านปิดเบราว์เซอร์</p>
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
-                <p className="font-semibold text-[#131F3C] mb-1">Persistent Cookies</p>
+                <p className="font-semibold text-[#0F172A] mb-1">Persistent Cookies</p>
                 <p className="text-gray-600">เก็บไว้ตามระยะเวลาที่กำหนด (ตั้งแต่ 30 วัน ถึง 2 ปี)</p>
               </div>
             </div>
@@ -190,7 +190,7 @@ export default function CookiePolicy() {
 function CookieSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="text-lg font-bold text-[#131F3C] mb-3 pb-2 border-b border-gray-100">{title}</h2>
+      <h2 className="text-lg font-bold text-[#0F172A] mb-3 pb-2 border-b border-gray-100">{title}</h2>
       <div className="text-sm text-[#4B5563] space-y-2 leading-relaxed">{children}</div>
     </section>
   );
@@ -205,7 +205,7 @@ function CookieType({
   return (
     <div className="border border-gray-100 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-2 flex-wrap">
-        <h3 className="font-semibold text-[#131F3C] text-sm">{name}</h3>
+        <h3 className="font-semibold text-[#0F172A] text-sm">{name}</h3>
         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badgeColor}`}>{badge}</span>
         <span className={`text-xs px-2 py-0.5 rounded-full ${canDisable ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
           {canDisable ? "ปิดได้" : "ปิดไม่ได้"}

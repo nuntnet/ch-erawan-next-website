@@ -131,7 +131,7 @@ export default async function BrandBodyRepairPage({ params }: PageProps) {
         <BrandSubNav brand={brand} currentSection="body-repair" scrollPastHero />
 
         {/* Stats */}
-        <section className="bg-[#0C1C3E] py-10">
+        <section className="bg-[#0F172A] py-10">
           <div className="container">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
               {[
@@ -265,7 +265,7 @@ export default async function BrandBodyRepairPage({ params }: PageProps) {
         </section>
 
         {/* นัดหมายเข้าซ่อม */}
-        <section className="bg-[#0C1C3E] py-12 lg:py-14">
+        <section className="bg-[#0F172A] py-12 lg:py-14">
           <div className="container max-w-2xl text-center">
             <p className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: accentColor }}>
               ติดต่อเรา
@@ -313,7 +313,7 @@ export default async function BrandBodyRepairPage({ params }: PageProps) {
               <p className="text-sm text-gray-500 mt-2">เปรียบเทียบค่าใช้จ่ายระหว่างการเคลมประกันภัยและจ่ายเอง</p>
             </div>
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <div className="grid grid-cols-3 bg-[#0C1C3E] text-white text-sm font-semibold">
+              <div className="grid grid-cols-3 bg-[#0F172A] text-white text-sm font-semibold">
                 <div className="px-5 py-3 col-span-1">รายการ</div>
                 <div className="px-4 py-3 text-center border-l border-white/10">ประกันภัย</div>
                 <div className="px-4 py-3 text-center border-l border-white/10">จ่ายเอง</div>
@@ -375,7 +375,7 @@ export default async function BrandBodyRepairPage({ params }: PageProps) {
         )}
 
         {/* CTA */}
-        <section className="bg-[#0C1C3E] py-12">
+        <section className="bg-[#0F172A] py-12">
           <div className="container text-center">
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"

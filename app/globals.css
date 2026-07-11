@@ -103,7 +103,7 @@
   }
 
   .btn-gradient-navy {
-    @apply bg-gradient-to-r from-[#131F3C] to-[#2E5EA8] text-white font-semibold;
+    @apply bg-gradient-to-r from-[#0F172A] to-[#2E5EA8] text-white font-semibold;
     @apply hover:from-[#0f1830] hover:to-[#264d8c] transition-all duration-300;
     @apply shadow-lg shadow-blue-900/25 hover:shadow-xl hover:shadow-blue-900/35;
   }
@@ -147,5 +147,24 @@
   @keyframes scaleIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
+  }
+}
+/* Lazy-image placeholder shimmer — pure CSS, sits under the image (later DOM
+   nodes paint above), so it's only visible until the photo arrives. */
+@layer utilities {
+  .img-shimmer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+    transform: translateX(-100%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .img-shimmer::before {
+      animation: imgShimmer 1.8s ease-in-out infinite;
+    }
+  }
+  @keyframes imgShimmer {
+    to { transform: translateX(100%); }
   }
 }

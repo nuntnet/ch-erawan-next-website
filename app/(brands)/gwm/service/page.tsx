@@ -27,8 +27,8 @@ const serviceCategories = [
   {
     id: "general",
     label: "บริการมาตรฐาน",
-    accent: "#0C1C3E",
-    bg: "from-[#0C1C3E] to-[#1a3a6b]",
+    accent: "#0F172A",
+    bg: "from-[#0F172A] to-[#1a3a6b]",
     services: [
       { icon: Wrench,       title: "ศูนย์บริการมาตรฐาน GWM",     desc: "ช่างผ่านการอบรมจาก GWM Motor Thailand ทุกคน" },
       { icon: ShieldCheck,  title: "เคลมประกัน / รับประกัน",      desc: "ดำเนินการเคลมทุกบริษัท ครอบคลุมการรับประกันโรงงาน" },
@@ -117,7 +117,7 @@ export default function GwmServicePage() {
         <BrandSubNav brand={brand} currentSection="service" scrollPastHero />
 
         {/* ── Stats ── */}
-        <section className="bg-[#0C1C3E] py-10">
+        <section className="bg-[#0F172A] py-10">
           <div className="container grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
             {[
               { num: "GWM", sub: "Certified", label: "ช่างผ่านการรับรอง" },
@@ -145,11 +145,11 @@ export default function GwmServicePage() {
             {customerExperience.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="relative bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:border-[#0C1C3E]/20 transition-all group overflow-hidden"
+                className="relative bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:border-[#0F172A]/20 transition-all group overflow-hidden"
               >
                 {/* Accent corner */}
-                <div className="absolute top-0 right-0 w-12 h-12 bg-[#0C1C3E]/5 rounded-bl-2xl group-hover:bg-[#0C1C3E]/10 transition-colors" />
-                <div className="w-10 h-10 rounded-xl bg-[#0C1C3E] flex items-center justify-center mb-3 shadow-md">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-[#0F172A]/5 rounded-bl-2xl group-hover:bg-[#0F172A]/10 transition-colors" />
+                <div className="w-10 h-10 rounded-xl bg-[#0F172A] flex items-center justify-center mb-3 shadow-md">
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="font-semibold text-[#0F172A] text-sm mb-1">{title}</h3>
@@ -206,7 +206,7 @@ export default function GwmServicePage() {
         </section>
 
         {/* ── สาขา ── */}
-        <section className="bg-[#0C1C3E] py-14">
+        <section className="bg-[#0F172A] py-14">
           <div className="container">
             <div className="text-center mb-10">
               <p className="text-sm font-medium text-[#C8102E] uppercase tracking-wider mb-2">ที่ตั้ง</p>
@@ -275,7 +275,7 @@ export default function GwmServicePage() {
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/booking?type=service&brand=GWM">
-              <Button className="bg-[#0C1C3E] hover:bg-[#162d5e] text-white px-6">
+              <Button className="bg-[#0F172A] hover:bg-[#1E293B] text-white px-6">
                 <Wrench className="w-4 h-4 mr-2" />
                 นัดบริการออนไลน์
               </Button>

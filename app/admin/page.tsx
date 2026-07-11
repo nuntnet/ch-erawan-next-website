@@ -70,7 +70,7 @@ function RevalidateButton() {
     <button
       onClick={handleRevalidate}
       disabled={loading}
-      className="inline-flex items-center gap-2 rounded-lg bg-[#131F3C] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1f2d52] disabled:cursor-not-allowed disabled:opacity-60"
+      className="inline-flex items-center gap-2 rounded-lg bg-[#0F172A] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1f2d52] disabled:cursor-not-allowed disabled:opacity-60"
     >
       <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
       {loading ? "กำลังรีเฟรช..." : "รีเฟรชเว็บไซต์"}
@@ -117,7 +117,7 @@ function StatCard({
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm text-gray-500">{label}</p>
-          <p className="text-3xl font-bold text-[#131F3C] mt-1">
+          <p className="text-3xl font-bold text-[#0F172A] mt-1">
             {loading ? (
               <span className="inline-block w-10 h-7 bg-gray-100 animate-pulse rounded" />
             ) : (
@@ -139,7 +139,7 @@ function MiniStat({ label, value, loading }: { label: string; value: number; loa
   return (
     <div className="rounded-lg bg-gray-50 px-3 py-2">
       <p className="text-[11px] text-gray-500">{label}</p>
-      <p className="text-lg font-semibold text-[#131F3C]">
+      <p className="text-lg font-semibold text-[#0F172A]">
         {loading ? <span className="inline-block w-6 h-5 bg-gray-200 animate-pulse rounded" /> : value}
       </p>
     </div>
@@ -150,7 +150,7 @@ function BarRow({
   label,
   value,
   max,
-  color = "bg-[#131F3C]",
+  color = "bg-[#0F172A]",
 }: {
   label: string;
   value: number;
@@ -162,7 +162,7 @@ function BarRow({
     <div className="space-y-1">
       <div className="flex items-center justify-between text-xs">
         <span className="text-gray-600 truncate pr-2">{label}</span>
-        <span className="font-medium text-[#131F3C] shrink-0">{value}</span>
+        <span className="font-medium text-[#0F172A] shrink-0">{value}</span>
       </div>
       <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
@@ -277,7 +277,7 @@ export default function AdminDashboard() {
     <div className="space-y-6 max-w-7xl">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-[#131F3C]">ภาพรวม</h1>
+          <h1 className="text-2xl font-bold text-[#0F172A]">ภาพรวม</h1>
           <p className="text-sm text-gray-500 mt-1">สรุปข้อมูลทั้งหมดของระบบ ch-erawan-next</p>
         </div>
         <RevalidateButton />
@@ -401,11 +401,11 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl border border-gray-100 p-5 lg:col-span-1">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="h-4 w-4 text-emerald-600" />
-            <h2 className="font-semibold text-[#131F3C]">กิจกรรม 7 วัน</h2>
+            <h2 className="font-semibold text-[#0F172A]">กิจกรรม 7 วัน</h2>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
             <div className="space-y-3">
@@ -423,12 +423,12 @@ export default function AdminDashboard() {
         {/* Cars by brand */}
         <div className="bg-white rounded-xl border border-gray-100 p-5 lg:col-span-1">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">รถตามแบรนด์</h2>
+            <h2 className="font-semibold text-[#0F172A]">รถตามแบรนด์</h2>
             <Link href="/admin/cars" className="text-xs text-blue-600 hover:underline">จัดการ →</Link>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
             <div className="space-y-3">
@@ -448,12 +448,12 @@ export default function AdminDashboard() {
         {/* Appointment breakdown */}
         <div className="bg-white rounded-xl border border-gray-100 p-5 lg:col-span-1">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">สถานะนัดหมาย</h2>
+            <h2 className="font-semibold text-[#0F172A]">สถานะนัดหมาย</h2>
             <Link href="/admin/appointments" className="text-xs text-blue-600 hover:underline">ดูทั้งหมด →</Link>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
             <div className="space-y-4">
@@ -484,12 +484,12 @@ export default function AdminDashboard() {
         {/* Blog categories */}
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">บทความตามหมวด</h2>
+            <h2 className="font-semibold text-[#0F172A]">บทความตามหมวด</h2>
             <Link href="/admin/blog" className="text-xs text-blue-600 hover:underline">จัดการ →</Link>
           </div>
           {loading ? (
             <div className="py-6 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
             <div className="space-y-2">
@@ -512,12 +512,12 @@ export default function AdminDashboard() {
         {/* Promotions by brand */}
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">โปรโมชั่นตามแบรนด์</h2>
+            <h2 className="font-semibold text-[#0F172A]">โปรโมชั่นตามแบรนด์</h2>
             <Link href="/admin/promotions" className="text-xs text-blue-600 hover:underline">จัดการ →</Link>
           </div>
           {loading ? (
             <div className="py-6 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
             <div className="space-y-2">
@@ -539,10 +539,10 @@ export default function AdminDashboard() {
 
         {/* Brand content & social */}
         <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <h2 className="font-semibold text-[#131F3C] mb-4">Brand Web & โซเชียล</h2>
+          <h2 className="font-semibold text-[#0F172A] mb-4">Brand Web & โซเชียล</h2>
           {loading ? (
             <div className="py-6 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
             <div className="space-y-3">
@@ -551,7 +551,7 @@ export default function AdminDashboard() {
                   <Wrench className="h-4 w-4" />
                   Service Sections
                 </div>
-                <span className="text-sm font-semibold text-[#131F3C]">
+                <span className="text-sm font-semibold text-[#0F172A]">
                   {brandContentStats.serviceSections.published}/{brandContentStats.serviceSections.total} เผยแพร่
                 </span>
               </Link>
@@ -560,7 +560,7 @@ export default function AdminDashboard() {
                   <Shield className="h-4 w-4" />
                   บริษัทประกัน
                 </div>
-                <span className="text-sm font-semibold text-[#131F3C]">
+                <span className="text-sm font-semibold text-[#0F172A]">
                   {brandContentStats.insurancePartners.active}/{brandContentStats.insurancePartners.total} เปิดใช้
                 </span>
               </Link>
@@ -569,7 +569,7 @@ export default function AdminDashboard() {
                   <Share2 className="h-4 w-4" />
                   Social Links
                 </div>
-                <span className="text-sm font-semibold text-[#131F3C]">
+                <span className="text-sm font-semibold text-[#0F172A]">
                   {brandContentStats.socialLinks.active}/{brandContentStats.socialLinks.total} เปิดใช้
                 </span>
               </Link>
@@ -580,7 +580,7 @@ export default function AdminDashboard() {
                     {topBranches.map(([branch, count]) => (
                       <div key={branch} className="flex justify-between text-xs">
                         <span className="text-gray-600 truncate pr-2">{branch}</span>
-                        <span className="font-medium text-[#131F3C]">{count}</span>
+                        <span className="font-medium text-[#0F172A]">{count}</span>
                       </div>
                     ))}
                   </div>
@@ -595,12 +595,12 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">นัดหมายล่าสุด</h2>
+            <h2 className="font-semibold text-[#0F172A]">นัดหมายล่าสุด</h2>
             <Link href="/admin/appointments" className="text-xs text-blue-600 hover:underline">ดูทั้งหมด →</Link>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : appointments.length === 0 ? (
             <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีนัดหมาย</p>
@@ -609,7 +609,7 @@ export default function AdminDashboard() {
               {appointments.slice(0, 5).map((apt) => (
                 <div key={apt.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-[#131F3C] truncate">{apt.customerName}</p>
+                    <p className="text-sm font-medium text-[#0F172A] truncate">{apt.customerName}</p>
                     <p className="text-xs text-gray-400 truncate">
                       {APPOINTMENT_TYPE_LABELS[apt.type]} · {apt.carModel || apt.branch} · {apt.customerPhone}
                     </p>
@@ -623,12 +623,12 @@ export default function AdminDashboard() {
 
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">รีวิวรอตรวจสอบ</h2>
+            <h2 className="font-semibold text-[#0F172A]">รีวิวรอตรวจสอบ</h2>
             <Link href="/admin/stories" className="text-xs text-blue-600 hover:underline">ดูทั้งหมด →</Link>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : storyStats.pending === 0 ? (
             <div className="flex items-center gap-2 py-4 justify-center">
@@ -640,7 +640,7 @@ export default function AdminDashboard() {
               {stories.filter((s) => s.status === "pending").slice(0, 5).map((story) => (
                 <div key={story.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-[#131F3C] truncate">{story.customerName}</p>
+                    <p className="text-sm font-medium text-[#0F172A] truncate">{story.customerName}</p>
                     <p className="text-xs text-gray-400 line-clamp-1">{story.story}</p>
                   </div>
                   <div className="flex gap-0.5 shrink-0">
@@ -656,12 +656,12 @@ export default function AdminDashboard() {
 
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">ข้อความติดต่อล่าสุด</h2>
+            <h2 className="font-semibold text-[#0F172A]">ข้อความติดต่อล่าสุด</h2>
             <Link href="/admin/contacts" className="text-xs text-blue-600 hover:underline">ดูทั้งหมด →</Link>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : contacts.length === 0 ? (
             <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อความ</p>
@@ -670,7 +670,7 @@ export default function AdminDashboard() {
               {contacts.slice(0, 5).map((contact) => (
                 <div key={contact.id} className="py-2 border-b border-gray-50 last:border-0">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-medium text-[#131F3C] truncate">{contact.name}</p>
+                    <p className="text-sm font-medium text-[#0F172A] truncate">{contact.name}</p>
                     <span className="text-[10px] text-gray-400 shrink-0">{contact.branch || "—"}</span>
                   </div>
                   <p className="text-xs text-gray-400 line-clamp-1 mt-0.5">{contact.message}</p>
@@ -682,12 +682,12 @@ export default function AdminDashboard() {
 
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-[#131F3C]">Feedback ใหม่</h2>
+            <h2 className="font-semibold text-[#0F172A]">Feedback ใหม่</h2>
             <Link href="/admin/feedback" className="text-xs text-blue-600 hover:underline">ดูทั้งหมด →</Link>
           </div>
           {loading ? (
             <div className="py-8 flex justify-center">
-              <div className="w-5 h-5 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : feedbackStats.newCount === 0 ? (
             <div className="flex items-center gap-2 py-4 justify-center">
@@ -699,7 +699,7 @@ export default function AdminDashboard() {
               {feedback.filter((f) => f.status === "ใหม่").slice(0, 5).map((item) => (
                 <div key={item.id} className="py-2 border-b border-gray-50 last:border-0">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-medium text-[#131F3C] truncate">{item.name}</p>
+                    <p className="text-sm font-medium text-[#0F172A] truncate">{item.name}</p>
                     <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-50 text-red-700 shrink-0">{item.type}</span>
                   </div>
                   <p className="text-xs text-gray-400 line-clamp-1 mt-0.5">

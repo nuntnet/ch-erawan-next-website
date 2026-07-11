@@ -95,7 +95,7 @@ export default function Insurance() {
         <Image src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/pages/insurance-hero-bg" alt="" fill className="object-cover opacity-15" />
         <div className="container relative z-10 py-14 lg:py-16">
           <p className="text-white/40 text-sm font-medium tracking-wider uppercase mb-3">Insurance</p>
-          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-3">ประกันภัยรถยนต์</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">ประกันภัยรถยนต์</h1>
           <p className="text-white/50 max-w-lg">เปรียบเทียบจากกว่า 14 บริษัทประกันชั้นนำ พร้อมรับสิทธิพิเศษเฉพาะลูกค้า ช.เอราวัณ</p>
         </div>
       </div>
@@ -111,9 +111,9 @@ export default function Insurance() {
             />
           </div>
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-[#0F172A] mb-8 leading-tight">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#0F172A] mb-8 leading-tight">
               ประกันภัยรถยนต์ บริการจาก<br />ช.เอราวัณ ดียังไง?
-            </h1>
+            </h2>
             <div className="space-y-5">
               {benefits.map((b, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -223,7 +223,7 @@ export default function Insurance() {
                   href="https://lin.ee/NLeKZy6"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-[#06C755] text-white px-6 py-3 rounded-xl hover:bg-[#05B04C] transition-colors"
+                  className="flex items-center gap-2 bg-[#06C755] text-white px-6 py-3 rounded-xl hover:bg-[#05a847] transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
                   มีข้อสงสัยสอบถามเลย

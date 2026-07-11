@@ -12,6 +12,7 @@ const BranchesMap = dynamic(() => import("@/components/BranchesMapEmbed"), {
 });
 import BrandLogo from "@/components/BrandLogo";
 import BrandHallCard from "@/components/BrandHallCard";
+import PromoFallbackCover from "@/components/PromoFallbackCover";
 import { BRAND_IMAGES } from "@/lib/brandImages";
 import { BRANDS } from "@/lib/brandConfig";
 import { cldUrl } from "@/lib/cloudinary";
@@ -133,7 +134,7 @@ function AwardSlideshow() {
           <button
             key={i}
             onClick={() => { go(i); resetTimer(); }}
-            className="flex items-center justify-center w-6 h-6"
+            className="flex items-center justify-center w-8 h-8 -m-1"
             aria-label={`สไลด์ ${i + 1}`}
           >
             <span className={`block rounded-full transition-all ${i === current ? "bg-white w-4 h-1.5" : "w-1.5 h-1.5 bg-white/40"}`} />
@@ -266,7 +267,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
           {heroSlides.map((slide, i) => (
             <button key={i} onClick={() => setHeroSlide(i)}
               aria-label={`สไลด์ ${slide.brand}`}
-              className="flex items-center justify-center w-8 h-8 -m-2"
+              className="flex items-center justify-center w-11 h-11 -m-1.5"
             >
               <span className={`block rounded-full transition-all duration-300 ${i === heroSlide ? "w-8 h-2 bg-[#DD5259]" : "w-2 h-2 bg-white/30 hover:bg-white/60"}`} />
             </button>
@@ -300,7 +301,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
       </section>
 
       {/* BRAND HALL */}
-      <section className="relative py-16 lg:py-28 bg-[#0B1220] overflow-hidden">
+      <section className="relative py-16 lg:py-24 bg-[#0B1220] overflow-hidden">
         <div
           className="pointer-events-none absolute inset-0 opacity-60"
           style={{
@@ -350,7 +351,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
             ) : filteredCars.map((car) => (
               <div key={car.id} className="group bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 overflow-hidden">
                 {/* Whole image area links to car detail */}
-                <Link href={`/cars/${car.slug || car.id}`} className="block relative aspect-[16/10] bg-gray-50 overflow-hidden">
+                <Link href={`/cars/${car.slug || car.id}`} className="block relative aspect-[16/10] bg-gray-50 overflow-hidden img-shimmer">
                   {car.imageUrls[0] ? (
                     <Image src={cldUrl(car.imageUrls[0], "quality")} alt={car.model} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                   ) : (
@@ -422,9 +423,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0C1C3E] via-[#1a2f52] to-[#334155]">
-                          <span className="text-white/10 text-5xl font-black select-none uppercase">{promo.brand}</span>
-                        </div>
+                        <PromoFallbackCover brand={promo.brand} title={promo.title} />
                       )}
                       <Badge className="absolute top-3 left-3 bg-[#0F172A]/85 text-white text-[10px] font-semibold px-2.5 py-1 border-0 backdrop-blur-sm">
                         {promo.brand}
@@ -458,7 +457,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
       )}
 
       {/* QUOTE SECTION */}
-      <section className="relative py-20 lg:py-28 bg-[#131F3C] overflow-hidden">
+      <section className="relative py-16 lg:py-24 bg-[#0F172A] overflow-hidden">
         <div className="absolute top-0 left-0 w-1 h-full bg-[#DD5259]" />
         <div className="container relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -603,7 +602,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               </p>
             </div>
             <Link href="/secondhand" className="shrink-0">
-              <Button className="bg-[#DD5259] hover:bg-[#c94048] text-white font-semibold px-8 py-3 text-base rounded-xl">
+              <Button className="bg-[#DD5259] hover:bg-[#c9454c] text-white font-semibold px-8 py-3 text-base rounded-xl">
                 ดูรถมือสอง <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -674,7 +673,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
             {recentPosts.map((post) => (
               <Link key={post.id} href={`/blog/${post.slug}`}>
                 <div className="group bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
-                  <div className="relative aspect-[16/10] bg-gray-50 overflow-hidden">
+                  <div className="relative aspect-[16/10] bg-gray-50 overflow-hidden img-shimmer">
                     {post.coverImageUrl ? (
                       <Image src={cldUrl(post.coverImageUrl, "quality")} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
                     ) : (
@@ -715,7 +714,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
       </section>
 
       {/* CTA BANNER */}
-      <section className="py-16 lg:py-20 bg-[#0F172A]">
+      <section className="py-16 lg:py-24 bg-[#0F172A]">
         <div className="container text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">ติดต่อเราได้เลย ยินดีให้บริการ</h2>
           <p className="text-white/65 max-w-lg mx-auto mb-8">ให้ทีมผู้เชี่ยวชาญของเราช่วยคุณค้นหารถยนต์ที่ตรงกับความต้องการและงบประมาณของคุณ</p>

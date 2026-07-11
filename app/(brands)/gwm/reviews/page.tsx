@@ -228,7 +228,7 @@ export default async function GwmReviewsPage() {
 
         {/* CTA to social channels */}
         {socialLinks.filter(s => s.platform === "YouTube" || s.platform === "TikTok").length > 0 && (
-          <section className="bg-[#0C1C3E] py-10">
+          <section className="bg-[#0F172A] py-10">
             <div className="container text-center">
               <p className="text-white/60 text-sm mb-4">ติดตามช่องของเราเพื่อรับชมรีวิวล่าสุด</p>
               <div className="flex flex-wrap gap-3 justify-center">

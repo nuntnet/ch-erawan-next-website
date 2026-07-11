@@ -92,7 +92,7 @@ export default function AdminAppointments() {
   return (
     <div className="p-6 space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#131F3C]">นัดหมาย</h1>
+        <h1 className="text-2xl font-bold text-[#0F172A]">นัดหมาย</h1>
         <p className="text-sm text-gray-500 mt-0.5">จัดการนัดหมายทดลองขับและบริการ</p>
       </div>
 
@@ -105,7 +105,7 @@ export default function AdminAppointments() {
             placeholder="ค้นหาชื่อ / เบอร์โทร..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
           />
         </div>
         <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none">
@@ -122,7 +122,7 @@ export default function AdminAppointments() {
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="py-16 flex justify-center">
-            <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
@@ -158,7 +158,7 @@ export default function AdminAppointments() {
                         onClick={() => setExpandedId(isExpanded ? null : apt.id)}
                       >
                         <div className="px-5 py-4 flex-1 min-w-0" style={{ width: "auto" }}>
-                          <p className="text-sm font-medium text-[#131F3C]">{apt.customerName}</p>
+                          <p className="text-sm font-medium text-[#0F172A]">{apt.customerName}</p>
                           <p className="text-xs text-gray-400">{apt.customerPhone}</p>
                         </div>
                         <div className="px-5 py-4 w-32 shrink-0">

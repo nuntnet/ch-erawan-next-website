@@ -158,14 +158,14 @@ export default function AdminPromotionsPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#131F3C]">โปรโมชั่น</h1>
+          <h1 className="text-2xl font-bold text-[#0F172A]">โปรโมชั่น</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             {promos.length} รายการทั้งหมด · {activeCount} ใช้งานอยู่
           </p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 bg-[#131F3C] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors"
+          className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors"
         >
           <Plus className="w-4 h-4" />
           เพิ่มโปรโมชั่น
@@ -181,13 +181,13 @@ export default function AdminPromotionsPage() {
             placeholder="ค้นหาโปรโมชั่น..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); resetPage(); }}
-            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20 w-64"
+            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 w-64"
           />
         </div>
         <select
           value={brandFilter}
           onChange={(e) => { setBrandFilter(e.target.value); resetPage(); }}
-          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
         >
           <option value="all">ทุกแบรนด์</option>
           {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
@@ -195,7 +195,7 @@ export default function AdminPromotionsPage() {
         <select
           value={activeFilter}
           onChange={(e) => { setActiveFilter(e.target.value); resetPage(); }}
-          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+          className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
         >
           <option value="all">ทั้งใช้งานและปิด</option>
           <option value="active">ใช้งานอยู่</option>
@@ -216,7 +216,7 @@ export default function AdminPromotionsPage() {
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="py-16 flex justify-center">
-            <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
@@ -240,7 +240,7 @@ export default function AdminPromotionsPage() {
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2">
                       <Tag className="w-4 h-4 text-gray-300 shrink-0" />
-                      <span className="text-sm font-medium text-[#131F3C] line-clamp-1">{p.title}</span>
+                      <span className="text-sm font-medium text-[#0F172A] line-clamp-1">{p.title}</span>
                     </div>
                     {p.linkUrl && (
                       <a href={p.linkUrl} target="_blank" rel="noopener noreferrer"
@@ -271,7 +271,7 @@ export default function AdminPromotionsPage() {
                   <td className="px-5 py-3.5">
                     <div className="flex items-center justify-end gap-1">
                       <button onClick={() => openEdit(p)}
-                        className="p-2 text-gray-400 hover:text-[#131F3C] hover:bg-gray-100 rounded-lg transition-colors">
+                        className="p-2 text-gray-400 hover:text-[#0F172A] hover:bg-gray-100 rounded-lg transition-colors">
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button onClick={() => setDeleting(p)}
@@ -301,7 +301,7 @@ export default function AdminPromotionsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-[#131F3C]">
+              <h2 className="text-lg font-bold text-[#0F172A]">
                 {editingId ? "แก้ไขโปรโมชั่น" : "เพิ่มโปรโมชั่นใหม่"}
               </h2>
               <button onClick={() => setFormOpen(false)} className="p-1 rounded-lg hover:bg-gray-100">
@@ -317,7 +317,7 @@ export default function AdminPromotionsPage() {
                   value={form.title}
                   onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                   placeholder="เช่น HAVAL H6 HEV ดาวน์ 0% ผ่อน 84 เดือน"
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
                 />
               </div>
               {/* Brand */}
@@ -327,7 +327,7 @@ export default function AdminPromotionsPage() {
                   <select
                     value={form.brand}
                     onChange={(e) => setForm((f) => ({ ...f, brand: e.target.value as typeof BRANDS[number] }))}
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20"
                   >
                     {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
                   </select>
@@ -348,13 +348,13 @@ export default function AdminPromotionsPage() {
                   <label className="text-xs font-semibold text-gray-600 mb-1.5 block">วันเริ่มต้น</label>
                   <input type="date" value={form.startDate}
                     onChange={(e) => setForm((f) => ({ ...f, startDate: e.target.value }))}
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20" />
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20" />
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-gray-600 mb-1.5 block">วันสิ้นสุด</label>
                   <input type="date" value={form.endDate}
                     onChange={(e) => setForm((f) => ({ ...f, endDate: e.target.value }))}
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20" />
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20" />
                 </div>
               </div>
               {/* Cover Image */}
@@ -363,7 +363,7 @@ export default function AdminPromotionsPage() {
                 <input type="text" value={form.coverImageUrl}
                   onChange={(e) => setForm((f) => ({ ...f, coverImageUrl: e.target.value }))}
                   placeholder="https://res.cloudinary.com/..."
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20" />
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20" />
               </div>
               {/* Link */}
               <div>
@@ -371,7 +371,7 @@ export default function AdminPromotionsPage() {
                 <input type="url" value={form.linkUrl}
                   onChange={(e) => setForm((f) => ({ ...f, linkUrl: e.target.value }))}
                   placeholder="https://..."
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20" />
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20" />
               </div>
             </div>
             <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
@@ -380,7 +380,7 @@ export default function AdminPromotionsPage() {
                 ยกเลิก
               </button>
               <button onClick={handleSave} disabled={saving}
-                className="px-5 py-2 text-sm font-medium bg-[#131F3C] text-white rounded-xl hover:bg-[#1a2a50] transition-colors disabled:opacity-50 flex items-center gap-2">
+                className="px-5 py-2 text-sm font-medium bg-[#0F172A] text-white rounded-xl hover:bg-[#1a2a50] transition-colors disabled:opacity-50 flex items-center gap-2">
                 {saving && <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />}
                 {editingId ? "บันทึก" : "เพิ่มโปรโมชั่น"}
               </button>

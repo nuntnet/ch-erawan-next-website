@@ -124,7 +124,7 @@ function FeedbackForm() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="tel:0944133555"
-              className="inline-flex items-center gap-2 bg-[#DD5259] hover:bg-[#c0404a] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 bg-[#DD5259] hover:bg-[#c9454c] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
             >
               <Phone className="w-4 h-4" />
               094-413-3555 (เร่งด่วน)

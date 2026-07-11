@@ -306,7 +306,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
               <p className="text-xs text-[#64748B] mb-5">ราคาเริ่มต้น (ยังไม่รวมค่าใช้จ่ายอื่น)</p>
               <div className="space-y-3">
                 <Link href={`/booking?type=test_drive&car=${car.model}`}>
-                  <Button className="w-full bg-[#0F172A] hover:bg-[#0B1120] text-white font-semibold">
+                  <Button className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white font-semibold">
                     <Calendar className="w-4 h-4 mr-2" />
                     นัดหมายทดลองขับ
                   </Button>

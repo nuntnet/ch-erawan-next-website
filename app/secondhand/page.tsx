@@ -54,7 +54,7 @@ export default function Secondhand() {
         <Image src="https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/pages/secondhand-hero-bg" alt="" fill className="object-cover opacity-20" />
         <div className="container relative z-10 py-14 lg:py-16">
           <p className="text-white/40 text-sm font-medium tracking-wider uppercase mb-3">Trade-In & Used Cars</p>
-          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-3">ซื้อ-ขาย รถมือสอง</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">ซื้อ-ขาย รถมือสอง</h1>
           <p className="text-white/50 max-w-lg">รับเทิร์นรถเก่าแลกซื้อคันใหม่ ราคายุติธรรม บริการครบวงจร</p>
         </div>
       </div>
@@ -70,9 +70,9 @@ export default function Secondhand() {
             />
           </div>
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-[#0F172A] mb-4 leading-tight">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#0F172A] mb-4 leading-tight">
               ซื้อ-ขาย รถมือสอง<br />รับเทิร์นรถเก่าแลกซื้อคันใหม่
-            </h1>
+            </h2>
             <p className="text-[#64748B] mb-6 leading-relaxed">
               ที่ ช.เอราวัณ เราเปิดรับ ซื้อ-ขาย-เทิร์น รถยนต์ทุกรุ่นและรถมือสอง เพื่อเพิ่มความ
               สะดวกสบายให้กับลูกค้าทุกท่าน

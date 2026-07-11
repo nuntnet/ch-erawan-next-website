@@ -51,7 +51,7 @@ export default function BranchesMap() {
   </defs>
   <g filter="url(#pin-shadow)">
     <!-- Dark navy teardrop pin body -->
-    <path d="M26 4 C14.95 4 6 12.95 6 24 C6 38 26 60 26 60 C26 60 46 38 46 24 C46 12.95 37.05 4 26 4 Z" fill="#131F3C"/>
+    <path d="M26 4 C14.95 4 6 12.95 6 24 C6 38 26 60 26 60 C26 60 46 38 46 24 C46 12.95 37.05 4 26 4 Z" fill="#0F172A"/>
     <!-- Subtle stroke -->
     <path d="M26 4 C14.95 4 6 12.95 6 24 C6 38 26 60 26 60 C26 60 46 38 46 24 C46 12.95 37.05 4 26 4 Z" fill="none" stroke="#0a1628" stroke-width="1"/>
     <!-- White circle for logo — slightly smaller padding -->

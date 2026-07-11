@@ -32,11 +32,12 @@ export async function GET(req: NextRequest) {
 
   try {
     const url = `${spsBaseUrl}/public_slots.php?branch_id=${branchId}&date=${date}&api_key=${spsApiKey}`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    // Slot availability changes with every booking, so this must never be cached.
+    const res = await fetch(url, { cache: "no-store" });
 
     if (!res.ok) {
       const text = await res.text();
-      console.error("[api/slots] SPS returned non-ok status", res.status, text.slice(0, 500));
+      console.error("[api/slots] SPS returned non-ok status", res.status, text.slice(0, 300));
       return NextResponse.json({ error: "SPS unavailable" }, { status: 502 });
     }
 
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest) {
       const data = JSON.parse(text);
       return NextResponse.json(data);
     } catch (parseErr) {
-      console.error("[api/slots] SPS response was not valid JSON", text.slice(0, 500));
+      console.error("[api/slots] SPS response was not valid JSON", text.slice(0, 300));
       throw parseErr;
     }
   } catch (err) {

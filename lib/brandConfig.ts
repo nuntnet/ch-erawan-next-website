@@ -106,7 +106,7 @@ export const GAC_SUB_LINES = [
   {
     slug: "aion",
     displayName: "AION",
-    displayNameTh: "เอียน",
+    displayNameTh: "ไอออน",
     logoPath: "/brands/aion.png",
     modelPrefixes: ["AION", "Aion"],
   },
@@ -316,7 +316,7 @@ export const BRANDS: BrandConfig[] = [
     slug: "lepas",
     notionBrand: "Lepas",
     displayName: "Lepas",
-    displayNameTh: "เลอพาส",
+    displayNameTh: "เลพาส",
     tagline: "Drive Your Elegance",
     descriptionTh:
       "แบรนด์รถยนต์พรีเมียมใหม่จาก Chery Group เตรียมเปิดตัวในไทยกลางปี 2569 ด้วยกลุ่มรถ L4, L6 และ L8 — เร็วๆ นี้ที่ ช.เอราวัณ นครปฐม",

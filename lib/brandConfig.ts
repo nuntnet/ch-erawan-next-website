@@ -123,7 +123,7 @@ export const GAC_SUB_LINES = [
     slug: "motor",
     displayName: "GAC MOTOR",
     displayNameTh: "จีเอซี มอเตอร์",
-    logoPath: "/brands/gac-motor.png",
+    logoPath: "/brands/gac-motor-v2.png",
     modelPrefixes: ["GAC M8", "M8", "GAC MOTOR"],
   },
 ] satisfies SubLine[];
@@ -298,7 +298,7 @@ export const BRANDS: BrandConfig[] = [
     tagline: "WHERE CRAFT MEETS TECHNOLOGY",
     descriptionTh:
       "ตัวแทนจำหน่าย GAC อย่างเป็นทางการ ครบทั้ง AION, HYPTEC และ GAC MOTOR — รถยนต์ไฟฟ้าและ PHEV จากผู้ผลิตรถยนต์รายใหญ่ของจีน กำลังก่อสร้างโชว์รูมที่นครปฐม เปิดให้บริการตุลาคม 2569",
-    logoPath: "/brands/gac.png",
+    logoPath: "/brands/gac-v2.png",
     logoScale: 1,
     logoOnDark: "native",
     accentColor: "#E31E24",

@@ -214,7 +214,7 @@ export default function Career() {
           <p className="text-[#C8102E] text-sm font-medium tracking-widest uppercase mb-3">Join Our Team</p>
           <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">มาเป็นส่วนหนึ่งของทีมเรา</h1>
           <p className="text-white/60 max-w-xl leading-relaxed mb-6">
-            ร่วมงานกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 6 แบรนด์ชั้นนำ
+            ร่วมงานกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 8 แบรนด์ชั้นนำ
             {`ใน 7 สาขา จ.นครปฐม ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี`}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-white/50">

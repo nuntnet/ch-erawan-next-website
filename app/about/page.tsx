@@ -100,7 +100,7 @@ const timeline: TimelineItem[] = [
   },
   {
     year: "ปัจจุบัน",
-    title: "6 แบรนด์ 7 สาขา",
+    title: "8 แบรนด์ 7 สาขา",
     desc: "ช.เอราวัณ กรุ๊ป เติบโตเป็นกลุ่มดีลเลอร์ชั้นนำในภาคตะวันตก ครอบคลุม ICE, Hybrid และ EV ครบทุกกลุ่ม ส่วนแบ่งตลาดรวม ~13.1%",
     milestone: "ผู้นำภาคตะวันตก",
     image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245672/ch-erawan/team/team-photo-2.jpg",
@@ -351,7 +351,7 @@ export default function About() {
                 <span className="text-white/80">ที่พร้อมดูแลรถคุณ&rdquo;</span>
               </h1>
               <p className="text-white/55 text-base lg:text-lg leading-relaxed max-w-xl">
-                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 6 แบรนด์ 7 สาขา
+                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 8 แบรนด์ 7 สาขา
                 ครอบคลุม ICE, Hybrid และ EV ด้วยทีมงานมืออาชีพกว่า 200 คน
               </p>
 
@@ -544,7 +544,7 @@ export default function About() {
             <div className="max-w-3xl mb-10">
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">แบรนด์รถยนต์ในเครือ</h2>
               <p className="text-gray-500 leading-relaxed">
-                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 6 แบรนด์ชั้นนำ
+                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 8 แบรนด์ชั้นนำ
                 ครอบคลุมทุกกลุ่มรถยนต์ตั้งแต่ ICE, Hybrid ไปจนถึง EV เต็มรูปแบบ
               </p>
             </div>
@@ -659,7 +659,7 @@ export default function About() {
                   </h3>
                   <p className="text-white/60 leading-relaxed mb-5">
                     {`ตระกูลจันทร์วาววาม ผู้บุกเบิกธุรกิจยานยนต์นครปฐมกว่า ${getYearsOfExperience()} ปี`}
-                    ด้วยเครือข่ายดีลเลอร์ครบ 6 แบรนด์ 7 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
+                    ด้วยเครือข่ายดีลเลอร์ครบ 8 แบรนด์ 7 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
                   </p>
                   <div className="flex flex-wrap gap-5">
                     {[

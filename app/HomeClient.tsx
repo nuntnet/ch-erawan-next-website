@@ -247,7 +247,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
 
               {/* Description */}
               <p className="text-white/55 text-sm lg:text-base leading-relaxed max-w-xl mb-6">
-                {`ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม กว่า ${getYearsOfExperience()} ปี — 6 แบรนด์ 7 สาขา`}
+                {`ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม กว่า ${getYearsOfExperience()} ปี — 8 แบรนด์ 7 สาขา`}
                 ครอบคลุม ICE, Hybrid และ EV ด้วยทีมงานมืออาชีพกว่า 200 คน
               </p>
 
@@ -319,7 +319,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               โลกแห่งแบรนด์ชั้นนำ
             </h2>
             <p className="text-white/50 text-sm lg:text-base leading-relaxed">
-              ตัวแทนจำหน่ายอย่างเป็นทางการ 6 แบรนด์ระดับโลก — สำรวจเอกลักษณ์ ปรัชญา
+              ตัวแทนจำหน่ายอย่างเป็นทางการ 8 แบรนด์ระดับโลก — สำรวจเอกลักษณ์ ปรัชญา
               และประสบการณ์ของแต่ละแบรนด์
             </p>
           </div>
@@ -561,7 +561,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               <p className="text-gray-500 leading-relaxed mb-6">
                 กลุ่มบริษัท ช.เอราวัณ ก่อตั้งขึ้นเมื่อปี พ.ศ. 2510 โดยคุณวิชัย จันทร์วาววาม
                 เริ่มต้นจากอู่ซ่อมรถเล็กๆ ในจังหวัดนครปฐม จนเติบโตเป็นกลุ่มธุรกิจยานยนต์ครบวงจร
-                ที่มีโชว์รูมและศูนย์บริการมากกว่า 15 แห่ง ครอบคลุม 6 แบรนด์ชั้นนำ
+                ที่มีโชว์รูมและศูนย์บริการมากกว่า 15 แห่ง ครอบคลุม 8 แบรนด์ชั้นนำ
               </p>
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-3">

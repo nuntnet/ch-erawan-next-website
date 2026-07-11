@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 // Env values can carry stray whitespace/newlines (e.g. a pasted Vercel env var
 // with a trailing \n). Trim and strip any trailing slash so URLs built by plain
-// string concat (robots.txt Sitemap:, sitemap <loc>) stay valid.
-function cleanBaseUrl(u: string): string {
+// string concat (robots.txt Sitemap:, sitemap <loc>, Better Auth's baseURL) stay valid.
+export function cleanBaseUrl(u: string): string {
   return u.trim().replace(/\/+$/, "");
 }
 

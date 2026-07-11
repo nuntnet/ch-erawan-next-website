@@ -308,7 +308,7 @@ export const BRANDS: BrandConfig[] = [
       { name: "HYPTEC HT", slug: "gac-hyptec-ht-2025" },
     ],
     showroomImageUrl:
-      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1783781107/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
     social: {
       // No LINE OA yet — shares the Nakhon Pathom front desk with Mitsubishi until GAC's own is created.
       line: "https://lin.ee/N7UjCTE",

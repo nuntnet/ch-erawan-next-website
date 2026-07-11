@@ -35,12 +35,21 @@ export async function GET(req: NextRequest) {
     const res = await fetch(url, { next: { revalidate: 60 } });
 
     if (!res.ok) {
+      const text = await res.text();
+      console.error("[api/slots] SPS returned non-ok status", res.status, text.slice(0, 500));
       return NextResponse.json({ error: "SPS unavailable" }, { status: 502 });
     }
 
-    const data = await res.json();
-    return NextResponse.json(data);
-  } catch {
+    const text = await res.text();
+    try {
+      const data = JSON.parse(text);
+      return NextResponse.json(data);
+    } catch (parseErr) {
+      console.error("[api/slots] SPS response was not valid JSON", text.slice(0, 500));
+      throw parseErr;
+    }
+  } catch (err) {
+    console.error("[api/slots] fetch to SPS failed", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: "Failed to fetch slots" }, { status: 502 });
   }
 }

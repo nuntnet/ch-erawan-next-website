@@ -16,9 +16,10 @@ export const BRAND_IMAGES: Record<string, string> = {
   // GWM — Tank 300 HEV (flagship model, official GWM TH CDN)
   GWM:
     "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245618/ch-erawan/brands/gwm-tank-300-hev.webp",
-  // Deepal — S07 BEV hero banner (official changan.co.th S3 CDN)
+  // Deepal — S07 driving shot (clean photography, no baked-in headline — the
+  // previous marketing banner cropped its "DEEPAL NEW S07" title mid-word in cards)
   Deepal:
-    "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245623/ch-erawan/brands/deepal-s07-hero.webp",
+    "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/ch-erawan/hero/deepal-hero-desktop",
   // Kia — EV9 dark promo banner (dark bg = good contrast with white KIA logo)
   Kia:
     "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245620/ch-erawan/brands/kia-ev9-promo-2026.jpg",

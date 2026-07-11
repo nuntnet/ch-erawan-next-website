@@ -71,7 +71,7 @@ interface CarFormProps {
 }
 
 const inputClass =
-  "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20";
+  "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20";
 const labelClass = "text-sm font-medium text-gray-700 mb-1 block";
 
 export default function CarForm({ open, onOpenChange, car, onSaved }: CarFormProps) {
@@ -148,7 +148,7 @@ export default function CarForm({ open, onOpenChange, car, onSaved }: CarFormPro
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-[#131F3C]">
+          <DialogTitle className="text-[#0F172A]">
             {car ? "แก้ไขรถยนต์" : "เพิ่มรถยนต์"}
           </DialogTitle>
           <DialogDescription className="sr-only">
@@ -277,7 +277,7 @@ export default function CarForm({ open, onOpenChange, car, onSaved }: CarFormPro
               <button
                 type="button"
                 onClick={() => setSpecRows([...specRows, { key: "", value: "" }])}
-                className="flex items-center gap-1.5 text-sm text-[#131F3C] font-medium hover:underline"
+                className="flex items-center gap-1.5 text-sm text-[#0F172A] font-medium hover:underline"
               >
                 <Plus className="w-4 h-4" /> เพิ่มสเปค
               </button>
@@ -332,7 +332,7 @@ export default function CarForm({ open, onOpenChange, car, onSaved }: CarFormPro
             type="button"
             onClick={handleSubmit}
             disabled={saving}
-            className="flex items-center gap-2 bg-[#131F3C] text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-[#1a2a50] transition-colors disabled:opacity-60"
+            className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-[#1a2a50] transition-colors disabled:opacity-60"
           >
             {saving && <Loader2 className="w-4 h-4 animate-spin" />}
             {car ? "บันทึก" : "เพิ่มรถ"}

@@ -80,7 +80,7 @@ export default function BlogList({ posts }: { posts: BlogPost[] }) {
         <Link href={`/blog/${featured.slug}`}>
           <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-10 hover:shadow-lg transition-all duration-300 cursor-pointer group">
             <div className="grid md:grid-cols-2">
-              <div className="aspect-video md:aspect-auto min-h-[280px] relative overflow-hidden bg-gradient-to-br from-[#0F172A] to-[#334155]">
+              <div className="aspect-video md:aspect-auto min-h-[280px] relative overflow-hidden bg-gradient-to-br from-[#0F172A] to-[#334155] img-shimmer">
                 {featured.coverImageUrl && (
                   <img
                     src={cldUrl(featured.coverImageUrl, "full")}
@@ -159,7 +159,13 @@ export default function BlogList({ posts }: { posts: BlogPost[] }) {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-20 text-gray-400">ไม่พบบทความที่ตรงกับการค้นหา</div>
+        <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
+          <div className="w-12 h-12 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center mx-auto mb-4">
+            <Search className="w-5 h-5 text-gray-400" />
+          </div>
+          <p className="font-semibold text-[#0F172A] mb-1">ไม่พบบทความที่ตรงกับการค้นหา</p>
+          <p className="text-sm text-gray-500">ลองใช้คำค้นอื่น หรือเลือกหมวดหมู่ทั้งหมด</p>
+        </div>
       )}
     </div>
   );

@@ -125,7 +125,7 @@ export default async function GwmPromotionsPage() {
                 <div key={monthLabel}>
                   {/* Month divider */}
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="flex items-center gap-2 bg-[#0C1C3E] text-white text-sm font-semibold px-4 py-2 rounded-full">
+                    <div className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-semibold px-4 py-2 rounded-full">
                       <Calendar className="w-4 h-4" />
                       {monthLabel}
                     </div>
@@ -165,7 +165,7 @@ export default async function GwmPromotionsPage() {
                             </div>
                           </div>
                         ) : (
-                          <div className="relative aspect-[16/9] bg-gradient-to-br from-[#0C1C3E] via-[#1a2f52] to-[#C8102E] flex items-center justify-center overflow-hidden">
+                          <div className="relative aspect-[16/9] bg-gradient-to-br from-[#0F172A] via-[#1a2f52] to-[#C8102E] flex items-center justify-center overflow-hidden">
                             <span className="text-white/10 text-7xl font-black select-none">GWM</span>
                             {/* Decorative circles */}
                             <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/5" />
@@ -230,7 +230,7 @@ export default async function GwmPromotionsPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-[#0C1C3E] py-12">
+        <section className="bg-[#0F172A] py-12">
           <div className="container text-center">
             <h3 className="text-xl font-bold text-white mb-2">ไม่พลาดทุกโปรโมชั่น</h3>
             <p className="text-white/50 text-sm mb-6 max-w-sm mx-auto">

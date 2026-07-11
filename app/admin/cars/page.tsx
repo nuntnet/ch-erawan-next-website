@@ -150,7 +150,7 @@ export default function AdminCarsPage() {
     <div className="p-6 space-y-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-[#131F3C]">รถยนต์</h1>
+          <h1 className="text-2xl font-bold text-[#0F172A]">รถยนต์</h1>
           <p className="text-sm text-gray-500 mt-0.5">{cars.length} รุ่น</p>
         </div>
         <div className="flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function AdminCarsPage() {
               </button>
               <button
                 onClick={() => router.push("/admin/cars/new")}
-                className="flex items-center gap-2 bg-[#131F3C] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors">
+                className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#1a2a50] transition-colors">
                 <Plus className="w-4 h-4" />
                 เพิ่มรถ
               </button>
@@ -194,7 +194,7 @@ export default function AdminCarsPage() {
               placeholder="ค้นหาชื่อ / รุ่น / แบรนด์..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20 w-64"
+              className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 w-64"
             />
           </div>
           <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)}
@@ -216,7 +216,7 @@ export default function AdminCarsPage() {
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="py-16 flex justify-center">
-            <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
@@ -264,7 +264,7 @@ export default function AdminCarsPage() {
                         ? <img src={car.imageUrls[0]} alt="" className="w-12 h-9 object-cover rounded-lg bg-gray-100 shrink-0" />
                         : <div className="w-12 h-9 bg-gray-100 rounded-lg flex items-center justify-center shrink-0"><CarIcon className="w-4 h-4 text-gray-300" /></div>}
                       <div>
-                        <p className="text-sm font-medium text-[#131F3C]">{car.model || car.name}</p>
+                        <p className="text-sm font-medium text-[#0F172A]">{car.model || car.name}</p>
                         <p className="text-xs text-gray-400">{car.brand} · {car.year}</p>
                       </div>
                     </div>
@@ -288,7 +288,7 @@ export default function AdminCarsPage() {
                         </div>
                       )}
                       <div>
-                        <Link href={`/cars/${car.slug || car.id}`} target="_blank" className="text-sm font-medium text-[#131F3C] hover:underline">
+                        <Link href={`/cars/${car.slug || car.id}`} target="_blank" className="text-sm font-medium text-[#0F172A] hover:underline">
                           {car.model || car.name}
                         </Link>
                         <p className="text-xs text-gray-400">{car.year} · {car.condition === "new" ? "รถใหม่" : "รถมือสอง"}</p>
@@ -298,7 +298,7 @@ export default function AdminCarsPage() {
                   <td className="px-5 py-4">
                     <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">{car.brand}</span>
                   </td>
-                  <td className="px-5 py-4 text-sm font-medium text-[#131F3C]">฿{car.priceMin.toLocaleString()}</td>
+                  <td className="px-5 py-4 text-sm font-medium text-[#0F172A]">฿{car.priceMin.toLocaleString()}</td>
                   <td className="px-3 py-4 text-center">
                     <Switch
                       checked={car.isActive}
@@ -331,7 +331,7 @@ export default function AdminCarsPage() {
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => router.push(`/admin/cars/${car.id}/edit`)}
-                        className="p-2 text-gray-500 hover:text-[#131F3C] hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-2 text-gray-500 hover:text-[#0F172A] hover:bg-gray-100 rounded-lg transition-colors"
                         aria-label="แก้ไข"
                       >
                         <Pencil className="w-4 h-4" />

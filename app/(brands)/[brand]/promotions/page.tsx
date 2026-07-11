@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BrandHero from "@/components/BrandHero";
 import BrandSubNav from "@/components/brands/BrandSubNav";
+import PromoFallbackCover from "@/components/PromoFallbackCover";
 import {
   BRAND_BY_SLUG,
   BRAND_SLUGS,
@@ -177,7 +178,7 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
                 <div key={monthLabel}>
                   {/* Month divider */}
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="flex items-center gap-2 bg-[#0C1C3E] text-white text-sm font-semibold px-4 py-2 rounded-full">
+                    <div className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-semibold px-4 py-2 rounded-full">
                       <Calendar className="w-4 h-4" />
                       {monthLabel}
                     </div>
@@ -217,13 +218,8 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
                             </div>
                           </div>
                         ) : (
-                          <div className="relative aspect-[16/9] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0C1C3E] via-[#1a2f52] to-[#333]">
-                            <span className="text-white/10 text-7xl font-black select-none uppercase">
-                              {brand.displayName}
-                            </span>
-                            {/* Decorative circles */}
-                            <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/5" />
-                            <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-white/5" />
+                          <div className="relative aspect-[16/9] overflow-hidden">
+                            <PromoFallbackCover brand={promo.brand} title={promo.title} />
                             {/* Badges */}
                             <div className="absolute top-3 left-3 flex gap-1.5">
                               {isNew(promo.startDate) && (
@@ -289,7 +285,7 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
         </section>
 
         {/* CTA LINE footer */}
-        <section className="bg-[#0C1C3E] py-12">
+        <section className="bg-[#0F172A] py-12">
           <div className="container text-center">
             <h3 className="text-xl font-bold text-white mb-2">ไม่พลาดทุกโปรโมชั่น</h3>
             <p className="text-white/50 text-sm mb-6 max-w-sm mx-auto">

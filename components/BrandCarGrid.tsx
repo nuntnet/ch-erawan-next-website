@@ -43,7 +43,7 @@ export default function BrandCarGrid({
         return (
           <Link key={car.id} href={href} className="group block h-full">
             <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer h-full flex flex-col">
-              <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative">
+              <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative img-shimmer">
                 {/* Native img avoids next/image hostname errors for dynamic Notion URLs */}
                 <img
                   src={imgSrc}

@@ -226,7 +226,7 @@ export default function Career() {
       </div>
 
       {/* ── Stats ── */}
-      <div className="bg-[#0C1C3E] py-8">
+      <div className="bg-[#0F172A] py-8">
         <div className="container grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
           {[
             { num: getYearsLabel(), label: "ปีประสบการณ์" },
@@ -255,8 +255,8 @@ export default function Career() {
             <div className="grid sm:grid-cols-2 gap-4">
               {benefits.map(({ icon: Icon, title, items }) => (
                 <div key={title} className="bg-[#F8FAFC] rounded-xl p-5 border border-gray-100">
-                  <div className="w-9 h-9 rounded-lg bg-[#0C1C3E]/10 flex items-center justify-center mb-3">
-                    <Icon className="w-4 h-4 text-[#0C1C3E]" />
+                  <div className="w-9 h-9 rounded-lg bg-[#0F172A]/10 flex items-center justify-center mb-3">
+                    <Icon className="w-4 h-4 text-[#0F172A]" />
                   </div>
                   <h3 className="font-semibold text-[#0F172A] text-sm mb-2">{title}</h3>
                   <ul className="space-y-1">
@@ -306,7 +306,7 @@ export default function Career() {
               </div>
               <h3 className="font-semibold text-[#0F172A] mb-1">LINE แผนก HR</h3>
               <p className="text-gray-400 text-xs mb-3">แชทสอบถามหรือส่ง Resume ได้เลย</p>
-              <a href="https://line.me/R/ti/p/@ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05B04C] transition-colors">
+              <a href="https://line.me/R/ti/p/@ads1599i" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#06C755] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#05a847] transition-colors">
                 <MessageCircle className="w-4 h-4" />
                 @ads1599i
               </a>
@@ -451,7 +451,7 @@ export default function Career() {
         )}
 
         {/* CTA */}
-        <div className="mt-14 bg-[#0C1C3E] rounded-2xl p-8 lg:p-10 text-center max-w-2xl mx-auto">
+        <div className="mt-14 bg-[#0F172A] rounded-2xl p-8 lg:p-10 text-center max-w-2xl mx-auto">
           <h3 className="text-xl font-bold text-white mb-2">ไม่เห็นตำแหน่งที่ใช่?</h3>
           <p className="text-white/60 text-sm mb-6">
             ส่ง Resume พร้อมระบุตำแหน่งที่สนใจมาให้เราได้เลย

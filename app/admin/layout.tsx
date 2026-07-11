@@ -48,7 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (isPending) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#F8F9FB]">
-        <div className="w-6 h-6 border-2 border-[#131F3C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -78,8 +78,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={item.href}
                 className={`flex items-center gap-2.5 h-10 px-3 rounded-lg font-medium text-sm transition-all ${
                   isActive
-                    ? "bg-[#131F3C] text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-[#131F3C]"
+                    ? "bg-[#0F172A] text-white"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-[#0F172A]"
                 }`}
               >
                 <item.icon className="h-4 w-4 shrink-0" />
@@ -96,12 +96,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2.5 w-full px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-left">
                 <Avatar className="h-7 w-7 shrink-0">
-                  <AvatarFallback className="bg-[#131F3C] text-white text-xs font-semibold">
+                  <AvatarFallback className="bg-[#0F172A] text-white text-xs font-semibold">
                     {user?.name?.charAt(0).toUpperCase() ?? "A"}
                   </AvatarFallback>
                 </Avatar>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-[#131F3C] truncate">{user?.name ?? "Admin"}</p>
+                  <p className="text-sm font-medium text-[#0F172A] truncate">{user?.name ?? "Admin"}</p>
                   <p className="text-xs text-gray-400 truncate">{user?.email ?? ""}</p>
                 </div>
               </button>

@@ -181,7 +181,7 @@ export default function ImageUploader({
           }}
           className={`flex flex-col items-center justify-center gap-1.5 border-2 border-dashed rounded-xl py-6 px-4 cursor-pointer transition-colors ${
             dragOver
-              ? "border-[#131F3C] bg-[#131F3C]/5"
+              ? "border-[#0F172A] bg-[#0F172A]/5"
               : "border-gray-200 hover:border-gray-300 bg-gray-50/50"
           }`}
         >

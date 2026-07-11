@@ -42,7 +42,7 @@ function ToolbarButton({
       onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       className={`p-1.5 rounded-md transition-colors ${
-        active ? "bg-[#131F3C] text-white" : "text-gray-600 hover:bg-gray-100"
+        active ? "bg-[#0F172A] text-white" : "text-gray-600 hover:bg-gray-100"
       }`}
     >
       {children}

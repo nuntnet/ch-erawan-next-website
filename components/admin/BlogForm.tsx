@@ -64,7 +64,7 @@ interface BlogFormProps {
 }
 
 const inputClass =
-  "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#131F3C]/20";
+  "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20";
 const labelClass = "text-sm font-medium text-gray-700 mb-1 block";
 
 export default function BlogForm({ open, onOpenChange, postId, onSaved }: BlogFormProps) {
@@ -160,14 +160,14 @@ export default function BlogForm({ open, onOpenChange, postId, onSaved }: BlogFo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-[#131F3C]">
+          <DialogTitle className="text-[#0F172A]">
             {postId ? "แก้ไขบทความ" : "เขียนบทความใหม่"}
           </DialogTitle>
         </DialogHeader>
 
         {loading ? (
           <div className="py-16 flex justify-center">
-            <Loader2 className="w-6 h-6 text-[#131F3C] animate-spin" />
+            <Loader2 className="w-6 h-6 text-[#0F172A] animate-spin" />
           </div>
         ) : (
           <div className="space-y-4">
@@ -256,7 +256,7 @@ export default function BlogForm({ open, onOpenChange, postId, onSaved }: BlogFo
             type="button"
             onClick={handleSubmit}
             disabled={saving || loading}
-            className="flex items-center gap-2 bg-[#131F3C] text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-[#1a2a50] transition-colors disabled:opacity-60"
+            className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-[#1a2a50] transition-colors disabled:opacity-60"
           >
             {saving && <Loader2 className="w-4 h-4 animate-spin" />}
             {postId ? "บันทึก" : "สร้างบทความ"}

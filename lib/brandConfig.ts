@@ -1,22 +1,36 @@
 import type { Car } from "@/lib/notion-types";
 import { BRAND_IMAGES } from "@/lib/brandImages";
 
-export type BrandSlug = "mazda" | "ford" | "mitsubishi" | "gwm" | "deepal" | "kia";
+export type BrandSlug =
+  | "mazda"
+  | "ford"
+  | "mitsubishi"
+  | "gwm"
+  | "deepal"
+  | "kia"
+  | "gac"
+  | "lepas";
 export type GwmLineSlug = "haval" | "ora" | "tank" | "poer";
+export type GacLineSlug = "aion" | "hyptec" | "motor";
+export type LineSlug = GwmLineSlug | GacLineSlug;
 
 export interface FeaturedModel {
   name: string;
   slug: string;
 }
 
-export interface GwmSubLine {
-  slug: GwmLineSlug;
+/** Generic multi-line sub-brand entry (GWM's HAVAL/ORA/TANK/POER, GAC's AION/HYPTEC/GAC MOTOR). */
+export interface SubLine {
+  slug: LineSlug;
   displayName: string;
   displayNameTh: string;
   logoPath: string;
   /** Match model name prefixes (case-insensitive) */
   modelPrefixes: string[];
 }
+
+/** @deprecated Use {@link SubLine} — kept as an alias so existing GWM call sites keep compiling. */
+export type GwmSubLine = SubLine;
 
 export interface BrandConfig {
   slug: BrandSlug;
@@ -40,7 +54,7 @@ export interface BrandConfig {
   navBgImage?: string;
   hubPath: string;
   featuredModels?: FeaturedModel[];
-  subLines?: GwmSubLine[];
+  subLines?: SubLine[];
   /**
    * Showroom/dealership photo for BrandHall card hover effect.
    * Must be a Cloudinary URL. Upload via /admin → แบรนด์ หรือ Cloudinary dashboard.
@@ -57,7 +71,7 @@ export interface BrandConfig {
   };
 }
 
-export const GWM_SUB_LINES: GwmSubLine[] = [
+export const GWM_SUB_LINES = [
   {
     slug: "haval",
     displayName: "HAVAL",
@@ -86,7 +100,31 @@ export const GWM_SUB_LINES: GwmSubLine[] = [
     logoPath: "/brands/poer.svg",
     modelPrefixes: ["POER", "Poer"],
   },
-];
+] satisfies SubLine[];
+
+export const GAC_SUB_LINES = [
+  {
+    slug: "aion",
+    displayName: "AION",
+    displayNameTh: "เอียน",
+    logoPath: "/brands/aion.svg",
+    modelPrefixes: ["AION", "Aion"],
+  },
+  {
+    slug: "hyptec",
+    displayName: "HYPTEC",
+    displayNameTh: "ไฮเทค",
+    logoPath: "/brands/hyptec.svg",
+    modelPrefixes: ["HYPTEC", "Hyptec"],
+  },
+  {
+    slug: "motor",
+    displayName: "GAC MOTOR",
+    displayNameTh: "จีเอซี มอเตอร์",
+    logoPath: "/brands/gac-motor.svg",
+    modelPrefixes: ["GAC M8", "M8", "GAC MOTOR"],
+  },
+] satisfies SubLine[];
 
 export const BRANDS: BrandConfig[] = [
   {
@@ -250,6 +288,51 @@ export const BRANDS: BrandConfig[] = [
       line: "https://lin.ee/XQiajzI",
     },
   },
+  {
+    slug: "gac",
+    notionBrand: "GAC",
+    displayName: "GAC",
+    displayNameTh: "จีเอซี",
+    tagline: "WHERE CRAFT MEETS TECHNOLOGY",
+    descriptionTh:
+      "ตัวแทนจำหน่าย GAC อย่างเป็นทางการ ครบทั้ง AION, HYPTEC และ GAC MOTOR — รถยนต์ไฟฟ้าและ PHEV จากผู้ผลิตรถยนต์รายใหญ่ของจีน กำลังก่อสร้างโชว์รูมที่นครปฐม เปิดให้บริการตุลาคม 2569",
+    logoPath: "/brands/gac.svg",
+    logoScale: 1,
+    accentColor: "#E31E24",
+    hubPath: "/gac",
+    subLines: GAC_SUB_LINES,
+    featuredModels: [
+      { name: "AION Y Plus", slug: "gac-aion-y-plus-2025" },
+      { name: "HYPTEC HT", slug: "gac-hyptec-ht-2025" },
+    ],
+    showroomImageUrl:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
+    social: {
+      // No LINE OA yet — shares the Nakhon Pathom front desk with Mitsubishi until GAC's own is created.
+      line: "https://lin.ee/N7UjCTE",
+    },
+  },
+  {
+    slug: "lepas",
+    notionBrand: "Lepas",
+    displayName: "Lepas",
+    displayNameTh: "เลอพาส",
+    tagline: "Drive Your Elegance",
+    descriptionTh:
+      "แบรนด์รถยนต์พรีเมียมใหม่จาก Chery Group เตรียมเปิดตัวในไทยกลางปี 2569 ด้วยกลุ่มรถ L4, L6 และ L8 — เร็วๆ นี้ที่ ช.เอราวัณ นครปฐม",
+    logoPath: "/brands/lepas.svg",
+    logoScale: 1,
+    accentColor: "#0E8C7F",
+    hubPath: "/lepas",
+    featuredModels: [
+      { name: "L8", slug: "lepas-l8-2026" },
+      { name: "L6", slug: "lepas-l6-2026" },
+    ],
+    social: {
+      // No LINE OA yet — shares the Nakhon Pathom front desk with Mitsubishi until Lepas's own is created.
+      line: "https://lin.ee/N7UjCTE",
+    },
+  },
 ];
 
 export const BRAND_BY_SLUG = Object.fromEntries(
@@ -305,11 +388,12 @@ export function legacyBrandQueryToPath(brand: string): string | null {
   return null;
 }
 
-export function matchCarToGwmLine(car: Car, line: GwmLineSlug): boolean {
-  if (car.brand !== "GWM") return false;
-  const config = GWM_LINE_BY_SLUG[line];
+export function matchCarToLine(car: Car, brand: BrandConfig, line: SubLine): boolean {
+  if (car.brand !== brand.notionBrand) return false;
   const model = car.model.toUpperCase();
-  return config.modelPrefixes.some((prefix) =>
-    model.startsWith(prefix.toUpperCase())
-  );
+  return line.modelPrefixes.some((prefix) => model.startsWith(prefix.toUpperCase()));
+}
+
+export function matchCarToGwmLine(car: Car, line: GwmLineSlug): boolean {
+  return matchCarToLine(car, BRAND_BY_SLUG.gwm, GWM_LINE_BY_SLUG[line]);
 }

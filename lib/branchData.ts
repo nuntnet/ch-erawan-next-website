@@ -12,7 +12,7 @@ export interface BranchContact {
 
 export interface Branch {
   id: string;
-  brand: "Mazda" | "Deepal" | "Ford" | "Mitsubishi" | "GWM" | "Kia" | "Nissan";
+  brand: "Mazda" | "Deepal" | "Ford" | "Mitsubishi" | "GWM" | "Kia" | "Nissan" | "GAC" | "Lepas";
   name: string;
   companyName: string;
   shortName: string;
@@ -32,6 +32,8 @@ export interface Branch {
   color: string;
   directions: string[];
   contacts: BranchContact[];
+  /** Set when the branch is announced but not yet operating (e.g. under construction). */
+  openingDate?: string;
 }
 
 export const branches: Branch[] = [
@@ -309,6 +311,84 @@ export const branches: Branch[] = [
       { department: "ฝ่ายขาย", phone: "094-413-3555" },
       { department: "ฝ่ายบริการ", phone: "086-316-0100" },
     ],
+  },
+  {
+    id: "gac-nakhonpathom",
+    brand: "GAC",
+    name: "GAC ช.เอราวัณ นครปฐม",
+    companyName: "บริษัท ช.เอราวัณ เนกซ์ จำกัด",
+    shortName: "GAC นครปฐม",
+    isHQ: false,
+    address: "155 หมู่ 5 ต.ลำพยา อ.เมือง จ.นครปฐม 73000",
+    phone: "034-300-333",
+    fax: "034-300-390",
+    lineId: "@mitsuch.erawan",
+    lineUrl: "https://lin.ee/N7UjCTE",
+    hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
+    services: [
+      "ขายรถยนต์ใหม่ GAC (AION, HYPTEC, GAC MOTOR)",
+      "ศูนย์บริการมาตรฐาน GAC",
+      "Body & Paint (ใช้ร่วมกับ Mitsubishi นครปฐม)",
+      "EV Charging Station",
+      "ประกันภัยรถยนต์",
+    ],
+    mapUrl: "https://maps.app.goo.gl/nWnAMQXmwJnrntL97",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.5!2d100.07!3d13.81!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ4JzM2LjAiTiAxMDDCsDA0JzEyLjAiRQ!5e0!3m2!1sth!2sth!4v1",
+    graphicMapUrl:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245631/ch-erawan/branch-maps/branch-map-ford-omnoi.png",
+    lat: 13.804027,
+    lng: 100.015492,
+    color: "bg-red-600",
+    directions: [
+      "จากกรุงเทพฯ ใช้ถนนเพชรเกษม มุ่งหน้าจังหวัดนครปฐม",
+      "บริเวณ ต.ลำพยา อ.เมือง จ.นครปฐม (ที่ตั้งเดียวกับโชว์รูม Mitsubishi นครปฐม)",
+      "โชว์รูมอยู่ระหว่างก่อสร้าง กำหนดเปิดตุลาคม 2569",
+    ],
+    contacts: [
+      { department: "ฝ่ายขาย", phone: "094-413-3555" },
+      { department: "ฝ่ายบริการ", phone: "086-316-0100" },
+    ],
+    openingDate: "ตุลาคม 2569",
+  },
+  {
+    id: "lepas-nakhonpathom",
+    brand: "Lepas",
+    name: "Lepas ช.เอราวัณ นครปฐม",
+    companyName: "บริษัท ช.เอราวัณ เนกซ์ จำกัด",
+    shortName: "Lepas นครปฐม",
+    isHQ: false,
+    address: "155 หมู่ 5 ต.ลำพยา อ.เมือง จ.นครปฐม 73000",
+    phone: "034-300-333",
+    fax: "034-300-390",
+    lineId: "@mitsuch.erawan",
+    lineUrl: "https://lin.ee/N7UjCTE",
+    hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
+    services: [
+      "ขายรถยนต์ใหม่ Lepas (L4, L6, L8)",
+      "ศูนย์บริการมาตรฐาน Lepas",
+      "Body & Paint (ใช้ร่วมกับ Mitsubishi นครปฐม)",
+      "EV Charging Station",
+      "ประกันภัยรถยนต์",
+    ],
+    mapUrl: "https://maps.app.goo.gl/nWnAMQXmwJnrntL97",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.5!2d100.07!3d13.81!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ4JzM2LjAiTiAxMDDCsDA0JzEyLjAiRQ!5e0!3m2!1sth!2sth!4v1",
+    graphicMapUrl:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245631/ch-erawan/branch-maps/branch-map-ford-omnoi.png",
+    lat: 13.804027,
+    lng: 100.015492,
+    color: "bg-teal-600",
+    directions: [
+      "จากกรุงเทพฯ ใช้ถนนเพชรเกษม มุ่งหน้าจังหวัดนครปฐม",
+      "บริเวณ ต.ลำพยา อ.เมือง จ.นครปฐม (ที่ตั้งเดียวกับโชว์รูม Mitsubishi นครปฐม)",
+      "โชว์รูมอยู่ระหว่างก่อสร้าง กำหนดเปิดตุลาคม 2569",
+    ],
+    contacts: [
+      { department: "ฝ่ายขาย", phone: "094-413-3555" },
+      { department: "ฝ่ายบริการ", phone: "086-316-0100" },
+    ],
+    openingDate: "ตุลาคม 2569",
   },
 ];
 

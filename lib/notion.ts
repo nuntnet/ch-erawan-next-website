@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { Client } from "@notionhq/client";
+import { Client, APIErrorCode, isNotionClientError } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import { markdownToBlocks as martianMarkdownToBlocks } from "@tryfabric/martian";
 import type {
@@ -19,7 +19,7 @@ import type {
   VideoReview,
   FAQItem,
 } from "./notion-types";
-import { isGwmLineSlug, matchCarToGwmLine } from "./brandConfig";
+import { BRAND_BY_NOTION, matchCarToLine } from "./brandConfig";
 
 // ─── Rate-limit aware fetch (429 + transient 5xx retry w/ backoff) ────────────
 
@@ -66,6 +66,33 @@ const notion = new Client({
 });
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
+
+/**
+ * A brand's select option doesn't exist yet in a given Notion DB until the first
+ * page using it is created there (e.g. a brand added to lib/brandConfig.ts before
+ * any Cars/Promotions/FAQ/etc. content for it has been seeded) — Notion rejects
+ * `select: { equals: brand }` filters for unknown options instead of matching zero
+ * rows. Treat that specific validation error as "no content yet" rather than a
+ * real failure, so newly-added brands render empty states instead of 500s.
+ */
+function isMissingSelectOptionError(err: unknown): boolean {
+  return (
+    isNotionClientError(err) &&
+    err.code === APIErrorCode.ValidationError &&
+    /select option ".*" not found/.test(err.message)
+  );
+}
+
+async function queryDatabaseSafe(
+  params: Parameters<typeof notion.databases.query>[0]
+): Promise<{ results: NotionPage[] }> {
+  try {
+    return await notion.databases.query(params);
+  } catch (err) {
+    if (isMissingSelectOptionError(err)) return { results: [] };
+    throw err;
+  }
+}
 
 // ─── Database IDs ─────────────────────────────────────────────────────────────
 
@@ -213,7 +240,7 @@ export async function getActiveCars(filters?: {
     });
   }
 
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     filter: { and: filterConditions },
     sorts: [
@@ -230,13 +257,15 @@ export async function getCarsByBrandLine(
   line?: string
 ): Promise<Car[]> {
   const cars = await getActiveCars({ brand });
-  if (!line || brand !== "GWM") return cars;
-  if (!isGwmLineSlug(line)) return cars;
-  return cars.filter((car) => matchCarToGwmLine(car, line));
+  if (!line) return cars;
+  const brandConfig = BRAND_BY_NOTION[brand];
+  const subLine = brandConfig?.subLines?.find((l) => l.slug === line);
+  if (!subLine) return cars;
+  return cars.filter((car) => matchCarToLine(car, brandConfig, subLine));
 }
 
 export async function getFeaturedCars(): Promise<Car[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     filter: {
       and: [
@@ -273,7 +302,7 @@ function looksLikeNotionId(value: string): boolean {
  * old `/cars/<uuid>` links working and covers cars with an empty Slug.
  */
 export const getCarBySlug = cache(async (slug: string): Promise<Car | null> => {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     filter: { property: "Slug", rich_text: { equals: slug } },
     page_size: 1,
@@ -284,7 +313,7 @@ export const getCarBySlug = cache(async (slug: string): Promise<Car | null> => {
 });
 
 export async function getAllCarIds(): Promise<string[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     filter: { property: "Is Active", checkbox: { equals: true } },
   });
@@ -304,7 +333,7 @@ export interface SitemapEntry {
 
 /** Active cars with slug + last edited time for sitemap. */
 export async function getCarSitemapEntries(): Promise<SitemapEntry[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     filter: { property: "Is Active", checkbox: { equals: true } },
   });
@@ -327,7 +356,7 @@ export async function getCarSitemapEntries(): Promise<SitemapEntry[]> {
  * render on-demand thanks to `dynamicParams = true`.
  */
 export async function getCarSlugsForPrerender(limit = 40): Promise<string[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     filter: { property: "Is Active", checkbox: { equals: true } },
     sorts: [{ property: "Year", direction: "descending" }],
@@ -340,7 +369,7 @@ export async function getCarSlugsForPrerender(limit = 40): Promise<string[]> {
 
 /** Admin list: every car including inactive/archived. */
 export async function getAllCarsAdmin(): Promise<Car[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.cars,
     sorts: [{ property: "Year", direction: "descending" }],
     page_size: 100,
@@ -452,7 +481,7 @@ function pageToBlogPost(page: NotionPage): BlogPost {
 }
 
 export async function getPublishedBlogPosts(limit?: number): Promise<BlogPost[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.blog,
     filter: { property: "Is Published", checkbox: { equals: true } },
     sorts: [{ property: "Published At", direction: "descending" }],
@@ -462,7 +491,7 @@ export async function getPublishedBlogPosts(limit?: number): Promise<BlogPost[]>
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.blog,
     filter: {
       and: [
@@ -495,7 +524,7 @@ export async function getAllBlogSlugs(): Promise<string[]> {
 
 /** Published blog posts with slug + last modified for sitemap. */
 export async function getBlogSitemapEntries(): Promise<SitemapEntry[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.blog,
     filter: { property: "Is Published", checkbox: { equals: true } },
   });
@@ -523,7 +552,7 @@ export function markdownToBlocks(markdown: string) {
 
 /** Admin list: every blog post including drafts. */
 export async function getAllBlogPostsAdmin(): Promise<BlogPost[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.blog,
     sorts: [{ timestamp: "created_time", direction: "descending" }],
     page_size: 100,
@@ -659,7 +688,7 @@ function pageToContact(page: NotionPage): ContactSubmission {
 }
 
 export async function getAllContacts(): Promise<ContactSubmission[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.contacts,
     sorts: [{ timestamp: "created_time", direction: "descending" }],
     page_size: 100,
@@ -686,7 +715,7 @@ function pageToStory(page: NotionPage): CustomerStory {
 }
 
 export async function getPublicStories(limit?: number): Promise<CustomerStory[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.stories,
     filter: {
       and: [
@@ -700,7 +729,7 @@ export async function getPublicStories(limit?: number): Promise<CustomerStory[]>
 }
 
 export async function getAllStories(status?: CustomerStory["status"]): Promise<CustomerStory[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.stories,
     sorts: [{ timestamp: "created_time", direction: "descending" }],
     ...(status ? {
@@ -734,7 +763,7 @@ function pageToAppointment(page: NotionPage): Appointment {
 }
 
 export async function getAllAppointments(): Promise<Appointment[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.appointments,
     sorts: [{ timestamp: "created_time", direction: "descending" }],
   });
@@ -785,7 +814,7 @@ function pageToPromotion(page: NotionPage): Promotion {
 
 export async function getPromotionsByBrand(brand: Promotion["brand"]): Promise<Promotion[]> {
   if (!DB.promotions) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.promotions,
     filter: {
       and: [
@@ -802,7 +831,7 @@ export async function getPromotionsByBrand(brand: Promotion["brand"]): Promise<P
 /** Active promotions across all brands — for the home page. */
 export async function getActivePromotions(limit = 6): Promise<Promotion[]> {
   if (!DB.promotions) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.promotions,
     filter: { property: "Is Active", checkbox: { equals: true } },
     sorts: [{ timestamp: "created_time", direction: "descending" }],
@@ -814,7 +843,7 @@ export async function getActivePromotions(limit = 6): Promise<Promotion[]> {
 /** Admin: all promotions (active + inactive). */
 export async function getAllPromotionsAdmin(): Promise<Promotion[]> {
   if (!DB.promotions) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.promotions,
     sorts: [{ timestamp: "created_time", direction: "descending" }],
     page_size: 100,
@@ -874,7 +903,7 @@ export async function getBlogPostsByBrand(
   if (category) {
     filterConditions.push({ property: "Category", select: { equals: category } });
   }
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.blog,
     filter: { and: filterConditions },
     sorts: [{ property: "Published At", direction: "descending" }],
@@ -893,7 +922,7 @@ export async function logFailedSearch(query: string, page?: string): Promise<voi
   if (!DB.searchAnalytics || !query.trim()) return;
   try {
     // Check if this query already exists
-    const existing = await notion.databases.query({
+    const existing = await queryDatabaseSafe({
       database_id: DB.searchAnalytics,
       filter: { property: "Query", title: { equals: query.trim() } },
       page_size: 1,
@@ -955,7 +984,7 @@ export async function createFeedback(data: FeedbackFormData): Promise<void> {
 
 /** Admin: list all feedback, newest first. */
 export async function getAllFeedbackAdmin(): Promise<import("./notion-types").CustomerFeedback[]> {
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.feedback,
     sorts: [{ timestamp: "created_time", direction: "descending" }],
     page_size: 100,
@@ -1009,7 +1038,7 @@ export async function getInsurancePartners(onlyActive = true): Promise<Insurance
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filters: any[] = [];
   if (onlyActive) filters.push({ property: "IsActive", checkbox: { equals: true } });
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.insurancePartners,
     filter: filters.length ? { and: filters } : undefined,
     sorts: [{ property: "SortOrder", direction: "ascending" }],
@@ -1072,7 +1101,7 @@ function pageToServiceSection(page: NotionPage): ServicePageSection {
 
 export async function getAllServiceSectionsAdmin(): Promise<ServicePageSection[]> {
   if (!DB.serviceContent) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.serviceContent,
     sorts: [
       { property: "Page", direction: "ascending" },
@@ -1088,7 +1117,7 @@ export async function getServiceSections(
   pageName: ServicePageSection["page"]
 ): Promise<ServicePageSection[]> {
   if (!DB.serviceContent) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.serviceContent,
     filter: {
       and: [
@@ -1158,7 +1187,7 @@ function pageToSocialLink(page: NotionPage): BrandSocialLink {
 
 export async function getSocialLinksByBrand(brand: string): Promise<BrandSocialLink[]> {
   if (!DB.socialLinks) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.socialLinks,
     filter: {
       and: [
@@ -1174,7 +1203,7 @@ export async function getSocialLinksByBrand(brand: string): Promise<BrandSocialL
 
 export async function getAllSocialLinksAdmin(): Promise<BrandSocialLink[]> {
   if (!DB.socialLinks) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.socialLinks,
     sorts: [
       { property: "Brand", direction: "ascending" },
@@ -1240,7 +1269,7 @@ function pageToVideoReview(page: NotionPage): VideoReview {
 
 export async function getVideoReviewsByBrand(brand: string): Promise<VideoReview[]> {
   if (!DB.videoReviews) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.videoReviews,
     filter: {
       and: [
@@ -1256,7 +1285,7 @@ export async function getVideoReviewsByBrand(brand: string): Promise<VideoReview
 
 export async function getAllVideoReviewsAdmin(): Promise<VideoReview[]> {
   if (!DB.videoReviews) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.videoReviews,
     sorts: [
       { property: "Brand", direction: "ascending" },
@@ -1320,7 +1349,7 @@ function pageToFAQ(page: NotionPage): FAQItem {
 
 export async function getFAQItems(brand: string, page: string): Promise<FAQItem[]> {
   if (!DB.faq) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.faq,
     filter: {
       and: [
@@ -1341,7 +1370,7 @@ export async function getFAQItems(brand: string, page: string): Promise<FAQItem[
 
 export async function getAllFAQAdmin(): Promise<FAQItem[]> {
   if (!DB.faq) return [];
-  const response = await notion.databases.query({
+  const response = await queryDatabaseSafe({
     database_id: DB.faq,
     sorts: [
       { property: "Brand", direction: "ascending" },
@@ -1400,7 +1429,7 @@ export async function getSettings(): Promise<SettingEntry[]> {
     return settingsCache.data;
   }
   try {
-    const res = await notion.databases.query({
+    const res = await queryDatabaseSafe({
       database_id: DB.settings,
       page_size: 100,
     });

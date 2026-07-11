@@ -11,7 +11,7 @@ import type {
   BrandSocialLink,
 } from "@/lib/notion-types";
 
-export const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+export const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 export type BrandName = (typeof BRANDS)[number];
 
 export function isWithinLastDays(isoDate: string | null | undefined, days: number): boolean {

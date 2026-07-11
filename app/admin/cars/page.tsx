@@ -200,7 +200,7 @@ export default function AdminCarsPage() {
           <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)}
             className="px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none">
             <option value="all">ทุกแบรนด์</option>
-            {["Mazda","Ford","Mitsubishi","GWM","Deepal","Kia"].map(b => <option key={b} value={b}>{b}</option>)}
+            {["Mazda","Ford","Mitsubishi","GWM","Deepal","Kia","GAC","Lepas"].map(b => <option key={b} value={b}>{b}</option>)}
           </select>
           <span className="ml-auto text-xs text-gray-400 self-center">{filtered.length} รุ่น</span>
         </div>

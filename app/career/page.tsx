@@ -218,7 +218,7 @@ export default function Career() {
             {`ใน 7 สาขา จ.นครปฐม ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี`}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-white/50">
-            {["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"].map((b) => (
+            {["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"].map((b) => (
               <span key={b} className="bg-white/10 px-3 py-1 rounded-full">{b}</span>
             ))}
           </div>

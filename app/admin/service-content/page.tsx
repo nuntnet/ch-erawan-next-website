@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { InsurancePartner, ServicePageSection } from "@/lib/notion-types";
 
-const BRANDS_INS = ["ทุกแบรนด์", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
-const BRANDS_SVC = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia"] as const;
+const BRANDS_INS = ["ทุกแบรนด์", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
+const BRANDS_SVC = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia", "GAC", "Lepas"] as const;
 const PAGES_SVC = ["body-repair", "service", "one-stop"] as const;
 const PAGE_LABELS: Record<string, string> = { "body-repair": "ซ่อมสี/ตัวถัง", "service": "ศูนย์บริการ", "one-stop": "One Stop" };
 
@@ -313,7 +313,7 @@ function SectionsTab() {
 // ── FAQ Tab ─────────────────────────────────────────────────────────
 
 // PAGE_LABELS defined at line 21 — reused here
-const BRANDS_FAQ = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia", "ทุกแบรนด์"] as const;
+const BRANDS_FAQ = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia", "GAC", "Lepas", "ทุกแบรนด์"] as const;
 const PAGES_FAQ = ["body-repair", "service"] as const;
 
 type FAQForm = { question: string; answer: string; page: string; brand: string; isActive: boolean; sortOrder: number };

@@ -6,7 +6,7 @@ import { getAllVideoReviewsAdmin, createVideoReview, updateVideoReview, archiveV
 import { revalidatePath } from "next/cache";
 
 const PLATFORMS = ["YouTube", "TikTok"] as const;
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 
 const SOURCES = ["own", "external"] as const;
 

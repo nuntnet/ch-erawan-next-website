@@ -5,7 +5,7 @@ import { auditFromSession } from "@/lib/audit";
 import { getAllSocialLinksAdmin, createSocialLink, updateSocialLink, archiveSocialLink } from "@/lib/notion";
 
 const PLATFORMS = ["Facebook", "TikTok", "YouTube", "LINE", "Instagram"] as const;
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 
 const schema = z.object({
   brand: z.enum(BRANDS),

@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import ImageUploader from "@/components/admin/ImageUploader";
 import type { Car, CarInput } from "@/lib/notion-types";
 
-const BRANDS: Car["brand"][] = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"];
+const BRANDS: Car["brand"][] = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"];
 const TYPES: { value: Car["type"]; label: string }[] = [
   { value: "sedan", label: "ซีดาน" },
   { value: "suv", label: "เอสยูวี" },

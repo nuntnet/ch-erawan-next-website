@@ -10,7 +10,7 @@ import {
   archivePromotion,
 } from "@/lib/notion";
 
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 
 const promoSchema = z.object({
   title: z.string().min(1),

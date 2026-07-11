@@ -11,7 +11,7 @@ import { Search, SlidersHorizontal, ArrowRight, Fuel, Gauge, Calendar } from "lu
 import type { Car } from "@/lib/notion-types";
 import { cldUrl } from "@/lib/cloudinary";
 
-const brands = ["ทั้งหมด", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"];
+const brands = ["ทั้งหมด", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"];
 const types = [
   { value: "all", label: "ทุกประเภท" },
   { value: "suv", label: "SUV" },

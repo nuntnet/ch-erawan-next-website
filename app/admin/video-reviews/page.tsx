@@ -11,7 +11,7 @@ import {
 import type { VideoReview } from "@/lib/notion-types";
 import Pagination from "@/components/admin/Pagination";
 
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 const PLATFORMS = ["YouTube", "TikTok"] as const;
 const SOURCES = ["own", "external"] as const;
 

@@ -300,7 +300,7 @@ export const BRANDS: BrandConfig[] = [
     logoScale: 1,
     accentColor: "#E31E24",
     navBgImage:
-      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783778044/ch-erawan/cars/gac-aion-y-plus.png",
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783782707/ch-erawan/cars/gac-aion-y-plus.jpg",
     hubPath: "/gac",
     subLines: GAC_SUB_LINES,
     featuredModels: [

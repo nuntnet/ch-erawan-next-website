@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import BrandHero from "@/components/BrandHero";
+import BrandServiceContent from "@/components/brands/BrandServiceContent";
 import BrandSubNav from "@/components/brands/BrandSubNav";
 import {
   BRAND_BY_SLUG,
@@ -236,6 +238,11 @@ export default async function BrandServicePage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* Notion CMS content — admin adds sections via /admin/service-content */}
+        <Suspense fallback={null}>
+          <BrandServiceContent brand={brand.notionBrand} page="service" />
+        </Suspense>
 
         {/* ── CTA ── */}
         <section className="container py-14 text-center">

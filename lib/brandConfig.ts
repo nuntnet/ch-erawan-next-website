@@ -107,21 +107,21 @@ export const GAC_SUB_LINES = [
     slug: "aion",
     displayName: "AION",
     displayNameTh: "เอียน",
-    logoPath: "/brands/aion.svg",
+    logoPath: "/brands/aion.png",
     modelPrefixes: ["AION", "Aion"],
   },
   {
     slug: "hyptec",
     displayName: "HYPTEC",
     displayNameTh: "ไฮเทค",
-    logoPath: "/brands/hyptec.svg",
+    logoPath: "/brands/hyptec.png",
     modelPrefixes: ["HYPTEC", "Hyptec"],
   },
   {
     slug: "motor",
     displayName: "GAC MOTOR",
     displayNameTh: "จีเอซี มอเตอร์",
-    logoPath: "/brands/gac-motor.svg",
+    logoPath: "/brands/gac-motor.png",
     modelPrefixes: ["GAC M8", "M8", "GAC MOTOR"],
   },
 ] satisfies SubLine[];
@@ -296,7 +296,7 @@ export const BRANDS: BrandConfig[] = [
     tagline: "WHERE CRAFT MEETS TECHNOLOGY",
     descriptionTh:
       "ตัวแทนจำหน่าย GAC อย่างเป็นทางการ ครบทั้ง AION, HYPTEC และ GAC MOTOR — รถยนต์ไฟฟ้าและ PHEV จากผู้ผลิตรถยนต์รายใหญ่ของจีน กำลังก่อสร้างโชว์รูมที่นครปฐม เปิดให้บริการตุลาคม 2569",
-    logoPath: "/brands/gac.svg",
+    logoPath: "/brands/gac.png",
     logoScale: 1,
     accentColor: "#E31E24",
     hubPath: "/gac",

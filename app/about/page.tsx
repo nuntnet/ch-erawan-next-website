@@ -93,10 +93,34 @@ const timeline: TimelineItem[] = [
   {
     year: "2566",
     title: "ก้าวสู่ยุค EV",
-    desc: "ได้รับแต่งตั้งเป็นตัวแทนจำหน่าย GWM และ Deepal พร้อมรับกระแสรถยนต์ไฟฟ้าอย่างเต็มตัว ต่อมาเพิ่ม Kia เข้าสู่พอร์ตโฟลิโอ",
-    milestone: "GWM · Deepal · Kia",
+    desc: "ได้รับแต่งตั้งเป็นตัวแทนจำหน่าย GWM เปิดโชว์รูมที่ ต.ธรรมศาลา จ.นครปฐม ครบทั้ง HAVAL, ORA และ TANK พร้อมรับกระแสรถยนต์ไฟฟ้าและไฮบริดอย่างเต็มตัว",
+    milestone: "GWM Dealer",
     image: BRAND_IMAGES.GWM,
     imageAlt: "GWM HAVAL H6 HEV",
+  },
+  {
+    year: "2567",
+    title: "Deepal ศาลายา",
+    desc: "เปิด Deepal ช.เอราวัณ ศาลายา ตัวแทนจำหน่ายรถยนต์ไฟฟ้า Deepal จาก Changan ติดกับโชว์รูมมาสด้า ศาลายา ขยายพอร์ตโฟลิโอ EV 100%",
+    milestone: "Deepal Dealer",
+    image: BRAND_IMAGES.Deepal,
+    imageAlt: "Deepal S07",
+  },
+  {
+    year: "2568",
+    title: "Kia นครปฐม",
+    desc: "เปิด Kia ช.เอราวัณ นครปฐม ที่ อ.สามพราน เสริมพอร์ตโฟลิโอด้วย SUV, MPV และ EV ระดับโลกจากเกาหลีใต้ ดีไซน์ Opposites United",
+    milestone: "Kia Dealer",
+    image: BRAND_IMAGES.Kia,
+    imageAlt: "Kia EV9",
+  },
+  {
+    year: "2569",
+    title: "GAC และ Lepas",
+    desc: "ขยายสู่ 8 แบรนด์ ภายใต้ บริษัท ช.เอราวัณ เนกซ์ จำกัด — ก่อสร้างโชว์รูม GAC (AION, HYPTEC, GAC MOTOR) ที่ ต.ลำพยา กำหนดเปิดตุลาคม 2569 พร้อมเตรียมเปิดตัว Lepas แบรนด์พรีเมียมจาก Chery Group",
+    milestone: "GAC · Lepas",
+    image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
+    imageAlt: "โชว์รูม GAC ช.เอราวัณ นครปฐม (แบบจำลอง 3 มิติ)",
   },
   {
     year: "ปัจจุบัน",
@@ -245,8 +269,8 @@ const brandCards = [
   { name: "Ford", since: "2558", branches: "1 สาขา", highlight: "Ranger · Everest · Ford Pro", rank: "อันดับ 7", sales: "20,349 คัน", color: "bg-blue-50 border-blue-100", dot: "bg-blue-600", slug: "ford" as const },
   { name: "Mitsubishi", since: "2510", branches: "1 สาขา", highlight: "Triton · Pajero Sport · PHEV", rank: "อันดับ 5", sales: "26,798 คัน", color: "bg-orange-50 border-orange-100", dot: "bg-orange-500", slug: "mitsubishi" as const },
   { name: "GWM", since: "2566", branches: "1 สาขา", highlight: "Haval H6 · ORA · Tank 300", rank: "อันดับ 8", sales: "14,264 คัน", color: "bg-amber-50 border-amber-100", dot: "bg-amber-500", slug: "gwm" as const },
-  { name: "Deepal", since: "2566", branches: "1 สาขา", highlight: "EV 100% · Changan Group", rank: "อันดับ 12", sales: "8,459 คัน", color: "bg-violet-50 border-violet-100", dot: "bg-violet-500", slug: "deepal" as const },
-  { name: "Kia", since: "2566", branches: "1 สาขา", highlight: "Sorento · Carnival · EV5 · EV9", rank: "อันดับ 26", sales: "1,889 คัน", color: "bg-emerald-50 border-emerald-100", dot: "bg-emerald-600", slug: "kia" as const },
+  { name: "Deepal", since: "2567", branches: "1 สาขา", highlight: "EV 100% · Changan Group", rank: "อันดับ 12", sales: "8,459 คัน", color: "bg-violet-50 border-violet-100", dot: "bg-violet-500", slug: "deepal" as const },
+  { name: "Kia", since: "2568", branches: "1 สาขา", highlight: "Sorento · Carnival · EV5 · EV9", rank: "อันดับ 26", sales: "1,889 คัน", color: "bg-emerald-50 border-emerald-100", dot: "bg-emerald-600", slug: "kia" as const },
 ];
 
 type Section = "history" | "brands" | "team" | "values";

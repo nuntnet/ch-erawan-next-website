@@ -153,6 +153,11 @@ export default async function BrandServicePage({ params }: PageProps) {
                         ))}
                       </div>
                     )}
+                    {branch.openingDate ? (
+                      <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 px-3 py-1.5 text-xs font-semibold">
+                        เปิดให้บริการเร็วๆ นี้ · {branch.openingDate}
+                      </div>
+                    ) : (
                     <div className="flex gap-3">
                       <Link
                         href={`/booking?type=service&branch=${branch.id}`}
@@ -182,6 +187,7 @@ export default async function BrandServicePage({ params }: PageProps) {
                         </Button>
                       </a>
                     </div>
+                    )}
                     {branch.lat && branch.lng && (
                       <div className="mt-4 rounded-xl overflow-hidden h-44">
                         <iframe

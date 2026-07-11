@@ -34,6 +34,8 @@ const brandColors: Record<string, { bg: string; text: string; dot: string }> = {
   "GWM":        { bg: "bg-orange-50",  text: "text-orange-700", dot: "bg-orange-500" },
   "Deepal":     { bg: "bg-purple-50",  text: "text-purple-700", dot: "bg-purple-500" },
   "Kia":        { bg: "bg-green-50",   text: "text-green-700",  dot: "bg-green-600" },
+  "GAC":        { bg: "bg-red-50",     text: "text-red-700",    dot: "bg-red-600" },
+  "Lepas":      { bg: "bg-teal-50",    text: "text-teal-700",   dot: "bg-teal-600" },
 };
 
 const serviceMenuByBrand: Record<string, { category: string; items: string[] }[]> = {
@@ -117,7 +119,7 @@ export default function ServiceLocator() {
   const [filterBrand, setFilterBrand] = useState("ทั้งหมด");
   const [activeTab, setActiveTab] = useState<"map" | "info" | "services">("map");
 
-  const brands = ["ทั้งหมด", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"];
+  const brands = ["ทั้งหมด", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"];
   const filtered = filterBrand === "ทั้งหมด" ? branches : branches.filter(b => b.brand === filterBrand);
   const selected = branches.find((b) => b.id === selectedBranch);
 
@@ -284,6 +286,11 @@ export default function ServiceLocator() {
                       )}
 
                       {/* Actions */}
+                      {selected.openingDate ? (
+                        <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 text-xs font-semibold">
+                          เปิดให้บริการเร็วๆ นี้ · {selected.openingDate}
+                        </div>
+                      ) : (
                       <div className="grid grid-cols-3 gap-2">
                         <Link href={`/booking?branch=${selected.id}&type=test_drive`}>
                           <Button size="sm" className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white text-xs">
@@ -306,6 +313,7 @@ export default function ServiceLocator() {
                           </Button>
                         </a>
                       </div>
+                      )}
                     </div>
                   ) : (
                     <div className="p-5">
@@ -327,12 +335,18 @@ export default function ServiceLocator() {
                         </div>
                       ))}
                       <div className="pt-3 border-t border-[#E2E8F0]">
+                        {selected.openingDate ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 text-xs font-semibold">
+                            เปิดให้บริการเร็วๆ นี้ · {selected.openingDate}
+                          </div>
+                        ) : (
                         <Link href={`/booking?branch=${selected.id}&type=service`}>
                           <Button size="sm" className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white text-xs">
                             <Wrench className="w-3.5 h-3.5 mr-1.5" />
                             จองนัดหมายบริการ
                           </Button>
                         </Link>
+                        )}
                       </div>
                     </div>
                     </div>

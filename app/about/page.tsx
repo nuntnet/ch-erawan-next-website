@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import BrandLogo from "@/components/BrandLogo";
-import { BRANDS } from "@/lib/brandConfig";
+import { BRANDS, type BrandSlug } from "@/lib/brandConfig";
 import { BRAND_IMAGES } from "@/lib/brandImages";
 import { branches } from "@/lib/branchData";
 import CoverageMap from "@/components/about/CoverageMap";
@@ -23,6 +23,15 @@ import {
 } from "lucide-react";
 
 const hqBranch = branches.find((b) => b.isHQ)!;
+
+// Some brand marks sit on a much smaller/narrower canvas than others (e.g. a
+// tall diamond vs. a wide wordmark), so object-contain renders them visibly
+// smaller at the same logoScale. Local override for this strip only — the
+// shared brandConfig.logoScale still governs hero/nav usage elsewhere.
+const STRIP_LOGO_SCALE: Partial<Record<BrandSlug, number>> = {
+  mitsubishi: 1.4,
+  gac: 1.35,
+};
 
 type TimelineItem = {
   year: string;
@@ -482,6 +491,7 @@ export default function About() {
                   alt={brand.displayName}
                   brandSlug={brand.slug}
                   size="md"
+                  scale={STRIP_LOGO_SCALE[brand.slug]}
                   className="grayscale opacity-45 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
                 />
               </Link>

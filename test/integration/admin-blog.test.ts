@@ -8,7 +8,7 @@ import {
 import { validBlogCreateBody, mockBlogPost } from "../helpers/api-fixtures";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   revalidatePath: vi.fn(),
   getAllBlogPostsAdmin: vi.fn(),
   getBlogPostForEdit: vi.fn(),
@@ -18,7 +18,7 @@ const mocks = vi.hoisted(() => ({
   archiveBlogPost: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 vi.mock("@/lib/notion", () => ({
   getAllBlogPostsAdmin: mocks.getAllBlogPostsAdmin,
@@ -33,7 +33,7 @@ import { GET, POST, PATCH, DELETE } from "@/app/api/admin/blog/route";
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllBlogPostsAdmin.mockResolvedValue([mockBlogPost]);
   mocks.getBlogPostForEdit.mockResolvedValue({ ...mockBlogPost, markdown: "# Hi" });
   mocks.createBlogPost.mockResolvedValue(mockBlogPost);
@@ -48,7 +48,7 @@ afterEach(() => {
 
 describe("GET /api/admin/blog", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET(makeRequest("/api/admin/blog"));
     expect(res.status).toBe(401);
   });

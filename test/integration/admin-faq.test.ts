@@ -2,14 +2,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   getAllFAQAdmin: vi.fn(),
   createFAQItem: vi.fn(),
   updateFAQItem: vi.fn(),
   archiveFAQItem: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   getAllFAQAdmin: mocks.getAllFAQAdmin,
   createFAQItem: mocks.createFAQItem,
@@ -30,7 +30,7 @@ const validBody = {
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllFAQAdmin.mockResolvedValue([{ id: "f1", question: "Q1", answer: "A1" }]);
   mocks.createFAQItem.mockResolvedValue({ id: "f2", ...validBody });
   mocks.updateFAQItem.mockResolvedValue(undefined);
@@ -43,13 +43,13 @@ afterEach(() => {
 
 describe("GET /api/admin/faq", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await GET();
     expect(res.status).toBe(403);
   });
@@ -69,7 +69,7 @@ describe("GET /api/admin/faq", () => {
 
 describe("POST /api/admin/faq", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await POST(makeRequest("/api/admin/faq", { method: "POST", body: validBody }));
     expect(res.status).toBe(401);
   });
@@ -115,7 +115,7 @@ describe("POST /api/admin/faq", () => {
 
 describe("PATCH /api/admin/faq", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await PATCH(
       makeRequest("/api/admin/faq", { method: "PATCH", body: { id: "f1", question: "updated?" } })
     );
@@ -149,7 +149,7 @@ describe("PATCH /api/admin/faq", () => {
 
 describe("DELETE /api/admin/faq", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await DELETE(
       makeRequest("/api/admin/faq", { method: "DELETE", searchParams: { id: "f1" } })
     );

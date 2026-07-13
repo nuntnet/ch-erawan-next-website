@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
 
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 
 const BRANCHES_BY_BRAND: Record<string, string[]> = {
   Mazda:      ["Mazda ช.เอราวัณ นครปฐม", "Mazda ช.เอราวัณ ศาลายา"],

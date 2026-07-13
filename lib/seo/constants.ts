@@ -14,6 +14,8 @@ export const DEALER_BRANDS = [
   "GWM",
   "Deepal",
   "Kia",
+  "GAC",
+  "Lepas",
 ] as const;
 
 export const DEFAULT_PHONE = "094-413-3555";

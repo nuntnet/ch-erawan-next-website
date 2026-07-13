@@ -23,6 +23,12 @@ export const BRAND_IMAGES: Record<string, string> = {
   // Kia — EV9 dark promo banner (dark bg = good contrast with white KIA logo)
   Kia:
     "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245620/ch-erawan/brands/kia-ev9-promo-2026.jpg",
+  // GAC — AION Y Plus (official GAC Thailand model photo)
+  GAC:
+    "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783782707/ch-erawan/cars/gac-aion-y-plus.jpg",
+  // Lepas — official "Leopard Aesthetics" brand lifestyle photo (Chery Lepas site)
+  Lepas:
+    "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783779581/ch-erawan/brands/lepas-hero-leopard.jpg",
   default:
     "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245610/ch-erawan/hero/mazda-cx5-hero-2026.jpg",
 };

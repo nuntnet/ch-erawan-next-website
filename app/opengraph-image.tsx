@@ -32,10 +32,10 @@ export default function OpenGraphImage() {
           ช.เอราวัณ กรุ๊ป
         </div>
         <div style={{ fontSize: 32, opacity: 0.85, textAlign: "center", maxWidth: 900 }}>
-          ตัวแทนจำหน่ายรถยนต์ Mazda · Ford · Mitsubishi · GWM · Deepal · Kia
+          ตัวแทนจำหน่ายรถยนต์ Mazda · Ford · Mitsubishi · GWM · Deepal · Kia · GAC · Lepas
         </div>
         <div style={{ fontSize: 22, opacity: 0.6, marginTop: 24 }}>
-          จ.นครปฐม · 7 สาขา
+          จ.นครปฐม · 9 สาขา
         </div>
       </div>
     ),

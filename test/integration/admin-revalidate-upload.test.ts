@@ -3,12 +3,12 @@ import { NextRequest } from "next/server";
 import { makeRequest, makeFormRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   revalidatePath: vi.fn(),
   cloudinaryUpload: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 vi.mock("cloudinary", () => ({
   v2: {
@@ -22,7 +22,7 @@ import { POST as uploadPOST } from "@/app/api/upload/route";
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.revalidatePath.mockClear();
   mocks.cloudinaryUpload.mockResolvedValue({ secure_url: "https://cdn.example/img.jpg" });
   vi.stubEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME", "test-cloud");
@@ -37,7 +37,7 @@ afterEach(() => {
 
 describe("POST /api/admin/revalidate", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await revalidatePOST(makeRequest("/api/admin/revalidate", { method: "POST" }));
     expect(res.status).toBe(401);
   });
@@ -86,7 +86,7 @@ describe("POST /api/admin/revalidate", () => {
 
 describe("POST /api/upload", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const file = new File(["x"], "a.png", { type: "image/png" });
     const res = await uploadPOST(makeFormRequest("/api/upload", file));
     expect(res.status).toBe(401);

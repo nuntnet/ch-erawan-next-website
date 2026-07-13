@@ -8,15 +8,24 @@ function getClientIp(req: NextRequest): string {
   return req.headers.get("x-real-ip") ?? "127.0.0.1";
 }
 
-async function validateAdminSession(req: NextRequest) {
+const STAFF_ROLES = new Set(["admin", "editor"]);
+
+// User management + audit log stay admin-only — everything else under
+// /admin and /api/admin is open to any staff role (admin or editor).
+const ADMIN_ONLY_PREFIXES = ["/admin/users", "/admin/audit", "/api/admin/users", "/api/admin/audit"];
+
+function isAdminOnlyPath(pathname: string): boolean {
+  return ADMIN_ONLY_PREFIXES.some((p) => pathname.startsWith(p));
+}
+
+async function fetchStaffSession(req: NextRequest) {
   const sessionRes = await fetch(`${req.nextUrl.origin}/api/auth/get-session`, {
     headers: { cookie: req.headers.get("cookie") ?? "" },
   }).catch(() => null);
 
   if (!sessionRes?.ok) return null;
   const session = await sessionRes.json().catch(() => null);
-  if (!session?.user || session.user.role !== "admin") return null;
-  return session;
+  return session?.user ? session : null;
 }
 
 export async function middleware(req: NextRequest) {
@@ -50,7 +59,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // ── Protect /api/admin/* (defense-in-depth; handlers also call requireAdmin) ─
+  // ── Protect /api/admin/* (defense-in-depth; handlers also call requireStaff/requireAdmin) ─
   if (pathname.startsWith("/api/admin")) {
     const sessionCookie =
       req.cookies.get("better-auth.session_token") ??
@@ -59,8 +68,9 @@ export async function middleware(req: NextRequest) {
     if (!sessionCookie?.value) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const session = await validateAdminSession(req);
-    if (!session) {
+    const session = await fetchStaffSession(req);
+    const requiredRoles = isAdminOnlyPath(pathname) ? new Set(["admin"]) : STAFF_ROLES;
+    if (!session || !requiredRoles.has(session.user.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     return NextResponse.next();
@@ -78,9 +88,19 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-    const session = await validateAdminSession(req);
+    const session = await fetchStaffSession(req);
     if (!session) {
-      return NextResponse.redirect(new URL("/login?error=unauthorized", req.url));
+      return NextResponse.redirect(new URL("/login?error=session_expired", req.url));
+    }
+    if (!STAFF_ROLES.has(session.user.role)) {
+      return NextResponse.redirect(new URL("/login?error=no_access", req.url));
+    }
+
+    // Authenticated staff, but this specific admin-only section (user
+    // management / audit log) requires the "admin" role — bounce to the
+    // dashboard rather than /login (they ARE logged in, just not permitted here).
+    if (isAdminOnlyPath(pathname) && session.user.role !== "admin") {
+      return NextResponse.redirect(new URL("/admin", req.url));
     }
   }
 

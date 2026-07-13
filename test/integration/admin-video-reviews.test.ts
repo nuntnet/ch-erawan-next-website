@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   getAllVideoReviewsAdmin: vi.fn(),
   createVideoReview: vi.fn(),
   updateVideoReview: vi.fn(),
@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
   revalidatePath: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   getAllVideoReviewsAdmin: mocks.getAllVideoReviewsAdmin,
   createVideoReview: mocks.createVideoReview,
@@ -31,7 +31,7 @@ const validBody = {
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllVideoReviewsAdmin.mockResolvedValue([{ id: "vr1", title: "Review 1" }]);
   mocks.createVideoReview.mockResolvedValue({ id: "vr2", ...validBody });
   mocks.updateVideoReview.mockResolvedValue(undefined);
@@ -44,13 +44,13 @@ afterEach(() => {
 
 describe("GET /api/admin/video-reviews", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await GET();
     expect(res.status).toBe(403);
   });
@@ -70,7 +70,7 @@ describe("GET /api/admin/video-reviews", () => {
 
 describe("POST /api/admin/video-reviews", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await POST(makeRequest("/api/admin/video-reviews", { method: "POST", body: validBody }));
     expect(res.status).toBe(401);
   });
@@ -119,7 +119,7 @@ describe("POST /api/admin/video-reviews", () => {
 
 describe("PATCH /api/admin/video-reviews", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await PATCH(
       makeRequest("/api/admin/video-reviews", { method: "PATCH", body: { id: "vr1", title: "Updated" } })
     );
@@ -153,7 +153,7 @@ describe("PATCH /api/admin/video-reviews", () => {
 
 describe("DELETE /api/admin/video-reviews", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await DELETE(
       makeRequest("/api/admin/video-reviews", { method: "DELETE", searchParams: { id: "vr1" } })
     );

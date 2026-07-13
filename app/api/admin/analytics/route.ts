@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 import { getEventCounts, getTopCars, getTopBrands, getDailyEvents, getRecentEvents } from "@/lib/analytics";
 
 export async function GET(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
 
   const days = Number(req.nextUrl.searchParams.get("days") ?? 30);

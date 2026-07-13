@@ -30,9 +30,9 @@ const menuItems = [
   { icon: MessageSquareWarning, label: "Feedback",        href: "/admin/feedback" },
   { icon: MessageSquare,        label: "รีวิวลูกค้า",    href: "/admin/stories" },
   { icon: Mail,                 label: "ข้อความติดต่อ",  href: "/admin/contacts" },
-  // ── System ────────────────────────────────
-  { icon: Users,                label: "จัดการผู้ใช้",    href: "/admin/users" },
-  { icon: ScrollText,           label: "Audit Log",       href: "/admin/audit" },
+  // ── System (admin-only) ───────────────────
+  { icon: Users,                label: "จัดการผู้ใช้",    href: "/admin/users", adminOnly: true },
+  { icon: ScrollText,           label: "Audit Log",       href: "/admin/audit", adminOnly: true },
 ];
 
 
@@ -71,7 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Nav */}
         <nav className="flex-1 py-3 px-2 space-y-0.5">
           <p className="text-[10px] text-gray-400 uppercase tracking-widest px-2 mb-2">เมนูหลัก</p>
-          {menuItems.map((item) => {
+          {menuItems.filter((item) => !item.adminOnly || user?.role === "admin").map((item) => {
             const isActive = item.href === "/admin"
               ? pathname === "/admin"
               : pathname.startsWith(item.href);

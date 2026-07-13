@@ -132,6 +132,16 @@ export default function BrandHero({
                 </p>
               ) : null}
 
+              {brand.comingSoonLabel ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-white/90 text-xs font-medium px-3 py-1.5 mb-3">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full animate-pulse"
+                    style={{ backgroundColor: accent }}
+                  />
+                  {brand.comingSoonLabel}
+                </span>
+              ) : null}
+
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                 {brand.displayNameTh}
                 <span className="block sm:inline text-white/40 font-normal text-2xl md:text-3xl sm:ml-2">
@@ -197,7 +207,7 @@ export function BrandHeroSubLineLinks({
         return (
           <Link
             key={line.slug}
-            href={`/gwm/${line.slug}`}
+            href={`${brand.hubPath}/${line.slug}`}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 min-h-[44px] text-sm font-medium transition-colors backdrop-blur-sm ${
               isActive
                 ? "bg-white text-[#0F172A]"
@@ -212,6 +222,7 @@ export function BrandHeroSubLineLinks({
               white={!isActive}
               width={56}
               height={20}
+              containerClassName="w-auto"
               className={isActive ? "brightness-0" : "opacity-90"}
             />
             {line.displayName}

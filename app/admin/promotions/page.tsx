@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { Promotion } from "@/lib/notion-types";
 
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 const BRAND_COLORS: Record<string, string> = {
   Mazda: "bg-red-50 text-red-700",
   Ford: "bg-blue-50 text-blue-700",

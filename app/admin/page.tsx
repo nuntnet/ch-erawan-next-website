@@ -193,10 +193,13 @@ const BRAND_COLORS: Record<BrandName, string> = {
   GWM: "bg-slate-700",
   Deepal: "bg-cyan-600",
   Kia: "bg-orange-500",
+  GAC: "bg-rose-600",
+  Lepas: "bg-teal-600",
 };
 
 async function fetchJson<T>(url: string): Promise<T[]> {
   const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url} → ${res.status}`);
   const data = await res.json();
   return Array.isArray(data) ? data : [];
 }
@@ -238,6 +241,9 @@ export default function AdminDashboard() {
         setServiceSections(sections);
         setInsurancePartners(partners);
         setSocialLinks(links);
+      })
+      .catch(() => {
+        toast.error("โหลดข้อมูลแดชบอร์ดไม่สำเร็จ", { description: "กรุณารีเฟรชหน้าเว็บอีกครั้ง" });
       })
       .finally(() => setLoading(false));
   }, []);

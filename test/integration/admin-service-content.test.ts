@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   getAllServiceSectionsAdmin: vi.fn(),
   createServiceSection: vi.fn(),
   updateServiceSection: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   getAllServiceSectionsAdmin: mocks.getAllServiceSectionsAdmin,
   createServiceSection: mocks.createServiceSection,
@@ -27,7 +27,7 @@ const validBody = {
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllServiceSectionsAdmin.mockResolvedValue([{ id: "sc1", title: "Hero", page: "body-repair" }]);
   mocks.createServiceSection.mockResolvedValue({ id: "sc2", ...validBody });
   mocks.updateServiceSection.mockResolvedValue(undefined);
@@ -39,13 +39,13 @@ afterEach(() => {
 
 describe("GET /api/admin/service-content", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await GET();
     expect(res.status).toBe(403);
   });
@@ -65,7 +65,7 @@ describe("GET /api/admin/service-content", () => {
 
 describe("POST /api/admin/service-content", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await POST(makeRequest("/api/admin/service-content", { method: "POST", body: validBody }));
     expect(res.status).toBe(401);
   });
@@ -113,7 +113,7 @@ describe("POST /api/admin/service-content", () => {
 
 describe("PATCH /api/admin/service-content", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await PATCH(
       makeRequest("/api/admin/service-content", { method: "PATCH", body: { id: "sc1", title: "Updated" } })
     );

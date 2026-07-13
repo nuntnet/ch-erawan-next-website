@@ -93,14 +93,38 @@ const timeline: TimelineItem[] = [
   {
     year: "2566",
     title: "ก้าวสู่ยุค EV",
-    desc: "ได้รับแต่งตั้งเป็นตัวแทนจำหน่าย GWM และ Deepal พร้อมรับกระแสรถยนต์ไฟฟ้าอย่างเต็มตัว ต่อมาเพิ่ม Kia เข้าสู่พอร์ตโฟลิโอ",
-    milestone: "GWM · Deepal · Kia",
+    desc: "ได้รับแต่งตั้งเป็นตัวแทนจำหน่าย GWM เปิดโชว์รูมที่ ต.ธรรมศาลา จ.นครปฐม ครบทั้ง HAVAL, ORA และ TANK พร้อมรับกระแสรถยนต์ไฟฟ้าและไฮบริดอย่างเต็มตัว",
+    milestone: "GWM Dealer",
     image: BRAND_IMAGES.GWM,
     imageAlt: "GWM HAVAL H6 HEV",
   },
   {
+    year: "2567",
+    title: "Deepal ศาลายา",
+    desc: "เปิด Deepal ช.เอราวัณ ศาลายา ตัวแทนจำหน่ายรถยนต์ไฟฟ้า Deepal จาก Changan ติดกับโชว์รูมมาสด้า ศาลายา ขยายพอร์ตโฟลิโอ EV 100%",
+    milestone: "Deepal Dealer",
+    image: BRAND_IMAGES.Deepal,
+    imageAlt: "Deepal S07",
+  },
+  {
+    year: "2568",
+    title: "Kia นครปฐม",
+    desc: "เปิด Kia ช.เอราวัณ นครปฐม ที่ อ.สามพราน เสริมพอร์ตโฟลิโอด้วย SUV, MPV และ EV ระดับโลกจากเกาหลีใต้ ดีไซน์ Opposites United",
+    milestone: "Kia Dealer",
+    image: BRAND_IMAGES.Kia,
+    imageAlt: "Kia EV9",
+  },
+  {
+    year: "2569",
+    title: "GAC และ Lepas",
+    desc: "ขยายสู่ 8 แบรนด์ ภายใต้ บริษัท ช.เอราวัณ เนกซ์ จำกัด — ก่อสร้างโชว์รูม GAC (AION, HYPTEC, GAC MOTOR) ที่ ต.ลำพยา กำหนดเปิดตุลาคม 2569 พร้อมเตรียมเปิดตัว Lepas แบรนด์พรีเมียมจาก Chery Group",
+    milestone: "GAC · Lepas",
+    image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1783781107/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
+    imageAlt: "โชว์รูม GAC ช.เอราวัณ นครปฐม (แบบจำลอง 3 มิติ)",
+  },
+  {
     year: "ปัจจุบัน",
-    title: "6 แบรนด์ 7 สาขา",
+    title: "8 แบรนด์ 9 สาขา",
     desc: "ช.เอราวัณ กรุ๊ป เติบโตเป็นกลุ่มดีลเลอร์ชั้นนำในภาคตะวันตก ครอบคลุม ICE, Hybrid และ EV ครบทุกกลุ่ม ส่วนแบ่งตลาดรวม ~13.1%",
     milestone: "ผู้นำภาคตะวันตก",
     image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245672/ch-erawan/team/team-photo-2.jpg",
@@ -233,21 +257,31 @@ const management = [
 
 const stats = [
   { value: getYearsLabel(), label: "ปีแห่งประสบการณ์", sub: `ก่อตั้งปี ${FOUNDED_YEAR_BE}` },
-  { value: "6", label: "แบรนด์รถยนต์", sub: "Mazda · Ford · Mitsubishi · GWM · Deepal · Kia" },
-  { value: "7", label: "สาขาทั่วนครปฐม", sub: "ครอบคลุมทุกพื้นที่" },
+  { value: "8", label: "แบรนด์รถยนต์", sub: "Mazda · Ford · Mitsubishi · GWM · Deepal · Kia · GAC · Lepas" },
+  { value: "9", label: "สาขาทั่วนครปฐม", sub: "ครอบคลุมทุกพื้นที่" },
   { value: "4", label: "ศูนย์ Body & Paint", sub: "มาตรฐาน OEM" },
   { value: "13.1%", label: "ส่วนแบ่งตลาดรวม", sub: "แบรนด์ในเครือ ปี 2568" },
   { value: "#1", label: "ผู้นำภาคตะวันตก", sub: "ดีลเลอร์อันดับ 1 ในภูมิภาค" },
 ];
 
 const brandCards = [
-  { name: "Mazda", since: "2544", branches: "2 สาขา", highlight: "KODO Design · SKYACTIV Technology", rank: "อันดับ 15", sales: "7,769 คัน", color: "bg-red-50 border-red-100", dot: "bg-red-500", slug: "mazda" as const },
-  { name: "Ford", since: "2558", branches: "1 สาขา", highlight: "Ranger · Everest · Ford Pro", rank: "อันดับ 7", sales: "20,349 คัน", color: "bg-blue-50 border-blue-100", dot: "bg-blue-600", slug: "ford" as const },
-  { name: "Mitsubishi", since: "2510", branches: "1 สาขา", highlight: "Triton · Pajero Sport · PHEV", rank: "อันดับ 5", sales: "26,798 คัน", color: "bg-orange-50 border-orange-100", dot: "bg-orange-500", slug: "mitsubishi" as const },
-  { name: "GWM", since: "2566", branches: "1 สาขา", highlight: "Haval H6 · ORA · Tank 300", rank: "อันดับ 8", sales: "14,264 คัน", color: "bg-amber-50 border-amber-100", dot: "bg-amber-500", slug: "gwm" as const },
-  { name: "Deepal", since: "2566", branches: "1 สาขา", highlight: "EV 100% · Changan Group", rank: "อันดับ 12", sales: "8,459 คัน", color: "bg-violet-50 border-violet-100", dot: "bg-violet-500", slug: "deepal" as const },
-  { name: "Kia", since: "2566", branches: "1 สาขา", highlight: "Sorento · Carnival · EV5 · EV9", rank: "อันดับ 26", sales: "1,889 คัน", color: "bg-emerald-50 border-emerald-100", dot: "bg-emerald-600", slug: "kia" as const },
+  { name: "Mazda", since: "2544", branches: "2 สาขา", highlight: "KODO Design · SKYACTIV Technology", rank: "อันดับ 15", sales: "7,769 คัน", color: "bg-red-50 border-red-100", dot: "bg-red-500", slug: "mazda" as const, comingSoon: false },
+  { name: "Ford", since: "2558", branches: "1 สาขา", highlight: "Ranger · Everest · Ford Pro", rank: "อันดับ 7", sales: "20,349 คัน", color: "bg-blue-50 border-blue-100", dot: "bg-blue-600", slug: "ford" as const, comingSoon: false },
+  { name: "Mitsubishi", since: "2510", branches: "1 สาขา", highlight: "Triton · Pajero Sport · PHEV", rank: "อันดับ 5", sales: "26,798 คัน", color: "bg-orange-50 border-orange-100", dot: "bg-orange-500", slug: "mitsubishi" as const, comingSoon: false },
+  { name: "GWM", since: "2566", branches: "1 สาขา", highlight: "Haval H6 · ORA · Tank 300", rank: "อันดับ 8", sales: "14,264 คัน", color: "bg-amber-50 border-amber-100", dot: "bg-amber-500", slug: "gwm" as const, comingSoon: false },
+  { name: "Deepal", since: "2567", branches: "1 สาขา", highlight: "EV 100% · Changan Group", rank: "อันดับ 12", sales: "8,459 คัน", color: "bg-violet-50 border-violet-100", dot: "bg-violet-500", slug: "deepal" as const, comingSoon: false },
+  { name: "Kia", since: "2568", branches: "1 สาขา", highlight: "Sorento · Carnival · EV5 · EV9", rank: "อันดับ 26", sales: "1,889 คัน", color: "bg-emerald-50 border-emerald-100", dot: "bg-emerald-600", slug: "kia" as const, comingSoon: false },
 ];
+
+// GAC/Lepas aren't open yet — shown in the brand roster grid (real, honest "coming soon"
+// status) but deliberately excluded from the 2568 sales-share strip below, which is real
+// Thai-market registration data these two brands have zero of yet.
+const upcomingBrandCards = [
+  { name: "GAC", since: "2569", branches: "เร็วๆ นี้", highlight: "AION · HYPTEC · GAC MOTOR", rank: "เปิดตัว 2569", sales: "อยู่ระหว่างก่อสร้าง", color: "bg-rose-50 border-rose-100", dot: "bg-rose-600", slug: "gac" as const, comingSoon: true },
+  { name: "Lepas", since: "2569", branches: "เร็วๆ นี้", highlight: "L4 · L6 · L8", rank: "เปิดตัว 2569", sales: "เตรียมเปิดตัว", color: "bg-teal-50 border-teal-100", dot: "bg-teal-600", slug: "lepas" as const, comingSoon: true },
+];
+
+const rosterCards = [...brandCards, ...upcomingBrandCards];
 
 type Section = "history" | "brands" | "team" | "values";
 
@@ -351,7 +385,7 @@ export default function About() {
                 <span className="text-white/80">ที่พร้อมดูแลรถคุณ&rdquo;</span>
               </h1>
               <p className="text-white/55 text-base lg:text-lg leading-relaxed max-w-xl">
-                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 6 แบรนด์ 7 สาขา
+                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 8 แบรนด์ 9 สาขา
                 ครอบคลุม ICE, Hybrid และ EV ด้วยทีมงานมืออาชีพกว่า 200 คน
               </p>
 
@@ -359,7 +393,7 @@ export default function About() {
               <div className="grid grid-cols-3 gap-4 mt-8 mb-8">
                 {[
                   { value: getYearsLabel(), label: "ปี" },
-                  { value: "7", label: "สาขา" },
+                  { value: "9", label: "สาขา" },
                   { value: "200+", label: "ทีมงาน" },
                 ].map((s) => (
                   <div key={s.label} className="text-center bg-white/5 rounded-xl p-3 border border-white/10">
@@ -373,7 +407,7 @@ export default function About() {
                 <Link href="/branches">
                   <Button className="bg-[#DD5259] hover:bg-[#c9454c] text-white font-semibold">
                     <MapPin className="w-4 h-4 mr-1.5" />
-                    ดู 7 สาขา
+                    ดู 9 สาขา
                   </Button>
                 </Link>
                 <Link href="/awards">
@@ -436,7 +470,7 @@ export default function About() {
       {/* Brand strip */}
       <section className="bg-white border-b border-gray-100">
         <div className="container py-5">
-          <div className="flex items-center justify-center gap-5 md:gap-8 flex-wrap">
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-y-2">
             {BRANDS.map((brand) => (
               <Link
                 key={brand.slug}
@@ -544,13 +578,13 @@ export default function About() {
             <div className="max-w-3xl mb-10">
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">แบรนด์รถยนต์ในเครือ</h2>
               <p className="text-gray-500 leading-relaxed">
-                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 6 แบรนด์ชั้นนำ
+                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 8 แบรนด์ชั้นนำ
                 ครอบคลุมทุกกลุ่มรถยนต์ตั้งแต่ ICE, Hybrid ไปจนถึง EV เต็มรูปแบบ
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {brandCards.map((b) => {
+              {rosterCards.map((b) => {
                 const brandConfig = BRANDS.find((br) => br.slug === b.slug)!;
                 const heroImage = BRAND_IMAGES[b.name] ?? BRAND_IMAGES.default;
 
@@ -591,13 +625,13 @@ export default function About() {
                         </div>
                         <div className="text-right">
                           <div className="text-xs font-semibold text-gray-500">{b.rank}</div>
-                          <div className="text-xs text-gray-400">ตลาดไทย</div>
+                          <div className="text-xs text-gray-400">{b.comingSoon ? "สถานะ" : "ตลาดไทย"}</div>
                         </div>
                       </div>
                       <p className="text-sm text-gray-500 mb-4 italic">{b.highlight}</p>
                       <div className="flex items-center justify-between pt-3 border-t border-black/5">
                         <div>
-                          <div className="text-xs text-gray-400">ยอดจดทะเบียน 2568</div>
+                          <div className="text-xs text-gray-400">{b.comingSoon ? "สถานะโชว์รูม" : "ยอดจดทะเบียน 2568"}</div>
                           <div className="text-sm font-bold text-[#0F172A]">{b.sales}</div>
                         </div>
                         <div className="flex items-center gap-1 text-sm font-semibold text-[#0F172A] group-hover:text-[#DD5259] transition-colors">
@@ -659,12 +693,12 @@ export default function About() {
                   </h3>
                   <p className="text-white/60 leading-relaxed mb-5">
                     {`ตระกูลจันทร์วาววาม ผู้บุกเบิกธุรกิจยานยนต์นครปฐมกว่า ${getYearsOfExperience()} ปี`}
-                    ด้วยเครือข่ายดีลเลอร์ครบ 6 แบรนด์ 7 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
+                    ด้วยเครือข่ายดีลเลอร์ครบ 8 แบรนด์ 9 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
                   </p>
                   <div className="flex flex-wrap gap-5">
                     {[
-                      { value: "7", label: "สาขาในเครือ" },
-                      { value: "6", label: "แบรนด์ชั้นนำ" },
+                      { value: "9", label: "สาขาในเครือ" },
+                      { value: "8", label: "แบรนด์ชั้นนำ" },
                       { value: getYearsLabel(), label: "ปีแห่งประสบการณ์" },
                       { value: "200+", label: "ทีมงานทั่วสาขา" },
                     ].map((s) => (

@@ -2,14 +2,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   getAllSocialLinksAdmin: vi.fn(),
   createSocialLink: vi.fn(),
   updateSocialLink: vi.fn(),
   archiveSocialLink: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   getAllSocialLinksAdmin: mocks.getAllSocialLinksAdmin,
   createSocialLink: mocks.createSocialLink,
@@ -28,7 +28,7 @@ const validBody = {
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllSocialLinksAdmin.mockResolvedValue([{ id: "sl1", brand: "GWM", platform: "Facebook" }]);
   mocks.createSocialLink.mockResolvedValue({ id: "sl2", ...validBody, label: "GWM Facebook" });
   mocks.updateSocialLink.mockResolvedValue(undefined);
@@ -41,13 +41,13 @@ afterEach(() => {
 
 describe("GET /api/admin/social-links", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await GET();
     expect(res.status).toBe(403);
   });
@@ -67,7 +67,7 @@ describe("GET /api/admin/social-links", () => {
 
 describe("POST /api/admin/social-links", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await POST(makeRequest("/api/admin/social-links", { method: "POST", body: validBody }));
     expect(res.status).toBe(401);
   });
@@ -115,7 +115,7 @@ describe("POST /api/admin/social-links", () => {
 
 describe("PATCH /api/admin/social-links", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await PATCH(
       makeRequest("/api/admin/social-links", { method: "PATCH", body: { id: "sl1", isActive: false } })
     );
@@ -149,7 +149,7 @@ describe("PATCH /api/admin/social-links", () => {
 
 describe("DELETE /api/admin/social-links", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await DELETE(
       makeRequest("/api/admin/social-links", { method: "DELETE", searchParams: { id: "sl1" } })
     );

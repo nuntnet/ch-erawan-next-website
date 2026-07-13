@@ -2,14 +2,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   getAllInsurancePartnersAdmin: vi.fn(),
   createInsurancePartner: vi.fn(),
   updateInsurancePartner: vi.fn(),
   archiveInsurancePartner: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   getAllInsurancePartnersAdmin: mocks.getAllInsurancePartnersAdmin,
   createInsurancePartner: mocks.createInsurancePartner,
@@ -21,7 +21,7 @@ import { GET, POST, PATCH, DELETE } from "@/app/api/admin/insurance-partners/rou
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllInsurancePartnersAdmin.mockResolvedValue([{ id: "ip1", name: "วิริยะ", brand: "ทุกแบรนด์" }]);
   mocks.createInsurancePartner.mockResolvedValue({ id: "ip2", name: "วิริยะ", brand: "ทุกแบรนด์" });
   mocks.updateInsurancePartner.mockResolvedValue(undefined);
@@ -34,13 +34,13 @@ afterEach(() => {
 
 describe("GET /api/admin/insurance-partners", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await GET();
     expect(res.status).toBe(403);
   });
@@ -60,7 +60,7 @@ describe("GET /api/admin/insurance-partners", () => {
 
 describe("POST /api/admin/insurance-partners", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await POST(
       makeRequest("/api/admin/insurance-partners", { method: "POST", body: { name: "วิริยะ", brand: "ทุกแบรนด์" } })
     );
@@ -100,7 +100,7 @@ describe("POST /api/admin/insurance-partners", () => {
 
 describe("PATCH /api/admin/insurance-partners", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await PATCH(
       makeRequest("/api/admin/insurance-partners", { method: "PATCH", body: { id: "ip1", name: "updated", isActive: false } })
     );
@@ -134,7 +134,7 @@ describe("PATCH /api/admin/insurance-partners", () => {
 
 describe("DELETE /api/admin/insurance-partners", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await DELETE(
       makeRequest("/api/admin/insurance-partners", { method: "DELETE", searchParams: { id: "ip1" } })
     );

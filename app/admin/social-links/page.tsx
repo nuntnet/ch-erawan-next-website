@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { BrandSocialLink } from "@/lib/notion-types";
 
-const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia"] as const;
+const BRANDS = ["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
 const PLATFORMS = ["Facebook", "TikTok", "YouTube", "LINE", "Instagram"] as const;
 
 const PLATFORM_COLORS: Record<string, string> = {

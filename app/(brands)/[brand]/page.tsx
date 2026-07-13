@@ -17,7 +17,7 @@ import { ArrowRight } from "lucide-react";
 import BrandSocialLinks from "@/components/BrandSocialLinks";
 
 // All brands now have sub-pages via generic [brand]/service, [brand]/body-repair etc.
-const HAS_SUB_PAGES = new Set<BrandSlug>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia"]);
+const HAS_SUB_PAGES = new Set<BrandSlug>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia", "gac", "lepas"]);
 
 export const revalidate = 3600;
 
@@ -99,7 +99,14 @@ export default async function BrandHubPage({ params }: PageProps) {
             </Link>
           </div>
 
-          <BrandCarGrid cars={cars} />
+          <BrandCarGrid
+            cars={cars}
+            emptyMessage={
+              brand.comingSoonLabel
+                ? `รุ่นรถ ${brand.displayNameTh} เร็วๆ นี้ — ${brand.comingSoonLabel}`
+                : undefined
+            }
+          />
 
           {/* Social links — from Notion CMS */}
           {(socialLinks.length > 0 || brand.social) && (

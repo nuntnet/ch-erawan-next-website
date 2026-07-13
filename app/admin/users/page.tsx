@@ -26,7 +26,13 @@ export default function AdminUsersPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/users");
-      if (res.ok) setUsers(await res.json());
+      if (res.ok) {
+        setUsers(await res.json());
+      } else {
+        toast.error("โหลดรายชื่อผู้ใช้ไม่สำเร็จ", {
+          description: res.status === 403 ? "คุณไม่มีสิทธิ์เข้าถึงหน้านี้" : `เกิดข้อผิดพลาด (${res.status})`,
+        });
+      }
     } finally { setLoading(false); }
   };
   useEffect(() => { load(); }, []);

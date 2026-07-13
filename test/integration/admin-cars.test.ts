@@ -8,7 +8,7 @@ import {
 import { validCarBody, mockCar } from "../helpers/api-fixtures";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   revalidatePath: vi.fn(),
   getAllCarsAdmin: vi.fn(),
   getCarById: vi.fn(),
@@ -18,7 +18,7 @@ const mocks = vi.hoisted(() => ({
   archiveCar: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 vi.mock("@/lib/notion", () => ({
   getAllCarsAdmin: mocks.getAllCarsAdmin,
@@ -33,7 +33,7 @@ import { GET, POST, PATCH, DELETE } from "@/app/api/admin/cars/route";
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllCarsAdmin.mockResolvedValue([mockCar]);
   mocks.getCarById.mockResolvedValue(mockCar);
   mocks.createCar.mockResolvedValue(mockCar);
@@ -48,19 +48,19 @@ afterEach(() => {
 
 describe("GET /api/admin/cars", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await GET();
     expect(res.status).toBe(403);
   });
 
   it("returns 503 when auth is not configured", async () => {
-    denyAdmin(mocks.requireAdmin, 503, "Authentication not configured");
+    denyAdmin(mocks.requireStaff, 503, "Authentication not configured");
     const res = await GET();
     expect(res.status).toBe(503);
   });
@@ -82,7 +82,7 @@ describe("GET /api/admin/cars", () => {
 
 describe("POST /api/admin/cars", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await POST(makeRequest("/api/admin/cars", { method: "POST", body: validCarBody }));
     expect(res.status).toBe(401);
   });

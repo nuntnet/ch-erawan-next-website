@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 import {
   getAllCarsAdmin,
@@ -52,7 +52,7 @@ async function revalidateCarsByNotionId(notionId: string) {
 
 // GET — list all cars (admin, includes inactive)
 export async function GET() {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const cars = await getAllCarsAdmin();
@@ -65,7 +65,7 @@ export async function GET() {
 
 // POST — create a car
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const body = await req.json();
@@ -101,7 +101,7 @@ const patchSchema = z.object({
 });
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const body = await req.json();
@@ -137,7 +137,7 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE — archive (soft delete via Is Active=false)
 export async function DELETE(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const id = req.nextUrl.searchParams.get("id");
@@ -154,7 +154,7 @@ export async function DELETE(req: NextRequest) {
 
 // PUT — bulk update sort order after drag-and-drop
 export async function PUT(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const { items } = z.object({

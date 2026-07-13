@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 import {
   getAllPromotionsAdmin,
@@ -29,7 +29,7 @@ function revalidatePromos(brand?: string) {
 }
 
 export async function GET(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const brand = req.nextUrl.searchParams.get("brand") as typeof BRANDS[number] | null;
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const data = promoSchema.parse(await req.json());
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const body = await req.json();
@@ -90,7 +90,7 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const id = req.nextUrl.searchParams.get("id");

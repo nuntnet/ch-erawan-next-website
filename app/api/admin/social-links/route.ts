@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 import { getAllSocialLinksAdmin, createSocialLink, updateSocialLink, archiveSocialLink } from "@/lib/notion";
 
@@ -16,7 +16,7 @@ const schema = z.object({
 });
 
 export async function GET() {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     return NextResponse.json(await getAllSocialLinksAdmin());
@@ -27,7 +27,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const data = schema.parse(await req.json());
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const { id, ...data } = z.object({ id: z.string().min(1) }).merge(schema.partial()).parse(await req.json());
@@ -59,7 +59,7 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const id = req.nextUrl.searchParams.get("id");

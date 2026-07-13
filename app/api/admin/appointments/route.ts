@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getAllAppointments, updateAppointmentStatus } from "@/lib/notion";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 
 // GET /api/admin/appointments — list all appointments
 export async function GET() {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const appointments = await getAllAppointments();
@@ -24,7 +24,7 @@ const patchSchema = z.object({
 });
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const body = await req.json();

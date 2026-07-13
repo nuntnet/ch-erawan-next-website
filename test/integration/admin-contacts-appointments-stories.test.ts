@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integration-utils";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   getAllContacts: vi.fn(),
   getAllAppointments: vi.fn(),
   updateAppointmentStatus: vi.fn(),
@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
   updateStoryStatus: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   getAllContacts: mocks.getAllContacts,
   getAllAppointments: mocks.getAllAppointments,
@@ -25,7 +25,7 @@ import { GET as storiesGET, PATCH as storiesPATCH } from "@/app/api/admin/storie
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.getAllContacts.mockResolvedValue([{ id: "c1", name: "A" }]);
   mocks.getAllAppointments.mockResolvedValue([{ id: "a1", status: "pending" }]);
   mocks.updateAppointmentStatus.mockResolvedValue(undefined);
@@ -39,7 +39,7 @@ afterEach(() => {
 
 describe("GET /api/admin/contacts", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await contactsGET();
     expect(res.status).toBe(401);
   });
@@ -59,7 +59,7 @@ describe("GET /api/admin/contacts", () => {
 
 describe("GET /api/admin/appointments", () => {
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await appointmentsGET();
     expect(res.status).toBe(403);
   });

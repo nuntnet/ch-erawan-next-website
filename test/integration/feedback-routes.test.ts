@@ -3,14 +3,14 @@ import { makeRequest, allowAdmin, denyAdmin, jsonBody } from "../helpers/integra
 import { validFeedbackBody } from "../helpers/api-fixtures";
 
 const mocks = vi.hoisted(() => ({
-  requireAdmin: vi.fn(),
+  requireStaff: vi.fn(),
   createFeedback: vi.fn(),
   getAllFeedbackAdmin: vi.fn(),
   updateFeedbackStatus: vi.fn(),
   sendFormNotification: vi.fn(),
 }));
 
-vi.mock("@/lib/admin-auth", () => ({ requireAdmin: mocks.requireAdmin }));
+vi.mock("@/lib/admin-auth", () => ({ requireStaff: mocks.requireStaff }));
 vi.mock("@/lib/notion", () => ({
   createFeedback: mocks.createFeedback,
   getAllFeedbackAdmin: mocks.getAllFeedbackAdmin,
@@ -25,7 +25,7 @@ import { GET as adminFeedbackGET, PATCH as adminFeedbackPATCH } from "@/app/api/
 
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-  allowAdmin(mocks.requireAdmin);
+  allowAdmin(mocks.requireStaff);
   mocks.createFeedback.mockResolvedValue(undefined);
   mocks.sendFormNotification.mockResolvedValue({ sent: false, channel: "none" });
   mocks.getAllFeedbackAdmin.mockResolvedValue([{ id: "f1", name: "Somchai", status: "ใหม่" }]);
@@ -93,13 +93,13 @@ describe("POST /api/submit/feedback", () => {
 
 describe("GET /api/admin/feedback", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await adminFeedbackGET();
     expect(res.status).toBe(401);
   });
 
   it("returns 403 for non-admin", async () => {
-    denyAdmin(mocks.requireAdmin, 403, "Forbidden");
+    denyAdmin(mocks.requireStaff, 403, "Forbidden");
     const res = await adminFeedbackGET();
     expect(res.status).toBe(403);
   });
@@ -119,7 +119,7 @@ describe("GET /api/admin/feedback", () => {
 
 describe("PATCH /api/admin/feedback", () => {
   it("returns 401 when not authenticated", async () => {
-    denyAdmin(mocks.requireAdmin, 401, "Unauthorized");
+    denyAdmin(mocks.requireStaff, 401, "Unauthorized");
     const res = await adminFeedbackPATCH(
       makeRequest("/api/admin/feedback", {
         method: "PATCH",

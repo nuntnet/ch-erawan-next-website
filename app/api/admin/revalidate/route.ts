@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 
 // POST /api/admin/revalidate — admin-triggered ISR refresh (session-guarded,
 // no shared secret needed since requireAdmin validates the admin session).
@@ -10,7 +10,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
 
   try {

@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { getAllContacts } from "@/lib/notion";
 
 // GET /api/admin/contacts — list all contact submissions (read-only)
 export async function GET() {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const contacts = await getAllContacts();

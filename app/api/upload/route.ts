@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToCloudinary, isCloudinaryConfigured } from "@/lib/cloudinary-upload";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5MB
 const ALLOWED = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
 
   if (!isCloudinaryConfigured()) {

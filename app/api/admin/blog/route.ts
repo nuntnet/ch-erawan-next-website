@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 import {
   getAllBlogPostsAdmin,
@@ -35,7 +35,7 @@ function revalidateBlog(slug?: string) {
 
 // GET — list all posts (admin) OR single post for edit via ?id=
 export async function GET(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const id = req.nextUrl.searchParams.get("id");
@@ -59,7 +59,7 @@ const createSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const { meta, markdown } = createSchema.parse(await req.json());
@@ -88,7 +88,7 @@ const patchSchema = z.object({
 });
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const { id, meta, markdown, publish } = patchSchema.parse(await req.json());
@@ -119,7 +119,7 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE — archive (soft delete)
 export async function DELETE(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const id = req.nextUrl.searchParams.get("id");

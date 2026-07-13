@@ -9,14 +9,23 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
  *   - signed in admin             -> null (proceed)
  */
 
-async function loadRequireAdmin(authValue: unknown) {
+async function loadAuthModule(authValue: unknown) {
   vi.resetModules();
   vi.doMock("next/headers", () => ({
     headers: vi.fn(async () => new Headers()),
   }));
   vi.doMock("@/lib/auth", () => ({ auth: authValue }));
-  const mod = await import("@/lib/admin-auth");
+  return import("@/lib/admin-auth");
+}
+
+async function loadRequireAdmin(authValue: unknown) {
+  const mod = await loadAuthModule(authValue);
   return mod.requireAdmin;
+}
+
+async function loadRequireStaff(authValue: unknown) {
+  const mod = await loadAuthModule(authValue);
+  return mod.requireStaff;
 }
 
 beforeEach(() => {
@@ -67,6 +76,30 @@ describe("requireAdmin", () => {
     const getSession = vi.fn(async () => ({ user: { id: "u1", role: "admin" } }));
     const requireAdmin = await loadRequireAdmin({ api: { getSession } });
     const res = await requireAdmin();
+    expect(res).toBeNull();
+  });
+});
+
+describe("requireStaff", () => {
+  it("returns 403 when the user is authenticated but neither admin nor editor", async () => {
+    const getSession = vi.fn(async () => ({ user: { id: "u1", role: "user" } }));
+    const requireStaff = await loadRequireStaff({ api: { getSession } });
+    const res = await requireStaff();
+    expect(res!.status).toBe(403);
+    await expect(res!.json()).resolves.toEqual({ error: "Forbidden" });
+  });
+
+  it("returns null (proceed) when the user is an editor", async () => {
+    const getSession = vi.fn(async () => ({ user: { id: "u1", role: "editor" } }));
+    const requireStaff = await loadRequireStaff({ api: { getSession } });
+    const res = await requireStaff();
+    expect(res).toBeNull();
+  });
+
+  it("returns null (proceed) when the user is an admin", async () => {
+    const getSession = vi.fn(async () => ({ user: { id: "u1", role: "admin" } }));
+    const requireStaff = await loadRequireStaff({ api: { getSession } });
+    const res = await requireStaff();
     expect(res).toBeNull();
   });
 });

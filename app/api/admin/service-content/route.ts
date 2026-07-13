@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 import { getAllServiceSectionsAdmin, createServiceSection, updateServiceSection } from "@/lib/notion";
 
@@ -8,7 +8,7 @@ const pageEnum = z.enum(["body-repair", "service", "one-stop"]);
 const BRANDS = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia"] as const;
 
 export async function GET() {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     return NextResponse.json(await getAllServiceSectionsAdmin());
@@ -19,7 +19,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const data = z.object({
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const { id, ...data } = z.object({

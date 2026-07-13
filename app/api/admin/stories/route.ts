@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getAllStories, updateStoryStatus } from "@/lib/notion";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireStaff } from "@/lib/admin-auth";
 import { auditFromSession } from "@/lib/audit";
 
 // GET /api/admin/stories — list all stories (admin view, all statuses)
 export async function GET(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const status = req.nextUrl.searchParams.get("status") as "pending" | "approved" | "rejected" | null;
@@ -26,7 +26,7 @@ const patchSchema = z.object({
 });
 
 export async function PATCH(req: NextRequest) {
-  const denied = await requireAdmin();
+  const denied = await requireStaff();
   if (denied) return denied;
   try {
     const body = await req.json();

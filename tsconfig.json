@@ -37,6 +37,7 @@
   "exclude": [
     "node_modules",
     "drizzle.config.ts",
-    "scripts"
+    "scripts",
+    "ch-erawanwebsite"
   ]
 }

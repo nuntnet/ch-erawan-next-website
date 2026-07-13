@@ -723,7 +723,10 @@ export async function getPublicStories(limit?: number): Promise<CustomerStory[]>
         { property: "Is Public", checkbox: { equals: true } },
       ],
     },
-    page_size: limit ?? 20,
+    // Without an explicit sort, Notion returns an arbitrary page — a newly
+    // approved story could fall outside the page_size window and never show.
+    sorts: [{ timestamp: "created_time", direction: "descending" }],
+    page_size: limit ?? 100,
   });
   return response.results.map(pageToStory);
 }

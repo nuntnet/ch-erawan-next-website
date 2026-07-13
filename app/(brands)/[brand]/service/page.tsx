@@ -14,7 +14,6 @@ import { getBranchesByBrand } from "@/lib/branchData";
 import { getSocialLinksByBrand, getFAQItems } from "@/lib/notion";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
 import { faqPageJsonLd } from "@/lib/seo";
-import CallToAction from "@/components/CallToAction";
 import {
   MapPin,
   Phone,
@@ -285,12 +284,6 @@ export default async function BrandServicePage({ params }: PageProps) {
           </div>
         </section>
       </div>
-
-      <CallToAction
-        brand={brand.displayName}
-        heading={`ศูนย์บริการ ${brand.displayNameTh} ช.เอราวัณ`}
-        description={`เช็คระยะ ซ่อมบำรุง อะไหล่แท้ ${brand.displayName} ที่ ช.เอราวัณ นครปฐม นัดออนไลน์สะดวก`}
-      />
     </>
   );
 }

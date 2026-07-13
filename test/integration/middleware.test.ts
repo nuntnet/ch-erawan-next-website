@@ -56,7 +56,7 @@ describe("middleware — /admin UI", () => {
     expect(loc).toContain("callbackUrl=%2Fadmin%2Fcars");
   });
 
-  it("redirects non-admin sessions to /login?error=unauthorized", async () => {
+  it("redirects sessions with no staff role to /login?error=no_access", async () => {
     mocks.fetch.mockResolvedValue({
       ok: true,
       json: async () => ({ user: { id: "u1", role: "user" } }),
@@ -67,7 +67,46 @@ describe("middleware — /admin UI", () => {
       })
     );
     expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toContain("/login?error=unauthorized");
+    expect(res.headers.get("location")).toContain("/login?error=no_access");
+  });
+
+  it("redirects an invalid/expired session to /login?error=session_expired", async () => {
+    mocks.fetch.mockResolvedValue({ ok: false });
+    const res = await middleware(
+      makeMwRequest("/admin", {
+        cookies: { "better-auth.session_token": "tok" },
+      })
+    );
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toContain("/login?error=session_expired");
+  });
+
+  it("allows editor sessions into general /admin pages (no redirect)", async () => {
+    mocks.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ user: { id: "u1", role: "editor" } }),
+    });
+    const res = await middleware(
+      makeMwRequest("/admin/cars", {
+        cookies: { "better-auth.session_token": "tok" },
+      })
+    );
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("bounces editor sessions away from /admin/users to /admin", async () => {
+    mocks.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ user: { id: "u1", role: "editor" } }),
+    });
+    const res = await middleware(
+      makeMwRequest("/admin/users", {
+        cookies: { "better-auth.session_token": "tok" },
+      })
+    );
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toContain("/admin");
+    expect(res.headers.get("location")).not.toContain("/login");
   });
 
   it("allows admin sessions through (no redirect)", async () => {

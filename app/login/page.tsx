@@ -10,6 +10,13 @@ import { ShieldCheck } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import CompanyLogo from "@/components/CompanyLogo";
 
+const LOGIN_ERROR_MESSAGES: Record<string, string> = {
+  no_access: "บัญชีนี้ยังไม่มีสิทธิ์เข้าถึง Admin Panel — กรุณาติดต่อผู้ดูแลระบบให้กำหนดสิทธิ์ Editor หรือ Admin",
+  session_expired: "เซสชันหมดอายุหรือไม่ถูกต้อง กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+  // Legacy code from before no_access/session_expired were split out — keep working for old bookmarked links.
+  unauthorized: "คุณไม่มีสิทธิ์เข้าถึง Admin Panel",
+};
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,7 +27,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(
-    error === "unauthorized" ? "คุณไม่มีสิทธิ์เข้าถึง Admin Panel" : ""
+    error ? (LOGIN_ERROR_MESSAGES[error] ?? "เกิดข้อผิดพลาด กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง") : ""
   );
 
   const handleSubmit = async (e: React.FormEvent) => {

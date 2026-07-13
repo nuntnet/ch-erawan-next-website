@@ -89,8 +89,11 @@ export async function middleware(req: NextRequest) {
     }
 
     const session = await fetchStaffSession(req);
-    if (!session || !STAFF_ROLES.has(session.user.role)) {
-      return NextResponse.redirect(new URL("/login?error=unauthorized", req.url));
+    if (!session) {
+      return NextResponse.redirect(new URL("/login?error=session_expired", req.url));
+    }
+    if (!STAFF_ROLES.has(session.user.role)) {
+      return NextResponse.redirect(new URL("/login?error=no_access", req.url));
     }
 
     // Authenticated staff, but this specific admin-only section (user

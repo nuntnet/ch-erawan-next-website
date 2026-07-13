@@ -108,7 +108,7 @@ export default async function BlogPostPage({
 
       {/* Content */}
       <div className="container max-w-4xl py-12">
-        <article className="prose prose-slate prose-lg max-w-none">
+        <article className="prose prose-slate prose-lg max-w-none break-words">
           <ReactMarkdown>{post.contentMarkdown}</ReactMarkdown>
         </article>
 

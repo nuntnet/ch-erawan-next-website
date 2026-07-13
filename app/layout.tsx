@@ -67,7 +67,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
-      <body className={`${inter.variable} ${ibmPlexSansThai.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${ibmPlexSansThai.variable} font-sans antialiased overflow-x-hidden`}>
         <JsonLd data={organizationGraph()} />
         <JsonLd data={websiteJsonLd()} />
         <PublicLayoutServer>

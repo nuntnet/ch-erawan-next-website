@@ -5,7 +5,7 @@ import { auditFromSession } from "@/lib/audit";
 import { getAllFAQAdmin, createFAQItem, updateFAQItem, archiveFAQItem } from "@/lib/notion";
 
 const PAGES = ["body-repair", "service", "one-stop", "general"] as const;
-const BRANDS = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia", "ทุกแบรนด์"] as const;
+const BRANDS = ["GWM", "Mazda", "Ford", "Mitsubishi", "Deepal", "Kia", "GAC", "Lepas", "ทุกแบรนด์"] as const;
 
 const schema = z.object({
   question: z.string().min(1, "กรุณาใส่คำถาม"),

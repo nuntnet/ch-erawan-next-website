@@ -336,7 +336,7 @@ export const branches: Branch[] = [
     mapEmbed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.5!2d100.07!3d13.81!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ4JzM2LjAiTiAxMDDCsDA0JzEyLjAiRQ!5e0!3m2!1sth!2sth!4v1",
     graphicMapUrl:
-      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245631/ch-erawan/branch-maps/branch-map-ford-omnoi.png",
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1783948600/ch-erawan/branch-maps/branch-map-gac-nakhonpathom.png",
     lat: 13.804027,
     lng: 100.015492,
     color: "bg-red-600",
@@ -375,7 +375,7 @@ export const branches: Branch[] = [
     mapEmbed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.5!2d100.07!3d13.81!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ4JzM2LjAiTiAxMDDCsDA0JzEyLjAiRQ!5e0!3m2!1sth!2sth!4v1",
     graphicMapUrl:
-      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245631/ch-erawan/branch-maps/branch-map-ford-omnoi.png",
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1783948602/ch-erawan/branch-maps/branch-map-lepas-nakhonpathom.png",
     lat: 13.804027,
     lng: 100.015492,
     color: "bg-teal-600",

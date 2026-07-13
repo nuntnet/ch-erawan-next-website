@@ -723,7 +723,10 @@ export async function getPublicStories(limit?: number): Promise<CustomerStory[]>
         { property: "Is Public", checkbox: { equals: true } },
       ],
     },
-    page_size: limit ?? 20,
+    // Without an explicit sort, Notion returns an arbitrary page — a newly
+    // approved story could fall outside the page_size window and never show.
+    sorts: [{ timestamp: "created_time", direction: "descending" }],
+    page_size: limit ?? 100,
   });
   return response.results.map(pageToStory);
 }
@@ -1353,11 +1356,6 @@ export async function getFAQItems(brand: string, page: string): Promise<FAQItem[
     database_id: DB.faq,
     filter: {
       and: [
-        // Match the brand's own FAQs plus cross-brand ("ทุกแบรนด์") ones.
-        { or: [
-          { property: "Brand", select: { equals: brand } },
-          { property: "Brand", select: { equals: "ทุกแบรนด์" } },
-        ] },
         { property: "Page", select: { equals: page } },
         { property: "IsActive", checkbox: { equals: true } },
       ],
@@ -1365,7 +1363,14 @@ export async function getFAQItems(brand: string, page: string): Promise<FAQItem[
     sorts: [{ property: "SortOrder", direction: "ascending" }],
     page_size: 50,
   });
-  return response.results.map(pageToFAQ);
+  // Filter Brand in-memory rather than in the Notion query: a select filter
+  // errors out (and queryDatabaseSafe drops the whole query) if the brand
+  // hasn't been used as a "Brand" option yet, which would also hide the
+  // cross-brand ("ทุกแบรนด์") FAQs for that brand until someone happens to
+  // create one FAQ item with it first.
+  return response.results
+    .map(pageToFAQ)
+    .filter((item) => item.brand === brand || item.brand === "ทุกแบรนด์");
 }
 
 export async function getAllFAQAdmin(): Promise<FAQItem[]> {

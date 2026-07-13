@@ -5,12 +5,14 @@ import BrandHero from "@/components/BrandHero";
 import BrandSubNav from "@/components/brands/BrandSubNav";
 import { BRAND_BY_SLUG } from "@/lib/brandConfig";
 import { getBranchesByBrand } from "@/lib/branchData";
+import { getFAQItems } from "@/lib/notion";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
+import { faqPageJsonLd } from "@/lib/seo";
 import {
   MapPin, Phone, Clock, MessageCircle, Wrench, ChevronRight,
   Wifi, Car, Sofa, Smartphone, ShieldCheck,
   Zap, Thermometer, RefreshCw, Key, Wind, Gauge, TriangleAlert,
-  CheckCircle2,
+  CheckCircle2, ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -85,9 +87,12 @@ const customerExperience = [
   { icon: Smartphone,   title: "จองผ่านแอป GWM",          desc: "นัดหมายผ่าน GWM Thailand App ตลอด 24 ชม." },
 ];
 
-export default function GwmServicePage() {
+export default async function GwmServicePage() {
   const brand = BRAND_BY_SLUG.gwm;
-  const gwmBranches = getBranchesByBrand("GWM");
+  const [gwmBranches, faqItems] = await Promise.all([
+    Promise.resolve(getBranchesByBrand("GWM")),
+    getFAQItems("GWM", "service"),
+  ]);
 
   const breadcrumbs = [
     { name: "หน้าแรก", path: "/" },
@@ -101,6 +106,12 @@ export default function GwmServicePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(breadcrumbs)) }}
       />
+      {faqItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(faqItems.map(f => ({ question: f.question, answer: f.answer })))) }}
+        />
+      )}
       <div className="min-h-screen bg-[#F8FAFC] pt-[64px]">
         <BrandHero
           brand={brand}
@@ -261,6 +272,40 @@ export default function GwmServicePage() {
             </div>
           </div>
         </section>
+
+        {/* ── FAQ ── */}
+        {faqItems.length > 0 && (
+          <section className="bg-gray-50 py-14">
+            <div className="container max-w-3xl">
+              <div className="text-center mb-10">
+                <p className="text-sm font-medium text-[#C8102E] uppercase tracking-wider mb-2">
+                  คำถามที่พบบ่อย
+                </p>
+                <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">
+                  FAQ — ศูนย์บริการ GWM
+                </h2>
+              </div>
+              <div className="space-y-3">
+                {faqItems.map((item) => (
+                  <details
+                    key={item.id}
+                    className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+                  >
+                    <summary className="flex items-center justify-between gap-4 p-5 cursor-pointer list-none select-none hover:bg-gray-50 transition-colors">
+                      <span className="font-semibold text-[#0F172A] text-sm leading-snug">
+                        {item.question}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-400 shrink-0 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="px-5 pb-5 pt-1 text-sm text-gray-600 leading-relaxed border-t border-gray-50">
+                      {item.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Notion CMS content */}
         <Suspense fallback={null}>

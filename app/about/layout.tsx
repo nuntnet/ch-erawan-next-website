@@ -24,7 +24,7 @@ const aboutPageSchema = {
       "@id": `${SITE_URL}/about#webpage`,
       name: "เกี่ยวกับ ช.เอราวัณ กรุ๊ป",
       url: `${SITE_URL}/about`,
-      description: `ประวัติกว่า ${getYearsOfExperience()} ปี ตัวแทนจำหน่าย Mazda, Ford, Mitsubishi, GWM, Deepal, Kia จ.นครปฐม`,
+      description: `ประวัติกว่า ${getYearsOfExperience()} ปี ตัวแทนจำหน่าย Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas จ.นครปฐม`,
       mainEntity: { "@id": `${SITE_URL}/#organization` },
     },
   ],

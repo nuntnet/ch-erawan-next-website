@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata = pageMetadata({
   title: "รถยนต์ใหม่ทุกแบรนด์ ราคาดีที่สุด นครปฐม | ช.เอราวัณ",
   description:
-    "รถยนต์ใหม่ราคาโรงงาน Mazda, Ford, Mitsubishi, GWM, Deepal, Kia ที่นครปฐม ผ่อนเริ่มต้นหมื่นกว่าบาท/เดือน จอง test drive ฟรีได้เลย",
+    "รถยนต์ใหม่ราคาโรงงาน Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas ที่นครปฐม ผ่อนเริ่มต้นหมื่นกว่าบาท/เดือน จอง test drive ฟรีได้เลย",
   path: "/cars",
 });
 

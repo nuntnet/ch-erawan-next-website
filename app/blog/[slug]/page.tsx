@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { getBlogPostWithContent, getAllBlogSlugs, getPublishedBlogPosts } from "@/lib/notion";
 import { format } from "date-fns";
@@ -75,10 +76,13 @@ export default async function BlogPostPage({
       {/* Hero Banner */}
       <div className="relative overflow-hidden min-h-[400px] lg:min-h-[500px] flex items-end">
         {post.coverImageUrl ? (
-          <img
-            src={cldUrl(post.coverImageUrl, "full")}
+          <Image
+            src={cldUrl(post.coverImageUrl, "quality")}
             alt={post.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-[#0F172A] to-[#334155]" />

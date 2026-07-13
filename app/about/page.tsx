@@ -470,7 +470,7 @@ export default function About() {
       {/* Brand strip */}
       <section className="bg-white border-b border-gray-100">
         <div className="container py-5">
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-y-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2">
             {BRANDS.map((brand) => (
               <Link
                 key={brand.slug}

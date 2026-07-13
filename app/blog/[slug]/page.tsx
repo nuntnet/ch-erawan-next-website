@@ -73,18 +73,18 @@ export default async function BlogPostPage({
       <JsonLd data={breadcrumbs} />
     <div className="min-h-screen bg-white pt-[68px]">
       {/* Hero Banner */}
-      <div className="relative h-[400px] lg:h-[500px]">
+      <div className="relative overflow-hidden min-h-[400px] lg:min-h-[500px] flex items-end">
         {post.coverImageUrl ? (
           <img
             src={cldUrl(post.coverImageUrl, "full")}
             alt={post.title}
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#0F172A] to-[#334155]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0F172A] to-[#334155]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+        <div className="relative z-10 w-full p-8 lg:p-12">
           <div className="container max-w-4xl">
             <div className="flex items-center gap-2 text-white/60 text-sm mb-3">
               <Link href="/blog" className="hover:text-white transition-colors">บทความ</Link>

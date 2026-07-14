@@ -1,12 +1,12 @@
-import Image from "next/image";
-import { cldUrl } from "@/lib/cloudinary";
 import Link from "next/link";
 import BrandHero from "@/components/BrandHero";
 import BrandSubNav from "@/components/brands/BrandSubNav";
+import PromotionFeedCard from "@/components/PromotionFeedCard";
 import { BRAND_BY_SLUG } from "@/lib/brandConfig";
+import { getBranchesByBrand } from "@/lib/branchData";
 import { getPromotionsByBrand } from "@/lib/notion";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
-import { ExternalLink, Calendar, ChevronRight } from "lucide-react";
+import { Calendar, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Promotion } from "@/lib/notion-types";
 
@@ -39,29 +39,9 @@ function groupByMonth(promotions: Promotion[]): Map<string, Promotion[]> {
   return map;
 }
 
-function isExpiringSoon(endDate: string | null): boolean {
-  if (!endDate) return false;
-  const diff = new Date(endDate).getTime() - Date.now();
-  return diff > 0 && diff < 7 * 24 * 60 * 60 * 1000; // within 7 days
-}
-
-function isNew(startDate: string | null): boolean {
-  if (!startDate) return false;
-  const diff = Date.now() - new Date(startDate).getTime();
-  return diff < 7 * 24 * 60 * 60 * 1000; // within 7 days
-}
-
-function formatDateRange(startDate: string | null, endDate: string | null): string {
-  const fmt = (d: string) =>
-    new Date(d).toLocaleDateString("th-TH", { day: "numeric", month: "short" });
-  if (startDate && endDate) return `${fmt(startDate)} – ${fmt(endDate)}`;
-  if (startDate) return `เริ่ม ${fmt(startDate)}`;
-  if (endDate) return `ถึง ${fmt(endDate)}`;
-  return "";
-}
-
 export default async function GwmPromotionsPage() {
   const brand = BRAND_BY_SLUG.gwm;
+  const fallbackTel = getBranchesByBrand("GWM")[0]?.phone;
   const promotions = await getPromotionsByBrand("GWM");
   const grouped = groupByMonth(promotions);
 
@@ -133,94 +113,15 @@ export default async function GwmPromotionsPage() {
                     <span className="text-xs text-gray-400 shrink-0">{items.length} โปรโมชั่น</span>
                   </div>
 
-                  {/* Cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {/* Feed */}
+                  <div className="max-w-2xl mx-auto space-y-6">
                     {items.map((promo) => (
-                      <div
+                      <PromotionFeedCard
                         key={promo.id}
-                        className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
-                      >
-                        {/* Image / Placeholder */}
-                        {promo.coverImageUrl ? (
-                          <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                            <Image
-                              src={cldUrl(promo.coverImageUrl, "quality")}
-                              alt={promo.title}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-500"
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            />
-                            {/* Badges on image */}
-                            <div className="absolute top-3 left-3 flex gap-1.5">
-                              {isNew(promo.startDate) && (
-                                <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใหม่
-                                </span>
-                              )}
-                              {isExpiringSoon(promo.endDate) && (
-                                <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใกล้หมดเวลา
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="relative aspect-[16/9] bg-gradient-to-br from-[#0F172A] via-[#1a2f52] to-[#C8102E] flex items-center justify-center overflow-hidden">
-                            <span className="text-white/10 text-7xl font-black select-none">GWM</span>
-                            {/* Decorative circles */}
-                            <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/5" />
-                            <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-white/5" />
-                            {/* Badges */}
-                            <div className="absolute top-3 left-3 flex gap-1.5">
-                              {isNew(promo.startDate) && (
-                                <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใหม่
-                                </span>
-                              )}
-                              {isExpiringSoon(promo.endDate) && (
-                                <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใกล้หมดเวลา
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Content */}
-                        <div className="p-5">
-                          <h3 className="font-semibold text-[#0F172A] leading-snug line-clamp-2 mb-3 group-hover:text-[#C8102E] transition-colors">
-                            {promo.title}
-                          </h3>
-
-                          {/* Date range pill */}
-                          {(promo.startDate || promo.endDate) && (
-                            <div className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500 mb-3">
-                              <Calendar className="w-3 h-3 text-gray-400" />
-                              {formatDateRange(promo.startDate, promo.endDate)}
-                            </div>
-                          )}
-
-                          {promo.linkUrl ? (
-                            <a
-                              href={promo.linkUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-sm font-medium text-[#C8102E] hover:underline"
-                            >
-                              ดูรายละเอียด
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          ) : (
-                            <a
-                              href="tel:034-219-000"
-                              className="flex items-center gap-1 text-sm font-medium text-[#C8102E] hover:underline"
-                            >
-                              สอบถามโปรโมชั่น
-                              <ChevronRight className="w-3.5 h-3.5" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
+                        promo={promo}
+                        accentColor="#C8102E"
+                        fallbackTel={fallbackTel}
+                      />
                     ))}
                   </div>
                 </div>

@@ -12,7 +12,7 @@ const BranchesMap = dynamic(() => import("@/components/BranchesMapEmbed"), {
 });
 import BrandLogo from "@/components/BrandLogo";
 import BrandHallCard from "@/components/BrandHallCard";
-import PromoFallbackCover from "@/components/PromoFallbackCover";
+import PromotionFeedCard from "@/components/PromotionFeedCard";
 import { BRAND_IMAGES } from "@/lib/brandImages";
 import { BRANDS } from "@/lib/brandConfig";
 import { cldUrl } from "@/lib/cloudinary";
@@ -403,52 +403,18 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">โปรโมชั่นและข้อเสนอพิเศษ</h2>
               <p className="text-gray-500">ดีลล่าสุดจากทุกแบรนด์ ช.เอราวัณ กรุ๊ป</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="max-w-2xl mx-auto space-y-6">
               {promotions.map((promo) => {
                 const brandSlug = BRANDS.find((b) => b.notionBrand === promo.brand)?.slug;
-                const href = promo.linkUrl || (brandSlug ? `/${brandSlug}/promotions` : "/contact");
-                const external = !!promo.linkUrl;
-                const endLabel = promo.endDate
-                  ? `ถึง ${new Date(promo.endDate).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}`
-                  : null;
-                const card = (
-                  <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full">
-                    <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                      {promo.coverImageUrl ? (
-                        <Image
-                          src={cldUrl(promo.coverImageUrl, "quality")}
-                          alt={promo.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <PromoFallbackCover brand={promo.brand} title={promo.title} />
-                      )}
-                      <Badge className="absolute top-3 left-3 bg-[#0F172A]/85 text-white text-[10px] font-semibold px-2.5 py-1 border-0 backdrop-blur-sm">
-                        {promo.brand}
-                      </Badge>
-                    </div>
-                    <div className="p-5">
-                      <h3 className="font-semibold text-[#0F172A] leading-snug line-clamp-2 mb-3 group-hover:text-[#DD5259] transition-colors">
-                        {promo.title}
-                      </h3>
-                      {endLabel && (
-                        <div className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500 mb-3">
-                          <Calendar className="w-3 h-3 text-gray-400" />
-                          {endLabel}
-                        </div>
-                      )}
-                      <span className="flex items-center gap-1 text-sm font-medium text-[#DD5259]">
-                        ดูรายละเอียด <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </div>
-                );
-                return external ? (
-                  <a key={promo.id} href={href} target="_blank" rel="noopener noreferrer">{card}</a>
-                ) : (
-                  <Link key={promo.id} href={href}>{card}</Link>
+                const accentColor = BRANDS.find((b) => b.notionBrand === promo.brand)?.accentColor ?? "#DD5259";
+                return (
+                  <PromotionFeedCard
+                    key={promo.id}
+                    promo={promo}
+                    accentColor={accentColor}
+                    showBrandName
+                    fallbackHref={brandSlug ? `/${brandSlug}/promotions` : "/contact"}
+                  />
                 );
               })}
             </div>

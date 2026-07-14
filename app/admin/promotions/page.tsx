@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Tag, Plus, Pencil, Trash2, Search, ExternalLink, Calendar, X, Filter } from "lucide-react";
 import Pagination from "@/components/admin/Pagination";
+import ImageUploader from "@/components/admin/ImageUploader";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -358,13 +359,11 @@ export default function AdminPromotionsPage() {
                 </div>
               </div>
               {/* Cover Image */}
-              <div>
-                <label className="text-xs font-semibold text-gray-600 mb-1.5 block">URL รูปภาพ (Cloudinary)</label>
-                <input type="text" value={form.coverImageUrl}
-                  onChange={(e) => setForm((f) => ({ ...f, coverImageUrl: e.target.value }))}
-                  placeholder="https://res.cloudinary.com/..."
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20" />
-              </div>
+              <ImageUploader
+                label="รูปภาพโปรโมชั่น"
+                value={form.coverImageUrl ? [form.coverImageUrl] : []}
+                onChange={(urls) => setForm((f) => ({ ...f, coverImageUrl: urls[0] ?? "" }))}
+              />
               {/* Link */}
               <div>
                 <label className="text-xs font-semibold text-gray-600 mb-1.5 block">Link (ไม่บังคับ)</label>

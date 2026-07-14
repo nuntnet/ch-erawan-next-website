@@ -15,7 +15,7 @@ interface PageProps {
 
 export async function generateStaticParams() {
   return Object.values(BRAND_BY_SLUG)
-    .filter((b) => b.slug !== "gwm" && b.subLines?.length)
+    .filter((b) => b.subLines?.length)
     .flatMap((b) => b.subLines!.map((line) => ({ brand: b.slug, line: line.slug })));
 }
 

@@ -404,7 +404,3 @@ export function matchCarToLine(car: Car, brand: BrandConfig, line: SubLine): boo
   const model = car.model.toUpperCase();
   return line.modelPrefixes.some((prefix) => model.startsWith(prefix.toUpperCase()));
 }
-
-export function matchCarToGwmLine(car: Car, line: GwmLineSlug): boolean {
-  return matchCarToLine(car, BRAND_BY_SLUG.gwm, GWM_LINE_BY_SLUG[line]);
-}

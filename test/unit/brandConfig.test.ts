@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import {
-  matchCarToGwmLine,
   matchCarToLine,
   legacyBrandQueryToPath,
   isBrandSlug,
@@ -51,13 +50,6 @@ describe("brandConfig", () => {
     expect(legacyBrandQueryToPath("HAVAL")).toBe("/gwm/haval");
     expect(legacyBrandQueryToPath("haval")).toBe("/gwm/haval");
     expect(legacyBrandQueryToPath("Unknown")).toBeNull();
-  });
-
-  it("matches GWM cars by model prefix", () => {
-    expect(matchCarToGwmLine(gwmCar("HAVAL H6 HEV"), "haval")).toBe(true);
-    expect(matchCarToGwmLine(gwmCar("ORA Good Cat"), "ora")).toBe(true);
-    expect(matchCarToGwmLine(gwmCar("TANK 300"), "tank")).toBe(true);
-    expect(matchCarToGwmLine(gwmCar("HAVAL H6"), "ora")).toBe(false);
   });
 
   it("exposes hub paths for all eight brands", () => {

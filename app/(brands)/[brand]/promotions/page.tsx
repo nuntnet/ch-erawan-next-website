@@ -1,18 +1,17 @@
-import Image from "next/image";
-import { cldUrl } from "@/lib/cloudinary";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BrandHero from "@/components/BrandHero";
 import BrandSubNav from "@/components/brands/BrandSubNav";
-import PromoFallbackCover from "@/components/PromoFallbackCover";
+import PromotionFeedCard from "@/components/PromotionFeedCard";
 import {
   BRAND_BY_SLUG,
   BRAND_SLUGS,
   isBrandSlug,
 } from "@/lib/brandConfig";
+import { getBranchesByBrand } from "@/lib/branchData";
 import { getPromotionsByBrand, getSocialLinksByBrand } from "@/lib/notion";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
-import { ExternalLink, Calendar, ChevronRight } from "lucide-react";
+import { Calendar, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Promotion } from "@/lib/notion-types";
 
@@ -58,32 +57,13 @@ function groupByMonth(promotions: Promotion[]): Map<string, Promotion[]> {
   return map;
 }
 
-function isExpiringSoon(endDate: string | null): boolean {
-  if (!endDate) return false;
-  const diff = new Date(endDate).getTime() - Date.now();
-  return diff > 0 && diff < 7 * 24 * 60 * 60 * 1000;
-}
-
-function isNew(startDate: string | null): boolean {
-  if (!startDate) return false;
-  const diff = Date.now() - new Date(startDate).getTime();
-  return diff < 7 * 24 * 60 * 60 * 1000;
-}
-
-function formatDateRange(startDate: string | null, endDate: string | null): string {
-  const fmt = (d: string) =>
-    new Date(d).toLocaleDateString("th-TH", { day: "numeric", month: "short" });
-  if (startDate && endDate) return `${fmt(startDate)} – ${fmt(endDate)}`;
-  if (startDate) return `เริ่ม ${fmt(startDate)}`;
-  if (endDate) return `ถึง ${fmt(endDate)}`;
-  return "";
-}
-
 export default async function BrandPromotionsPage({ params }: PageProps) {
   const { brand: slug } = await params;
   if (!isBrandSlug(slug)) notFound();
 
   const brand = BRAND_BY_SLUG[slug];
+  const brandBranches = getBranchesByBrand(brand.notionBrand);
+  const fallbackTel = brandBranches[0]?.phone;
 
   const [promotions, socialLinks] = await Promise.all([
     getPromotionsByBrand(brand.notionBrand as Promotion["brand"]),
@@ -132,9 +112,9 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
         <BrandSubNav brand={brand} currentSection="promotions" scrollPastHero />
 
         <section className="container py-12 lg:py-16">
-          {/* Header */}
-          <div className="flex items-end justify-between mb-10">
-            <div>
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="mb-8">
               <p
                 className="text-sm font-medium uppercase tracking-wider mb-1"
                 style={{ color: accentColor }}
@@ -144,144 +124,63 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">
                 โปรโมชั่น {brand.displayNameTh}
               </h2>
+              {promotions.length > 0 && (
+                <p className="text-sm text-gray-400 mt-1">
+                  {promotions.length} แคมเปญ · {grouped.size} ช่วงเวลา
+                </p>
+              )}
             </div>
-            {promotions.length > 0 && (
-              <p className="text-sm text-gray-400 pb-1">
-                {promotions.length} แคมเปญ · {grouped.size} ช่วงเวลา
-              </p>
+
+            {promotions.length === 0 ? (
+              <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
+                <div className="text-6xl mb-4">🎁</div>
+                <h3 className="text-lg font-semibold text-[#0F172A] mb-2">
+                  ติดตามโปรโมชั่นได้เร็วๆ นี้
+                </h3>
+                <p className="text-gray-500 mb-6 text-sm">
+                  ยังไม่มีโปรโมชั่นในขณะนี้ — ติดต่อเราเพื่อสอบถามข้อเสนอพิเศษ
+                </p>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <a href={lineUrl} target="_blank" rel="noopener noreferrer">
+                    <Button className="bg-[#06C755] hover:bg-[#05a847] text-white border-0">
+                      สอบถามผ่าน LINE
+                    </Button>
+                  </a>
+                  <Link href="/contact">
+                    <Button variant="outline">ติดต่อสอบถาม</Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {Array.from(grouped.entries()).map(([monthLabel, items]) => (
+                  <div key={monthLabel}>
+                    {/* Month divider */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex items-center gap-1.5 bg-[#0F172A] text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {monthLabel}
+                      </div>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <span className="text-xs text-gray-400 shrink-0">{items.length} โปรโมชั่น</span>
+                    </div>
+
+                    {/* Feed */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                      {items.map((promo) => (
+                        <PromotionFeedCard
+                          key={promo.id}
+                          promo={promo}
+                          accentColor={accentColor}
+                          fallbackTel={fallbackTel}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-
-          {promotions.length === 0 ? (
-            <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
-              <div className="text-6xl mb-4">🎁</div>
-              <h3 className="text-lg font-semibold text-[#0F172A] mb-2">
-                ติดตามโปรโมชั่นได้เร็วๆ นี้
-              </h3>
-              <p className="text-gray-500 mb-6 text-sm">
-                ยังไม่มีโปรโมชั่นในขณะนี้ — ติดต่อเราเพื่อสอบถามข้อเสนอพิเศษ
-              </p>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <a href={lineUrl} target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-[#06C755] hover:bg-[#05a847] text-white border-0">
-                    สอบถามผ่าน LINE
-                  </Button>
-                </a>
-                <Link href="/contact">
-                  <Button variant="outline">ติดต่อสอบถาม</Button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-12">
-              {Array.from(grouped.entries()).map(([monthLabel, items]) => (
-                <div key={monthLabel}>
-                  {/* Month divider */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-semibold px-4 py-2 rounded-full">
-                      <Calendar className="w-4 h-4" />
-                      {monthLabel}
-                    </div>
-                    <div className="flex-1 h-px bg-gray-200" />
-                    <span className="text-xs text-gray-400 shrink-0">{items.length} โปรโมชั่น</span>
-                  </div>
-
-                  {/* Cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {items.map((promo) => (
-                      <div
-                        key={promo.id}
-                        className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
-                      >
-                        {/* Image / Placeholder */}
-                        {promo.coverImageUrl ? (
-                          <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                            <Image
-                              src={cldUrl(promo.coverImageUrl, "quality")}
-                              alt={promo.title}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-500"
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            />
-                            {/* Badges on image */}
-                            <div className="absolute top-3 left-3 flex gap-1.5">
-                              {isNew(promo.startDate) && (
-                                <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใหม่
-                                </span>
-                              )}
-                              {isExpiringSoon(promo.endDate) && (
-                                <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใกล้หมดเวลา
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="relative aspect-[16/9] overflow-hidden">
-                            <PromoFallbackCover brand={promo.brand} title={promo.title} />
-                            {/* Badges */}
-                            <div className="absolute top-3 left-3 flex gap-1.5">
-                              {isNew(promo.startDate) && (
-                                <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใหม่
-                                </span>
-                              )}
-                              {isExpiringSoon(promo.endDate) && (
-                                <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  ใกล้หมดเวลา
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Content */}
-                        <div className="p-5">
-                          <h3
-                            className="font-semibold text-[#0F172A] leading-snug line-clamp-2 mb-3 transition-colors"
-                            style={{ ["--hover-color" as string]: accentColor }}
-                          >
-                            {promo.title}
-                          </h3>
-
-                          {/* Date range pill */}
-                          {(promo.startDate || promo.endDate) && (
-                            <div className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500 mb-3">
-                              <Calendar className="w-3 h-3 text-gray-400" />
-                              {formatDateRange(promo.startDate, promo.endDate)}
-                            </div>
-                          )}
-
-                          {promo.linkUrl ? (
-                            <a
-                              href={promo.linkUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-sm font-medium hover:underline"
-                              style={{ color: accentColor }}
-                            >
-                              ดูรายละเอียด
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          ) : (
-                            <a
-                              href="tel:034-219-000"
-                              className="flex items-center gap-1 text-sm font-medium hover:underline"
-                              style={{ color: accentColor }}
-                            >
-                              สอบถามโปรโมชั่น
-                              <ChevronRight className="w-3.5 h-3.5" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </section>
 
         {/* CTA LINE footer */}

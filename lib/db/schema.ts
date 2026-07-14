@@ -70,6 +70,33 @@ export const verification = sqliteTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+// ── Job Postings (pushed from CATS ATS) ──────────────────
+export const jobPostings = sqliteTable(
+  "job_postings",
+  {
+    // CATS's own job id — used as the upsert key so re-pushing the same
+    // job (e.g. to flip status) updates the row instead of duplicating it.
+    id: text("id").primaryKey(),
+    title: text("title").notNull(),
+    code: text("code"),
+    category: text("category").notNull(), // "sales" | "service" | "finance" | "support" | "mgmt"
+    branches: text("branches").notNull(), // JSON string array of branch keys (see BRANCH_LABELS)
+    salary: text("salary"),
+    employmentType: text("employment_type"),
+    requirements: text("requirements"), // JSON string array
+    description: text("description"),
+    urgent: integer("urgent", { mode: "boolean" }).notNull().default(false),
+    status: text("status").notNull().default("open"), // "open" | "closed"
+    source: text("source").notNull().default("cats"),
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+    updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  },
+  (t) => [
+    index("jp_status_idx").on(t.status),
+    index("jp_category_idx").on(t.category),
+  ]
+);
+
 export const analyticsEvents = sqliteTable(
   "analytics_events",
   {

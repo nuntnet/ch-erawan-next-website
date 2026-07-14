@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: Ch.Erawan Career Page — CATS Sync API
+  description: >
+    Inbound webhook for CATS (cats.ch-erawan.com) to push job postings into the
+    ch-erawan-next career page. See docs/CATS_SYNC_API.md for prose docs.
+  version: "1.0.0"
+servers:
+  - url: https://newweb.ch-erawan.com
+    description: Production
+  - url: https://staging.ch-erawan.com
+    description: Staging
+  - url: http://localhost:3002
+    description: Local dev
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/cats/jobs:
+    post:
+      summary: Create or update job postings (upsert by externalId)
+      operationId: upsertJobPostings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/JobPosting"
+                - type: object
+                  required: [jobs]
+                  properties:
+                    jobs:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/JobPosting"
+            examples:
+              single:
+                summary: Single job
+                value:
+                  externalId: cats-1234
+                  title: ที่ปรึกษาการขาย (Sales Consultant)
+                  code: SC
+                  category: sales
+                  branches: [mazda_npt, ford_omnoi]
+                  salary: ตามประสบการณ์ + commission
+                  employmentType: งานประจำ
+                  requirements: ["วุฒิ ปวส. ขึ้นไป", "มีใจรักงานบริการ"]
+                  urgent: true
+                  status: open
+              batch:
+                summary: Batch of jobs
+                value:
+                  jobs:
+                    - externalId: cats-1
+                      title: ช่างเทคนิค
+                      category: service
+                      branches: [gwm_npt]
+                      status: open
+                    - externalId: cats-2
+                      title: พนักงานบัญชี
+                      category: finance
+                      branches: [hq]
+                      status: closed
+      responses:
+        "200":
+          description: Upsert result (may include partial failures)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  upserted:
+                    type: array
+                    items: { type: string }
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        externalId: { type: string }
+                        issues: {}
+        "400":
+          description: Invalid JSON or batch shape
+        "401":
+          description: Missing/invalid bearer secret
+    patch:
+      summary: Toggle a posting's open/closed status
+      operationId: setJobPostingStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [externalId, status]
+              properties:
+                externalId: { type: string }
+                status: { $ref: "#/components/schemas/JobStatus" }
+            example:
+              externalId: cats-1234
+              status: closed
+      responses:
+        "200":
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+        "400":
+          description: Invalid body
+        "401":
+          description: Missing/invalid bearer secret
+        "404":
+          description: Unknown externalId — push it via POST first
+    get:
+      summary: List every stored posting, any status (verification/debug)
+      operationId: listAllJobPostings
+      responses:
+        "200":
+          description: All postings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobs:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/JobPostingStored"
+        "401":
+          description: Missing/invalid bearer secret
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: CATS_SYNC_SECRET shared secret
+  schemas:
+    JobCategory:
+      type: string
+      enum: [sales, service, finance, support, mgmt]
+    JobBranch:
+      type: string
+      enum:
+        - mazda_npt
+        - mazda_salaya
+        - deepal_salaya
+        - ford_omnoi
+        - mitsubishi_npt
+        - gwm_npt
+        - kia_sampran
+        - hq
+    JobStatus:
+      type: string
+      enum: [open, closed]
+    JobPosting:
+      type: object
+      required: [externalId, title, category, branches, status]
+      properties:
+        externalId: { type: string, description: "CATS's own job id — the upsert key" }
+        title: { type: string }
+        code: { type: string, nullable: true }
+        category: { $ref: "#/components/schemas/JobCategory" }
+        branches:
+          type: array
+          minItems: 1
+          items: { $ref: "#/components/schemas/JobBranch" }
+        salary: { type: string, nullable: true }
+        employmentType: { type: string, nullable: true }
+        requirements:
+          type: array
+          nullable: true
+          items: { type: string }
+        description: { type: string, nullable: true }
+        urgent: { type: boolean, default: false }
+        status: { $ref: "#/components/schemas/JobStatus" }
+    JobPostingStored:
+      allOf:
+        - $ref: "#/components/schemas/JobPosting"
+        - type: object
+          properties:
+            id: { type: string, description: "same value as externalId" }

@@ -112,9 +112,9 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
         <BrandSubNav brand={brand} currentSection="promotions" scrollPastHero />
 
         <section className="container py-12 lg:py-16">
-          {/* Header */}
-          <div className="flex items-end justify-between mb-10">
-            <div>
+          <div className="max-w-xl mx-auto">
+            {/* Header */}
+            <div className="mb-8">
               <p
                 className="text-sm font-medium uppercase tracking-wider mb-1"
                 style={{ color: accentColor }}
@@ -124,63 +124,63 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">
                 โปรโมชั่น {brand.displayNameTh}
               </h2>
+              {promotions.length > 0 && (
+                <p className="text-sm text-gray-400 mt-1">
+                  {promotions.length} แคมเปญ · {grouped.size} ช่วงเวลา
+                </p>
+              )}
             </div>
-            {promotions.length > 0 && (
-              <p className="text-sm text-gray-400 pb-1">
-                {promotions.length} แคมเปญ · {grouped.size} ช่วงเวลา
-              </p>
+
+            {promotions.length === 0 ? (
+              <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
+                <div className="text-6xl mb-4">🎁</div>
+                <h3 className="text-lg font-semibold text-[#0F172A] mb-2">
+                  ติดตามโปรโมชั่นได้เร็วๆ นี้
+                </h3>
+                <p className="text-gray-500 mb-6 text-sm">
+                  ยังไม่มีโปรโมชั่นในขณะนี้ — ติดต่อเราเพื่อสอบถามข้อเสนอพิเศษ
+                </p>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <a href={lineUrl} target="_blank" rel="noopener noreferrer">
+                    <Button className="bg-[#06C755] hover:bg-[#05a847] text-white border-0">
+                      สอบถามผ่าน LINE
+                    </Button>
+                  </a>
+                  <Link href="/contact">
+                    <Button variant="outline">ติดต่อสอบถาม</Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {Array.from(grouped.entries()).map(([monthLabel, items]) => (
+                  <div key={monthLabel}>
+                    {/* Month divider */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex items-center gap-1.5 bg-[#0F172A] text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {monthLabel}
+                      </div>
+                      <div className="flex-1 h-px bg-gray-200" />
+                      <span className="text-xs text-gray-400 shrink-0">{items.length} โปรโมชั่น</span>
+                    </div>
+
+                    {/* Feed */}
+                    <div className="space-y-4">
+                      {items.map((promo) => (
+                        <PromotionFeedCard
+                          key={promo.id}
+                          promo={promo}
+                          accentColor={accentColor}
+                          fallbackTel={fallbackTel}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-
-          {promotions.length === 0 ? (
-            <div className="text-center py-24 bg-white rounded-2xl border border-gray-100">
-              <div className="text-6xl mb-4">🎁</div>
-              <h3 className="text-lg font-semibold text-[#0F172A] mb-2">
-                ติดตามโปรโมชั่นได้เร็วๆ นี้
-              </h3>
-              <p className="text-gray-500 mb-6 text-sm">
-                ยังไม่มีโปรโมชั่นในขณะนี้ — ติดต่อเราเพื่อสอบถามข้อเสนอพิเศษ
-              </p>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <a href={lineUrl} target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-[#06C755] hover:bg-[#05a847] text-white border-0">
-                    สอบถามผ่าน LINE
-                  </Button>
-                </a>
-                <Link href="/contact">
-                  <Button variant="outline">ติดต่อสอบถาม</Button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-12">
-              {Array.from(grouped.entries()).map(([monthLabel, items]) => (
-                <div key={monthLabel}>
-                  {/* Month divider */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex items-center gap-2 bg-[#0F172A] text-white text-sm font-semibold px-4 py-2 rounded-full">
-                      <Calendar className="w-4 h-4" />
-                      {monthLabel}
-                    </div>
-                    <div className="flex-1 h-px bg-gray-200" />
-                    <span className="text-xs text-gray-400 shrink-0">{items.length} โปรโมชั่น</span>
-                  </div>
-
-                  {/* Feed */}
-                  <div className="max-w-2xl mx-auto space-y-6">
-                    {items.map((promo) => (
-                      <PromotionFeedCard
-                        key={promo.id}
-                        promo={promo}
-                        accentColor={accentColor}
-                        fallbackTel={fallbackTel}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </section>
 
         {/* CTA LINE footer */}

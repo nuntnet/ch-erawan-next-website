@@ -1,29 +1,14 @@
-"use client";
-
-import { useState } from "react";
 import { getYearsLabel, getYearsOfExperience } from "@/lib/company";
+import { listOpenJobPostings } from "@/lib/jobs";
 import Image from "next/image";
-import {
-  CheckCircle, Phone, Mail, Building, DollarSign,
-  Clock, ArrowUpRight, Users, TrendingUp, Shield, Gift,
-  Wrench, Car, Calculator, Headphones, ChevronRight, MessageCircle,
-} from "lucide-react";
+import { CheckCircle, Phone, Mail, Clock, TrendingUp, Shield, Gift, MessageCircle } from "lucide-react";
+import { JobsSection, type JobCard } from "./JobsSection";
+
+export const revalidate = 0; // always reflect the latest push from CATS
 
 // ───────────────────────────────────────────
 // Data
 // ───────────────────────────────────────────
-
-const BRANCH_LABELS: Record<string, string> = {
-  all:             "ทั้งหมด",
-  mazda_npt:       "Mazda นครปฐม",
-  mazda_salaya:    "Mazda ศาลายา",
-  deepal_salaya:   "Deepal ศาลายา",
-  ford_omnoi:      "Ford อ้อมใหญ่",
-  mitsubishi_npt:  "Mitsubishi นครปฐม",
-  gwm_npt:         "GWM นครปฐม",
-  kia_sampran:     "Kia นครปฐม",
-  hq:              "สำนักงานใหญ่",
-};
 
 const benefits = [
   {
@@ -48,160 +33,22 @@ const benefits = [
   },
 ];
 
-const jobCategories = [
-  { id: "sales",   label: "ฝ่ายขาย",    icon: Car },
-  { id: "service", label: "ฝ่ายบริการ", icon: Wrench },
-  { id: "finance", label: "ฝ่ายบัญชี/การเงิน", icon: Calculator },
-  { id: "support", label: "ฝ่ายสนับสนุน", icon: Headphones },
-  { id: "mgmt",    label: "ผู้บริหาร",  icon: Users },
-];
-
-interface Job {
-  title: string;
-  code?: string;
-  urgent?: boolean;
-  category: string;
-  branches: string[];
-  salary: string;
-  type: string;
-  requirements: string[];
-}
-
-const jobListings: Job[] = [
-  // ── ฝ่ายขาย ────────────────────────────────
-  {
-    title: "ที่ปรึกษาการขาย (Sales Consultant)",
-    code: "SC",
-    urgent: true,
-    category: "sales",
-    branches: ["mazda_npt", "mazda_salaya", "ford_omnoi", "mitsubishi_npt", "gwm_npt", "kia_sampran", "deepal_salaya"],
-    salary: "ตามประสบการณ์ + commission",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส. ขึ้นไป", "มีใจรักงานบริการ", "มีรถยนต์เป็นของตนเอง (จะพิจารณาเป็นพิเศษ)"],
-  },
-  {
-    title: "ที่ปรึกษาประกันภัยรถยนต์",
-    category: "sales",
-    branches: ["mazda_npt", "mazda_salaya", "ford_omnoi", "gwm_npt"],
-    salary: "ตามประสบการณ์ + commission",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส. ขึ้นไป", "มีใบอนุญาตนายหน้าประกัน (ไม่บังคับ)", "ทักษะการนำเสนอดี"],
-  },
-  {
-    title: "ผู้จัดการฝ่ายขาย (Sales Manager)",
-    category: "sales",
-    branches: ["mazda_npt", "ford_omnoi", "gwm_npt"],
-    salary: "35,000 – 60,000 บาท",
-    type: "งานประจำ",
-    requirements: ["ปริญญาตรีขึ้นไป", "ประสบการณ์ฝ่ายขายรถยนต์ 3 ปีขึ้นไป", "มีทักษะบริหารทีม"],
-  },
-
-  // ── ฝ่ายบริการ ──────────────────────────────
-  {
-    title: "ช่างเทคนิค (Technician)",
-    urgent: true,
-    category: "service",
-    branches: ["mazda_npt", "mazda_salaya", "ford_omnoi", "mitsubishi_npt", "gwm_npt", "kia_sampran"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวช./ปวส. สาขาช่างยนต์", "ประสบการณ์ซ่อมรถยนต์ (จะพิจารณาเป็นพิเศษ)", "มีความละเอียดรอบคอบ"],
-  },
-  {
-    title: "ช่างเทคนิค EV & HEV",
-    urgent: true,
-    category: "service",
-    branches: ["gwm_npt", "deepal_salaya", "kia_sampran"],
-    salary: "ตามประสบการณ์ (EV Premium)",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส. สาขาช่างไฟฟ้า/ช่างยนต์", "ยินดีรับการอบรม EV จากผู้ผลิต", "มีใบขับรถ"],
-  },
-  {
-    title: "ช่างสีตัวถัง (Body & Paint Technician)",
-    category: "service",
-    branches: ["mazda_npt", "mazda_salaya", "ford_omnoi"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวช./ปวส. สาขาช่างยนต์/ช่างกลโรงงาน", "มีประสบการณ์งานสีหรือตัวถัง (จะพิจารณาเป็นพิเศษ)"],
-  },
-  {
-    title: "ที่ปรึกษาบริการ (Service Advisor : SA)",
-    category: "service",
-    branches: ["mazda_npt", "mazda_salaya", "ford_omnoi", "mitsubishi_npt", "gwm_npt"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส./ปริญญาตรี", "บุคลิกภาพดี มีใจรักบริการ", "ทักษะการสื่อสารเชิงเทคนิคกับลูกค้า"],
-  },
-
-  // ── ฝ่ายบัญชี/การเงิน ───────────────────────
-  {
-    title: "พนักงานบัญชี (Accountant)",
-    category: "finance",
-    branches: ["hq", "mazda_npt"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["ปริญญาตรี สาขาบัญชี", "ใช้โปรแกรมบัญชีได้", "มีความละเอียดรอบคอบ"],
-  },
-  {
-    title: "พนักงานการเงิน / สินเชื่อ",
-    category: "finance",
-    branches: ["mazda_npt", "ford_omnoi", "gwm_npt"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส./ปริญญาตรี สาขาการเงิน/บัญชี", "มีทักษะเจรจาต่อรอง"],
-  },
-
-  // ── ฝ่ายสนับสนุน ─────────────────────────────
-  {
-    title: "พนักงานต้อนรับ (Receptionist)",
-    category: "support",
-    branches: ["mazda_npt", "mazda_salaya", "gwm_npt", "ford_omnoi"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส. ขึ้นไป", "บุคลิกดี ยิ้มแย้ม", "ภาษาอังกฤษพื้นฐาน"],
-  },
-  {
-    title: "ธุรการและจัดซื้อ",
-    category: "support",
-    branches: ["hq", "mazda_npt"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["วุฒิ ปวส./ปริญญาตรี", "Microsoft Office ดี", "ละเอียดรอบคอบ"],
-  },
-  {
-    title: "เจ้าหน้าที่ IT / Digital",
-    category: "support",
-    branches: ["hq"],
-    salary: "ตามประสบการณ์",
-    type: "งานประจำ",
-    requirements: ["ปริญญาตรี สาขา IT/คอมพิวเตอร์", "ดูแลระบบและ Support ผู้ใช้งาน"],
-  },
-
-  // ── ผู้บริหาร ────────────────────────────────
-  {
-    title: "ผู้จัดการสาขา (Branch Manager)",
-    category: "mgmt",
-    branches: ["deepal_salaya", "kia_sampran"],
-    salary: "50,000 บาทขึ้นไป",
-    type: "งานประจำ",
-    requirements: ["ปริญญาตรีขึ้นไป", "ประสบการณ์บริหารธุรกิจรถยนต์ 5 ปีขึ้นไป", "ทักษะ P&L Management"],
-  },
-];
-
 // ───────────────────────────────────────────
 // Component
 // ───────────────────────────────────────────
 
-export default function Career() {
-  const [activeBranch, setActiveBranch] = useState("all");
-  const [activeCategory, setActiveCategory] = useState("all");
-
-  const filteredJobs = jobListings.filter((job) => {
-    const branchMatch = activeBranch === "all" || job.branches.includes(activeBranch);
-    const catMatch = activeCategory === "all" || job.category === activeCategory;
-    return branchMatch && catMatch;
-  });
-
-  const totalUrgent = filteredJobs.filter((j) => j.urgent).length;
+export default async function Career() {
+  const openJobs = await listOpenJobPostings();
+  const jobListings: JobCard[] = openJobs.map((j) => ({
+    title: j.title,
+    code: j.code,
+    urgent: j.urgent,
+    category: j.category,
+    branches: j.branches,
+    salary: j.salary ?? "ตามประสบการณ์",
+    type: j.employmentType ?? "งานประจำ",
+    requirements: j.requirements,
+  }));
 
   return (
     <div className="min-h-screen bg-white pt-[68px]">
@@ -333,139 +180,7 @@ export default function Career() {
           </p>
         </div>
 
-        {/* Filter: Category */}
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
-          <button
-            onClick={() => setActiveCategory("all")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              activeCategory === "all" ? "bg-[#0F172A] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            ทุกแผนก
-          </button>
-          {jobCategories.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveCategory(id)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeCategory === id ? "bg-[#0F172A] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {/* Filter: Branch */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {Object.entries(BRANCH_LABELS).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => setActiveBranch(key)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                activeBranch === key
-                  ? "bg-[#C8102E] text-white border-[#C8102E]"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {/* Job Count */}
-        {filteredJobs.length > 0 && (
-          <p className="text-center text-sm text-gray-400 mb-6">
-            พบ {filteredJobs.length} ตำแหน่ง
-            {totalUrgent > 0 && <span className="text-red-500 font-medium"> · ด่วน {totalUrgent} ตำแหน่ง</span>}
-          </p>
-        )}
-
-        {/* Job Cards */}
-        <div className="space-y-4 max-w-4xl mx-auto">
-          {filteredJobs.map((job, i) => (
-            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-md transition-all">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-[#0F172A]">{job.title}</h3>
-                    {job.code && (
-                      <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded font-mono">{job.code}</span>
-                    )}
-                    {job.urgent && (
-                      <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full font-medium">ด่วน!</span>
-                    )}
-                  </div>
-
-                  {/* Branches */}
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {job.branches.map((b) => (
-                      <span key={b} className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded-full">
-                        <Building className="w-3 h-3" />
-                        {BRANCH_LABELS[b]}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Requirements */}
-                  <ul className="flex flex-wrap gap-x-4 gap-y-1 mb-3">
-                    {job.requirements.map((req) => (
-                      <li key={req} className="flex items-center gap-1 text-xs text-gray-500">
-                        <CheckCircle className="w-3 h-3 text-green-400 shrink-0" />
-                        {req}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="flex flex-wrap gap-3 text-xs text-gray-400">
-                    <span className="flex items-center gap-1">
-                      <DollarSign className="w-3.5 h-3.5" />
-                      {job.salary}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {job.type}
-                    </span>
-                  </div>
-                </div>
-
-                <a
-                  href="mailto:cherawan.hr@gmail.com"
-                  className="shrink-0 flex items-center gap-1 text-sm font-medium text-[#C8102E] hover:underline"
-                >
-                  สมัคร
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredJobs.length === 0 && (
-          <div className="text-center py-16 text-gray-400">
-            <Users className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">ไม่พบตำแหน่งงานที่ตรงกับเงื่อนไข</p>
-            <p className="text-sm mt-1">ลองเปลี่ยน filter หรือส่ง Resume มาที่ cherawan.hr@gmail.com ได้เลย</p>
-          </div>
-        )}
-
-        {/* CTA */}
-        <div className="mt-14 bg-[#0F172A] rounded-2xl p-8 lg:p-10 text-center max-w-2xl mx-auto">
-          <h3 className="text-xl font-bold text-white mb-2">ไม่เห็นตำแหน่งที่ใช่?</h3>
-          <p className="text-white/60 text-sm mb-6">
-            ส่ง Resume พร้อมระบุตำแหน่งที่สนใจมาให้เราได้เลย
-            ทีม HR จะติดต่อกลับเมื่อมีตำแหน่งที่เหมาะสม
-          </p>
-          <a
-            href="mailto:cherawan.hr@gmail.com?subject=สมัครงาน ช.เอราวัณ กรุ๊ป"
-            className="inline-flex items-center gap-2 bg-[#C8102E] hover:bg-[#a00d25] text-white font-medium px-6 py-3 rounded-xl transition-colors"
-          >
-            <Mail className="w-4 h-4" />
-            ส่ง Resume ทาง Email
-            <ChevronRight className="w-4 h-4" />
-          </a>
-        </div>
+        <JobsSection jobs={jobListings} />
       </div>
     </div>
   );

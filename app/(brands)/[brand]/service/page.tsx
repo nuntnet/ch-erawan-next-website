@@ -11,7 +11,7 @@ import {
   type BrandSlug,
 } from "@/lib/brandConfig";
 import { getBranchesByBrand } from "@/lib/branchData";
-import { getSocialLinksByBrand, getFAQItems } from "@/lib/notion";
+import { getFAQItems } from "@/lib/notion";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
 import { faqPageJsonLd } from "@/lib/seo";
 import {
@@ -24,6 +24,17 @@ import {
   ChevronDown,
   ShieldCheck,
   CheckCircle2,
+  Wifi,
+  Car,
+  Sofa,
+  Smartphone,
+  Zap,
+  Thermometer,
+  RefreshCw,
+  Key,
+  Wind,
+  Gauge,
+  TriangleAlert,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -48,6 +59,76 @@ export async function generateMetadata({ params }: PageProps) {
   });
 }
 
+// Service-department capability categories — same across every brand (this
+// describes ช.เอราวัณ's own service center, not a manufacturer-specific
+// claim), so category colors stay fixed for visual variety rather than
+// tracking each brand's own accent.
+function getServiceCategories(brandName: string) {
+  return [
+    {
+      id: "general",
+      label: "บริการมาตรฐาน",
+      accent: "#0F172A",
+      bg: "from-[#0F172A] to-[#1a3a6b]",
+      services: [
+        { icon: Wrench, title: `ศูนย์บริการมาตรฐาน ${brandName}`, desc: `ช่างผ่านการอบรมมาตรฐาน ${brandName} ทุกคน` },
+        { icon: ShieldCheck, title: "เคลมประกัน / รับประกัน", desc: "ดำเนินการเคลมทุกบริษัท ครอบคลุมการรับประกันโรงงาน" },
+        { icon: Key, title: "งานกุญแจ", desc: "ตัดกุญแจ โปรแกรม Smart Key เปลี่ยนกุญแจสำรอง" },
+        { icon: Wind, title: "ระบบแอร์ / Recycle น้ำยา", desc: "ล้างแอร์ เปลี่ยนไส้กรอง Recycle น้ำยาแอร์ F-gas" },
+        { icon: CheckCircle2, title: `อะไหล่แท้ ${brandName}`, desc: "สต็อกอะไหล่แท้ครบทุกรุ่น ส่งรวดเร็ว" },
+        { icon: Gauge, title: "ตรวจเช็คราคาก่อนซ่อม", desc: "ประเมินราคาโปร่งใสก่อนลงมือ ลูกค้าอนุมัติทุกครั้ง" },
+      ],
+    },
+    {
+      id: "ev",
+      label: "EV & HEV เฉพาะทาง",
+      accent: "#C8102E",
+      bg: "from-[#7f1d1d] to-[#C8102E]",
+      services: [
+        { icon: Zap, title: "EV & HEV Service", desc: "วิศวกรเฉพาะทางระบบไฟฟ้าและไฮบริด เครื่องมือครบมาตรฐาน" },
+        { icon: Gauge, title: "วัดคุณภาพแบตเตอรี่ (SOH)", desc: "ทดสอบ State of Health รายงานผลแม่นยำ" },
+        { icon: Thermometer, title: "ระบบหล่อเย็นแบตเตอรี่", desc: "ตรวจสอบ Thermal Management ป้องกัน Battery Degradation" },
+        { icon: RefreshCw, title: "Firmware & Software Update", desc: "OTA & Firmware อย่างเป็นทางการทุกรุ่น" },
+        { icon: Zap, title: "EV Charging Station", desc: "AC Type 2 ฟรีสำหรับลูกค้าศูนย์ระหว่างรอเซอร์วิส" },
+      ],
+    },
+    {
+      id: "tires",
+      label: "บริการยางและล้อ",
+      accent: "#374151",
+      bg: "from-[#1f2937] to-[#374151]",
+      services: [
+        { icon: RefreshCw, title: "เปลี่ยนยาง", desc: "ยางทุกแบรนด์ พร้อมคำแนะนำให้เหมาะกับรุ่นและการใช้งาน" },
+        { icon: Gauge, title: "ตั้งศูนย์ล้อ 3D (Alignment)", desc: "เครื่องแม่นยำสูง ลดสึกของยาง เพิ่มความปลอดภัย" },
+        { icon: Gauge, title: "ถ่วงล้อ (Balancing)", desc: "ถ่วงน้ำหนักทุกเส้น ลดสั่น ขับนุ่มขึ้น" },
+        { icon: RefreshCw, title: "สลับยาง (Rotation)", desc: "ยืดอายุยางได้สูงสุดตามรอบระยะทาง" },
+        { icon: CheckCircle2, title: "ปะยาง (Plug & Patch)", desc: "ปะแบบถอดแกนภายใน มาตรฐาน ปลอดภัย" },
+      ],
+    },
+    {
+      id: "emergency",
+      label: "บริการฉุกเฉิน",
+      accent: "#B45309",
+      bg: "from-[#78350f] to-[#B45309]",
+      services: [
+        { icon: TriangleAlert, title: "รถสไลด์ / รถลาก", desc: "พร้อมออกรับครอบคลุม จ.นครปฐมและใกล้เคียง" },
+        { icon: Phone, title: "ช่วยเหลือฉุกเฉิน 24 ชม.", desc: "Roadside Assistance ตอบรับตลอด 24 ชม. ทุกวัน" },
+      ],
+    },
+  ];
+}
+
+function getCustomerExperience(brandName: string) {
+  return [
+    { icon: Car, title: "Delivery & Pickup", desc: "รับ-ส่งรถถึงบ้าน ไม่เสียเวลาเดินทาง" },
+    { icon: Sofa, title: "Customer Lounge", desc: "ห้องรอสบาย แอร์เย็น เครื่องดื่มฟรี" },
+    { icon: Wifi, title: "Free WiFi", desc: "WiFi ความเร็วสูงตลอดเวลาที่รอ" },
+    { icon: Gauge, title: "ประเมินราคาก่อนซ่อม", desc: "แจ้งราคาโปร่งใส ลูกค้าอนุมัติก่อนทุกครั้ง" },
+    { icon: ShieldCheck, title: `ช่างผ่านการรับรอง ${brandName}`, desc: `อบรมและรับรองมาตรฐานจาก ${brandName}` },
+    { icon: Smartphone, title: "จองบริการออนไลน์", desc: "นัดหมายผ่านเว็บไซต์ ช.เอราวัณ ได้ตลอด 24 ชม." },
+  ];
+}
+
 export default async function BrandServicePage({ params }: PageProps) {
   const { brand: slug } = await params;
   if (!isBrandSlug(slug)) notFound();
@@ -59,6 +140,8 @@ export default async function BrandServicePage({ params }: PageProps) {
   ]);
 
   const accentColor = brand.accentColor ?? "#0F172A";
+  const serviceCategories = getServiceCategories(brand.displayName);
+  const customerExperience = getCustomerExperience(brand.displayName);
 
   const breadcrumbs = [
     { name: "หน้าแรก", path: "/" },
@@ -98,6 +181,92 @@ export default async function BrandServicePage({ params }: PageProps) {
         />
 
         <BrandSubNav brand={brand} currentSection="service" scrollPastHero />
+
+        {/* ── Stats ── */}
+        <section className="bg-[#0F172A] py-10">
+          <div className="container grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
+            {[
+              { num: brand.displayName, sub: "Certified", label: "ช่างผ่านการรับรอง" },
+              { num: "4", sub: "กลุ่ม", label: "หมวดบริการครบ" },
+              { num: "24", sub: "ชม.", label: "บริการฉุกเฉิน" },
+              { num: "Free", sub: "", label: "Delivery & Lounge" },
+            ].map((s) => (
+              <div key={s.label}>
+                <div className="text-2xl lg:text-3xl font-black" style={{ color: accentColor }}>
+                  {s.num}<span className="text-base font-medium text-white/60 ml-1">{s.sub}</span>
+                </div>
+                <div className="mt-1 text-sm text-white/60">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── ประสบการณ์ลูกค้า ── */}
+        <section className="container py-14">
+          <div className="text-center mb-10">
+            <p className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accentColor }}>ประสบการณ์ลูกค้า</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">บริการเหนือระดับ ดูแลทุกขั้นตอน</h2>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            {customerExperience.map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="relative bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:border-[#0F172A]/20 transition-all group overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-12 h-12 bg-[#0F172A]/5 rounded-bl-2xl group-hover:bg-[#0F172A]/10 transition-colors" />
+                <div className="w-10 h-10 rounded-xl bg-[#0F172A] flex items-center justify-center mb-3 shadow-md">
+                  <Icon className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-semibold text-[#0F172A] text-sm mb-1">{title}</h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Service Categories ── */}
+        <section className="py-14 bg-gray-50">
+          <div className="container">
+            <div className="text-center mb-12">
+              <p className="text-sm font-medium uppercase tracking-wider mb-2" style={{ color: accentColor }}>งานบริการ</p>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A]">บริการทั้งหมดที่รองรับ</h2>
+            </div>
+
+            <div className="space-y-6">
+              {serviceCategories.map((cat) => (
+                <div key={cat.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                  <div className={`bg-gradient-to-r ${cat.bg} px-6 py-4 flex items-center gap-3`}>
+                    <div className="w-2 h-6 bg-white/40 rounded-full" />
+                    <h3 className="text-white font-bold text-lg">{cat.label}</h3>
+                    <span className="ml-auto text-white/50 text-sm">{cat.services.length} บริการ</span>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-gray-50">
+                    {cat.services.map(({ icon: Icon, title, desc }, idx) => (
+                      <div
+                        key={title}
+                        className={`flex gap-3 p-5 hover:bg-gray-50 transition-colors ${
+                          idx >= 3 ? "border-t border-gray-50" : ""
+                        }`}
+                      >
+                        <div
+                          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                          style={{ backgroundColor: `${cat.accent}15` }}
+                        >
+                          <Icon className="w-4 h-4" style={{ color: cat.accent }} />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-[#0F172A] text-sm leading-snug mb-1">{title}</h4>
+                          <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* ── สาขา ── */}
         {brandBranches.length > 0 && (
@@ -280,6 +449,14 @@ export default async function BrandServicePage({ params }: PageProps) {
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
+              {brand.slug === "gwm" && (
+                <Link href="/gwm/one-stop">
+                  <Button variant="outline" className="px-6">
+                    One Stop Service
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </section>

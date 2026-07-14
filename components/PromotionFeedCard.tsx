@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Calendar, ChevronRight, ExternalLink } from "lucide-react";
 import { cldUrl } from "@/lib/cloudinary";
 import PromoFallbackCover from "@/components/PromoFallbackCover";
+import BrandLogo from "@/components/BrandLogo";
+import { BRANDS } from "@/lib/brandConfig";
 import type { Promotion } from "@/lib/notion-types";
 
 function isExpiringSoon(endDate: string | null): boolean {
@@ -48,17 +50,27 @@ export default function PromotionFeedCard({
   fallbackTel,
 }: PromotionFeedCardProps) {
   const dateLabel = formatDateRange(promo.startDate, promo.endDate);
+  const brandConfig = BRANDS.find((b) => b.notionBrand === promo.brand);
 
   return (
     <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
       {/* Post header */}
       <div className="flex items-center gap-3 px-5 pt-4">
-        <span
-          className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-          style={{ backgroundColor: accentColor }}
-        >
-          {promo.brand.slice(0, 2).toUpperCase()}
-        </span>
+        {brandConfig ? (
+          <BrandLogo
+            src={brandConfig.logoPath}
+            alt={brandConfig.displayName}
+            brandSlug={brandConfig.slug}
+            size="xs"
+            containerClassName="bg-white border border-gray-100 rounded-lg"
+          />
+        ) : (
+          <div className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
+            <span className="text-xs font-bold" style={{ color: accentColor }}>
+              {promo.brand.slice(0, 2).toUpperCase()}
+            </span>
+          </div>
+        )}
         <div className="min-w-0 flex-1">
           {showBrandName && (
             <p className="text-sm font-semibold text-[#0F172A] truncate">{promo.brand}</p>

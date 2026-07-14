@@ -112,7 +112,7 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
         <BrandSubNav brand={brand} currentSection="promotions" scrollPastHero />
 
         <section className="container py-12 lg:py-16">
-          <div className="max-w-xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             {/* Header */}
             <div className="mb-8">
               <p
@@ -166,7 +166,7 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
                     </div>
 
                     {/* Feed */}
-                    <div className="space-y-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       {items.map((promo) => (
                         <PromotionFeedCard
                           key={promo.id}

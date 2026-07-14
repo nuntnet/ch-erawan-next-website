@@ -403,7 +403,7 @@ export default function HomeClient({ featuredCars, recentPosts, publicStories, p
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">โปรโมชั่นและข้อเสนอพิเศษ</h2>
               <p className="text-gray-500">ดีลล่าสุดจากทุกแบรนด์ ช.เอราวัณ กรุ๊ป</p>
             </div>
-            <div className="max-w-xl mx-auto space-y-4">
+            <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
               {promotions.map((promo) => {
                 const brandSlug = BRANDS.find((b) => b.notionBrand === promo.brand)?.slug;
                 const accentColor = BRANDS.find((b) => b.notionBrand === promo.brand)?.accentColor ?? "#DD5259";

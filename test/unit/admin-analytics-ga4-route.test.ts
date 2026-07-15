@@ -2,6 +2,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("@/lib/admin-auth", () => ({ requireStaff: vi.fn(async () => null) }));
 vi.mock("@/lib/ga4", () => ({
+  // Mirror the real "needs env" behavior against GA4_PROPERTY_ID so the
+  // configured:true / configured:false cases below still exercise the route's
+  // branch. (The full 3-var logic of the real isGa4Configured is unit-tested
+  // in test/unit/ga4.test.ts.)
+  isGa4Configured: vi.fn(() => Boolean(process.env.GA4_PROPERTY_ID)),
   getChannels: vi.fn(async () => [{ channel: "Direct", sessions: 5, users: 5 }]),
   getTopSources: vi.fn(async () => []),
   getExitPages: vi.fn(async () => []),

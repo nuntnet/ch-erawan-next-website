@@ -188,6 +188,27 @@ describe("runGa4Report error handling", () => {
   });
 });
 
+describe("isGa4Configured", () => {
+  it("is true only when all three GA4 env vars are present", async () => {
+    // beforeEach sets all three; this is the fully-configured baseline.
+    const { isGa4Configured } = await import("@/lib/ga4");
+    expect(isGa4Configured()).toBe(true);
+  });
+
+  it("is false when only GA4_PROPERTY_ID is set (partial config)", async () => {
+    delete process.env.GA4_CLIENT_EMAIL;
+    delete process.env.GA4_PRIVATE_KEY;
+    const { isGa4Configured } = await import("@/lib/ga4");
+    expect(isGa4Configured()).toBe(false);
+  });
+
+  it("is false when the property id is missing", async () => {
+    delete process.env.GA4_PROPERTY_ID;
+    const { isGa4Configured } = await import("@/lib/ga4");
+    expect(isGa4Configured()).toBe(false);
+  });
+});
+
 describe("getFunnels", () => {
   it("runs all 4 hardcoded funnels and labels each result", async () => {
     // getFunnels calls runGa4Funnel internally (same module) — rather than

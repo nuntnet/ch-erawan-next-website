@@ -8,17 +8,23 @@ import {
   getDeviceBreakdown,
   getLeadCounts,
   getFunnels,
+  isGa4Configured,
 } from "@/lib/ga4";
 
 export const dynamic = "force-dynamic";
+
+// The UI only ever sends these; clamp so a garbage ?days= can't reach GA4 as
+// "NaNdaysAgo".
+const ALLOWED_DAYS = new Set([7, 30, 90]);
 
 export async function GET(req: NextRequest) {
   const denied = await requireStaff();
   if (denied) return denied;
 
   const url = new URL(req.url);
-  const days = Number(url.searchParams.get("days") ?? 30);
-  const configured = Boolean(process.env.GA4_PROPERTY_ID);
+  const rawDays = Number(url.searchParams.get("days") ?? 30);
+  const days = ALLOWED_DAYS.has(rawDays) ? rawDays : 30;
+  const configured = isGa4Configured();
 
   if (!configured) {
     return NextResponse.json({

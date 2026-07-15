@@ -356,34 +356,39 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          {/* Exit Pages */}
-          <div className="bg-white rounded-xl border border-gray-100 p-5">
-            <h2 className="text-sm font-semibold text-[#0F172A] mb-4">หน้าที่คนออกจากเว็บมากที่สุด</h2>
-            {ga4.exitPages.length === 0 ? (
-              <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>
-            ) : (
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
-                    <th className="pb-2 font-medium">หน้า</th>
-                    <th className="pb-2 font-medium text-right">Entrances</th>
-                    <th className="pb-2 font-medium text-right">Exits</th>
-                    <th className="pb-2 font-medium text-right">Bounce Rate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ga4.exitPages.filter((p) => p.entrances >= 10).map((p, i) => (
-                    <tr key={i} className="border-b border-gray-50 last:border-0">
-                      <td className="py-2 text-[#0F172A] truncate max-w-[240px]">{p.path}</td>
-                      <td className="py-2 text-right text-gray-600">{p.entrances.toLocaleString()}</td>
-                      <td className="py-2 text-right text-gray-600">{p.exits.toLocaleString()}</td>
-                      <td className="py-2 text-right text-gray-600">{p.bounceRate.toFixed(1)}%</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
+          {/* Exit Pages — filter first so the empty state reflects what's actually shown */}
+          {(() => {
+            const exitRows = ga4.exitPages.filter((p) => p.entrances >= 10);
+            return (
+              <div className="bg-white rounded-xl border border-gray-100 p-5">
+                <h2 className="text-sm font-semibold text-[#0F172A] mb-4">หน้าที่คนออกจากเว็บมากที่สุด</h2>
+                {exitRows.length === 0 ? (
+                  <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>
+                ) : (
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
+                        <th className="pb-2 font-medium">หน้า</th>
+                        <th className="pb-2 font-medium text-right">Entrances</th>
+                        <th className="pb-2 font-medium text-right">Exits</th>
+                        <th className="pb-2 font-medium text-right">Bounce Rate</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {exitRows.map((p, i) => (
+                        <tr key={i} className="border-b border-gray-50 last:border-0">
+                          <td className="py-2 text-[#0F172A] truncate max-w-[240px]">{p.path}</td>
+                          <td className="py-2 text-right text-gray-600">{p.entrances.toLocaleString()}</td>
+                          <td className="py-2 text-right text-gray-600">{p.exits.toLocaleString()}</td>
+                          <td className="py-2 text-right text-gray-600">{p.bounceRate.toFixed(1)}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Funnels */}
           <div>

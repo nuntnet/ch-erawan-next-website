@@ -20,6 +20,16 @@ function getClient(): BetaAnalyticsDataClient | null {
   return client;
 }
 
+/**
+ * True only when ALL three GA4 env vars are present — property id AND the
+ * service-account credentials. A partial config (e.g. only GA4_PROPERTY_ID
+ * set in Vercel) would otherwise read as "configured" but return nothing
+ * from every query, hiding the not-configured banner with no explanation.
+ */
+export function isGa4Configured(): boolean {
+  return Boolean(process.env.GA4_PROPERTY_ID) && getCredentials() !== null;
+}
+
 /** Runs a GA4 Data API report against this site's property. Returns null if GA4 isn't configured. */
 export async function runGa4Report(request: Omit<RunReportRequest, "property">) {
   const ga4Client = getClient();

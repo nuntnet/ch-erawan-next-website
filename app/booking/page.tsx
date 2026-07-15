@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,8 +71,15 @@ const emptyForm = {
 };
 
 function BookingForm() {
-  const searchParams = useSearchParams();
   const router = useRouter();
+  // Read query params from window.location instead of next/navigation's
+  // useSearchParams() — that hook forces this whole (heavy) form behind a
+  // Suspense boundary, and the fallback→real-content swap on mobile was
+  // showing up as a Real Experience Score CLS of ~1 (near-total layout
+  // shift) in Vercel Speed Insights. Starting from empty params (matching
+  // SSR) and correcting once mounted is a much smaller, faster shift.
+  const [searchParams, setSearchParams] = useState<URLSearchParams>(() => new URLSearchParams());
+  useEffect(() => { setSearchParams(new URLSearchParams(window.location.search)); }, []);
   const typeParam = searchParams.get("type") as BookingType | null;
   const carParam = searchParams.get("car") ?? "";
 
@@ -87,6 +94,7 @@ function BookingForm() {
   const [slotsError, setSlotsError] = useState(false);
 
   useEffect(() => { if (typeParam) setSelectedType(typeParam); }, [typeParam]);
+  useEffect(() => { if (carParam) setForm(f => ({ ...f, carModel: carParam })); }, [carParam]);
 
   // The success view replaces the long form with a short confirmation card —
   // without this, the page stays scrolled to wherever the user was in the
@@ -610,10 +618,4 @@ function BookingForm() {
   );
 }
 
-export default function BookingPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F8FAFC] pt-[68px] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#0F172A] border-t-transparent rounded-full animate-spin" /></div>}>
-      <BookingForm />
-    </Suspense>
-  );
-}
+export default BookingForm;

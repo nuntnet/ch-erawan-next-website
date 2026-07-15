@@ -204,7 +204,7 @@ export default function AdminAppointments() {
                           <p className="text-xs text-gray-400">{apt.customerPhone}</p>
                         </div>
                         <div className="px-5 py-4 w-32 shrink-0 space-y-1">
-                          <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                          <span className="inline-block whitespace-nowrap text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
                             {TYPE_LABEL[apt.type] ?? apt.type}
                           </span>
                           {spsFailed && (

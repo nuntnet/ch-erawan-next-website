@@ -143,6 +143,15 @@ Service account แยกจาก Measurement ID ข้างบน — ใช�
 4. Copy `client_email`/`private_key`/property ID เข้า env vars ด้านบน
 5. **ลบไฟล์ JSON key ทิ้งหลังตั้งค่าเสร็จ** — ไม่ควรมี private key แบบ plaintext ค้างอยู่ในเครื่อง
 
+### Google Search Console API (คำค้นหา organic ต่อหน้า — `lib/gsc.ts`)
+
+ใช้ **service account ตัวเดียวกับ GA4** (`GA4_CLIENT_EMAIL`/`GA4_PRIVATE_KEY`) — ไม่ต้องเพิ่ม env var ใหม่ แต่ต้อง setup ฝั่ง Google เพิ่ม:
+1. เปิดใช้ **"Google Search Console API"** ใน Google Cloud project เดียวกัน
+2. เพิ่ม service account email เป็น user ใน **GSC → Settings → Users and permissions** (Full หรือ Restricted)
+3. Property เป็นแบบ domain (`sc-domain:ch-erawan.com`) — hardcode ไว้ใน `lib/gsc.ts` แล้ว
+
+**ข้อจำกัด:** GSC เก็บข้อมูลตั้งแต่วัน verify เท่านั้น + delay 2-3 วัน → หน้า `/admin/analytics` จะโชว์ "ยังไม่มีข้อมูล" จนกว่า Google index (ปกติ ~2-4 สัปดาห์)
+
 ## Revalidation
 
 | Variable | Required | คำอธิบาย |

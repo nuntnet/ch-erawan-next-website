@@ -43,6 +43,10 @@ type Ga4Data = {
   funnels: FunnelResult[];
 };
 
+type SearchKeywordRow = { query: string; clicks: number; impressions: number; ctr: number; position: number };
+type PageKeywords = { page: string; clicks: number; impressions: number; keywords: SearchKeywordRow[] };
+type GscData = { configured: boolean; topKeywords: SearchKeywordRow[]; pages: PageKeywords[] };
+
 const EVENT_LABELS: Record<string, string> = {
   car_view: "ดูรถ", booking: "นัดทดลองขับ", contact: "ติดต่อ", search: "ค้นหา",
 };
@@ -89,6 +93,7 @@ export default function AnalyticsPage() {
   const [days, setDays] = useState(30);
   const [loading, setLoading] = useState(true);
   const [ga4, setGa4] = useState<Ga4Data | null>(null);
+  const [gsc, setGsc] = useState<GscData | null>(null);
 
   async function load(d: number) {
     setLoading(true);
@@ -109,7 +114,16 @@ export default function AnalyticsPage() {
     }
   }
 
-  useEffect(() => { load(days); loadGa4(days); }, [days]);
+  async function loadGsc(d: number) {
+    try {
+      const res = await fetch(`/api/admin/analytics/gsc?days=${d}`);
+      setGsc(await res.json());
+    } catch {
+      setGsc(null);
+    }
+  }
+
+  useEffect(() => { load(days); loadGa4(days); loadGsc(days); }, [days]);
 
   // Build daily chart data (last 14 days)
   const chartData = (() => {
@@ -426,6 +440,82 @@ export default function AnalyticsPage() {
           </div>
         </>
       )}
+
+      {/* Google Search keywords (Search Console) */}
+      <div>
+        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+          คำค้นหา Google Search — {days} วันล่าสุด
+        </h2>
+        {gsc && !gsc.configured ? (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-700">
+            ยังไม่ได้ตั้งค่า Search Console API — ดู <code className="font-mono">specs/env-vars.md</code>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {/* Top keywords across the whole site */}
+            <div className="bg-white rounded-xl border border-gray-100 p-5">
+              <h3 className="text-sm font-semibold text-[#0F172A] mb-4">คำค้นหายอดนิยม (ทั้งเว็บ)</h3>
+              {(gsc?.topKeywords.length ?? 0) === 0 ? (
+                <p className="text-sm text-gray-400 py-4 text-center">
+                  ยังไม่มีข้อมูล — GSC เพิ่งเริ่มเก็บ ต้องรอ Google index (โดยปกติ ~2-4 สัปดาห์ และมี delay 2-3 วันเสมอ)
+                </p>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
+                      <th className="pb-2 font-medium">คำค้นหา</th>
+                      <th className="pb-2 font-medium text-right">คลิก</th>
+                      <th className="pb-2 font-medium text-right">แสดง</th>
+                      <th className="pb-2 font-medium text-right">CTR</th>
+                      <th className="pb-2 font-medium text-right">อันดับ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {gsc!.topKeywords.map((k, i) => (
+                      <tr key={i} className="border-b border-gray-50 last:border-0">
+                        <td className="py-2 text-[#0F172A] truncate max-w-[280px]">{k.query}</td>
+                        <td className="py-2 text-right font-medium text-gray-700">{k.clicks.toLocaleString()}</td>
+                        <td className="py-2 text-right text-gray-500">{k.impressions.toLocaleString()}</td>
+                        <td className="py-2 text-right text-gray-500">{k.ctr.toFixed(1)}%</td>
+                        <td className="py-2 text-right text-gray-500">{k.position.toFixed(1)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            {/* Per-page keyword breakdown — "which page came from which keyword" */}
+            {(gsc?.pages.length ?? 0) > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-sm font-semibold text-[#0F172A]">คำค้นหาที่พาเข้าแต่ละหน้า</h3>
+                {gsc!.pages.slice(0, 12).map((p, i) => (
+                  <div key={i} className="bg-white rounded-xl border border-gray-100 p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm font-medium text-[#0F172A] truncate max-w-[60%]">
+                        {p.page.replace(/^https?:\/\/[^/]+/, "") || "/"}
+                      </span>
+                      <span className="text-xs text-gray-400 shrink-0">
+                        {p.clicks.toLocaleString()} คลิก · {p.impressions.toLocaleString()} แสดง
+                      </span>
+                    </div>
+                    <div className="space-y-1.5">
+                      {p.keywords.map((k, j) => (
+                        <div key={j} className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600 truncate">{k.query}</span>
+                          <span className="text-gray-400 text-xs shrink-0 ml-2">
+                            {k.clicks.toLocaleString()} คลิก · อันดับ {k.position.toFixed(1)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

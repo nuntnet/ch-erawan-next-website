@@ -149,3 +149,77 @@ export async function getDeviceBreakdown(days: number): Promise<DeviceRow[]> {
     sessions: Number(row.metricValues?.[0]?.value ?? 0),
   }));
 }
+
+export type ExitPageRow = { path: string; exits: number; entrances: number; bounceRate: number };
+
+export async function getExitPages(days: number): Promise<ExitPageRow[]> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "pagePath" }],
+    metrics: [{ name: "exits" }, { name: "entrances" }, { name: "bounceRate" }],
+    orderBys: [{ metric: { metricName: "exits" }, desc: true }],
+    limit: 15,
+  });
+  if (!response?.rows) return [];
+  return response.rows.map((row) => ({
+    path: row.dimensionValues?.[0]?.value ?? "",
+    exits: Number(row.metricValues?.[0]?.value ?? 0),
+    entrances: Number(row.metricValues?.[1]?.value ?? 0),
+    bounceRate: Number(row.metricValues?.[2]?.value ?? 0),
+  }));
+}
+
+export type VehicleRow = { slug: string; label: string; views: number };
+
+function labelFromSlug(slug: string): string {
+  return slug
+    .split("-")
+    .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
+    .join(" ");
+}
+
+export async function getTopVehicles(days: number): Promise<VehicleRow[]> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "pagePath" }],
+    dimensionFilter: {
+      filter: { fieldName: "pagePath", stringFilter: { matchType: "BEGINS_WITH", value: "/cars/" } },
+    },
+    metrics: [{ name: "screenPageViews" }],
+    orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+    limit: 15,
+  });
+  if (!response?.rows) return [];
+  return response.rows.map((row) => {
+    const path = row.dimensionValues?.[0]?.value ?? "";
+    const slug = path.replace(/^\/cars\//, "").replace(/\/$/, "");
+    return {
+      slug,
+      label: labelFromSlug(slug),
+      views: Number(row.metricValues?.[0]?.value ?? 0),
+    };
+  });
+}
+
+export type LeadCounts = { form: number; line: number; call: number };
+
+export async function getLeadCounts(days: number): Promise<LeadCounts> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "eventName" }],
+    dimensionFilter: {
+      filter: { fieldName: "eventName", inListFilter: { values: ["generate_lead", "click_line", "click_call"] } },
+    },
+    metrics: [{ name: "eventCount" }],
+  });
+  const counts: LeadCounts = { form: 0, line: 0, call: 0 };
+  if (!response?.rows) return counts;
+  for (const row of response.rows) {
+    const name = row.dimensionValues?.[0]?.value;
+    const count = Number(row.metricValues?.[0]?.value ?? 0);
+    if (name === "generate_lead") counts.form = count;
+    else if (name === "click_line") counts.line = count;
+    else if (name === "click_call") counts.call = count;
+  }
+  return counts;
+}

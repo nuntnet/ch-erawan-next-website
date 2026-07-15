@@ -124,3 +124,57 @@ describe("getChannels / getTopSources / getDeviceBreakdown", () => {
     ]);
   });
 });
+
+describe("getExitPages / getTopVehicles / getLeadCounts", () => {
+  it("getExitPages maps page rows sorted by exits", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [
+        { dimensionValues: [{ value: "/cars" }], metricValues: [{ value: "40" }, { value: "60" }, { value: "45.5" }] },
+        { dimensionValues: [{ value: "/booking" }], metricValues: [{ value: "25" }, { value: "30" }, { value: "50" }] },
+      ],
+    }]);
+    const { getExitPages } = await import("@/lib/ga4");
+    const result = await getExitPages(30);
+    expect(result).toEqual([
+      { path: "/cars", exits: 40, entrances: 60, bounceRate: 45.5 },
+      { path: "/booking", exits: 25, entrances: 30, bounceRate: 50 },
+    ]);
+  });
+
+  it("getTopVehicles derives a readable label from the slug", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [
+        { dimensionValues: [{ value: "/cars/mazda-cx-5-2025" }], metricValues: [{ value: "150" }] },
+        { dimensionValues: [{ value: "/cars/ford-ranger-raptor-2026" }], metricValues: [{ value: "90" }] },
+      ],
+    }]);
+    const { getTopVehicles } = await import("@/lib/ga4");
+    const result = await getTopVehicles(30);
+    expect(result).toEqual([
+      { slug: "mazda-cx-5-2025", label: "Mazda Cx 5 2025", views: 150 },
+      { slug: "ford-ranger-raptor-2026", label: "Ford Ranger Raptor 2026", views: 90 },
+    ]);
+  });
+
+  it("getLeadCounts maps the three event names into named counts", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [
+        { dimensionValues: [{ value: "generate_lead" }], metricValues: [{ value: "10" }] },
+        { dimensionValues: [{ value: "click_line" }], metricValues: [{ value: "25" }] },
+        { dimensionValues: [{ value: "click_call" }], metricValues: [{ value: "5" }] },
+      ],
+    }]);
+    const { getLeadCounts } = await import("@/lib/ga4");
+    const result = await getLeadCounts(30);
+    expect(result).toEqual({ form: 10, line: 25, call: 5 });
+  });
+
+  it("getLeadCounts defaults missing events to 0", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [{ dimensionValues: [{ value: "generate_lead" }], metricValues: [{ value: "3" }] }],
+    }]);
+    const { getLeadCounts } = await import("@/lib/ga4");
+    const result = await getLeadCounts(30);
+    expect(result).toEqual({ form: 3, line: 0, call: 0 });
+  });
+});

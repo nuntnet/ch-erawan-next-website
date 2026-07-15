@@ -133,8 +133,8 @@ export async function POST(req: NextRequest) {
       data.notes,
     ].filter(Boolean).join("\n");
 
-    // Also save to Notion as backup — created before the SPS log entry so a
-    // later retry (from /admin/sps-log) can flip this page's Status.
+    // Also save to Notion as backup — created before the SPS log entry so
+    // that log entry can reference back to it (see /admin/sps-log).
     let notionPageId: string | undefined;
     try {
       const page = await notion.pages.create({
@@ -142,7 +142,10 @@ export async function POST(req: NextRequest) {
         properties: {
           "Customer Name": { title: [{ text: { content: data.customerName } }] },
           Type: { select: { name: "service" } },
-          Status: { select: { name: spsSuccess ? "confirmed" : "pending" } },
+          // Always starts pending, same as every other submit route — SPS
+          // accepting the API call isn't the same as staff confirming the
+          // appointment. Staff advance this manually from /admin/appointments.
+          Status: { select: { name: "pending" } },
           "Customer Phone": { phone_number: data.customerPhone },
           ...(data.customerEmail ? { "Customer Email": { email: data.customerEmail } } : {}),
           ...(data.carModel ? { "Car Model": { rich_text: [{ text: { content: data.carModel } }] } } : {}),

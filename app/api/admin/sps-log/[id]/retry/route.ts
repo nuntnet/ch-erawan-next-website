@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Client } from "@notionhq/client";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getSpsLogById, logSpsCall } from "@/lib/sps-log";
-
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const SPS_ENDPOINT = process.env.SPS_BASE_URL
   ? `${process.env.SPS_BASE_URL}/servicebooking_form.php`
@@ -79,17 +76,10 @@ export async function POST(_req: NextRequest, { params }: RouteParams) {
     notionPageId: log.notionPageId ?? undefined,
   });
 
-  // Flip the original appointment's Status now that SPS actually accepted it.
-  if (spsSuccess && log.notionPageId) {
-    try {
-      await notion.pages.update({
-        page_id: log.notionPageId,
-        properties: { Status: { select: { name: "confirmed" } } },
-      });
-    } catch (notionErr) {
-      console.error("[sps-log retry] Failed to update Notion status:", notionErr);
-    }
-  }
+  // Note: the appointment's Status is a staff-confirmation workflow field,
+  // not a reflection of SPS API success — it stays whatever staff already
+  // set it to in /admin/appointments. This retry only affects whether SPS
+  // itself has the booking; it does not touch the Notion appointment.
 
   return NextResponse.json({
     success: spsSuccess,

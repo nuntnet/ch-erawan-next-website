@@ -11,6 +11,7 @@ import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon,
 import { toast } from "sonner";
 import { isValidEmail, EMAIL_ERROR } from "@/lib/form-validation";
 import { getBranchContact } from "@/lib/branchData";
+import { trackGenerateLead } from "@/lib/ga4-events";
 
 type BookingType = "test_drive" | "service" | "body_paint" | "insurance_quote";
 
@@ -205,6 +206,11 @@ function BookingForm() {
       if (selectedType === "service" && result.spsSuccess === false) {
         toast.warning("บันทึกข้อมูลแล้ว แต่ระบบ SPS ยังไม่ได้รับข้อมูล ทีมงานจะติดต่อกลับ");
       }
+      trackGenerateLead({
+        inquiryType: selectedType === "insurance_quote" ? "contact" : selectedType,
+        branch: form.branch || undefined,
+        carModel: form.carModel || undefined,
+      });
       setSubmitted(true);
     } catch {
       toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");

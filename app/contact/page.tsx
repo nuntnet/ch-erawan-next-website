@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { branches as branchList } from "@/lib/branchData";
 import { sanitizePhone, isValidPhone, isValidEmail, PHONE_ERROR, EMAIL_ERROR } from "@/lib/form-validation";
+import { trackGenerateLead } from "@/lib/ga4-events";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -31,6 +32,7 @@ export default function ContactPage() {
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error();
+      trackGenerateLead({ inquiryType: "contact", branch: form.branch || undefined });
       setSubmitted(true);
     } catch {
       toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");

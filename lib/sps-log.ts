@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client";
 import { spsCallLog } from "@/lib/db/schema";
-import { desc, eq, and, gte } from "drizzle-orm";
+import { desc, eq, and, gte, inArray } from "drizzle-orm";
 
 export type SpsCallLog = typeof spsCallLog.$inferSelect;
 
@@ -60,6 +60,30 @@ export async function getSpsLogById(id: number): Promise<SpsCallLog | null> {
   if (!db) return null;
   const rows = await db.select().from(spsCallLog).where(eq(spsCallLog.id, id)).limit(1);
   return rows[0] ?? null;
+}
+
+/**
+ * For each given Notion appointment page id, returns only its most recent
+ * SPS call log — used by /admin/appointments to show a failed-delivery
+ * badge + retry shortcut without linking to the full SPS Log page.
+ */
+export async function getLatestSpsLogsByNotionPageIds(
+  notionPageIds: string[]
+): Promise<Record<string, SpsCallLog>> {
+  const db = getDb();
+  if (!db || notionPageIds.length === 0) return {};
+
+  const rows = await db.select().from(spsCallLog)
+    .where(inArray(spsCallLog.notionPageId, notionPageIds))
+    .orderBy(desc(spsCallLog.createdAt));
+
+  const latest: Record<string, SpsCallLog> = {};
+  for (const row of rows) {
+    if (row.notionPageId && !latest[row.notionPageId]) {
+      latest[row.notionPageId] = row;
+    }
+  }
+  return latest;
 }
 
 export async function getSpsLogs(opts?: {

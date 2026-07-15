@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Search, ChevronDown, Phone, Mail, FileText, Car, MapPin, Clock, MessageSquare, Shield } from "lucide-react";
+import { Calendar, Search, ChevronDown, Phone, Mail, FileText, Car, MapPin, Clock, MessageSquare, Shield, AlertTriangle, RotateCw } from "lucide-react";
 import { toast } from "sonner";
+import { useSession } from "@/lib/auth-client";
 import type { Appointment } from "@/lib/notion-types";
+
+type SpsStatus = { id: number; success: boolean; createdAt: number };
 
 const TYPE_LABEL: Record<string, string> = {
   test_drive: "ทดลองขับ",
@@ -43,6 +46,8 @@ function DetailItem({ icon: Icon, label, value }: { icon: React.ElementType; lab
 }
 
 export default function AdminAppointments() {
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "admin";
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
@@ -50,16 +55,51 @@ export default function AdminAppointments() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [spsStatus, setSpsStatus] = useState<Record<string, SpsStatus>>({});
+  const [retryingId, setRetryingId] = useState<string | null>(null);
+
+  const fetchSpsStatus = (list: Appointment[]) => {
+    const ids = list.filter(a => a.type === "service").map(a => a.id);
+    if (ids.length === 0) return;
+    fetch(`/api/admin/appointments/sps-status?ids=${ids.join(",")}`)
+      .then(r => r.json())
+      .then(data => setSpsStatus(data && typeof data === "object" ? data : {}))
+      .catch(() => {});
+  };
 
   const fetchData = () => {
     setLoading(true);
     fetch("/api/admin/appointments")
       .then(r => r.json())
-      .then(data => setAppointments(Array.isArray(data) ? data : []))
+      .then(data => {
+        const list = Array.isArray(data) ? data : [];
+        setAppointments(list);
+        fetchSpsStatus(list);
+      })
       .finally(() => setLoading(false));
   };
 
   useEffect(() => { fetchData(); }, []);
+
+  const handleRetry = async (apt: Appointment) => {
+    const status = spsStatus[apt.id];
+    if (!status) return;
+    setRetryingId(apt.id);
+    try {
+      const res = await fetch(`/api/admin/sps-log/${status.id}/retry`, { method: "POST" });
+      const json = await res.json();
+      if (res.ok && json.success) {
+        toast.success(json.message ?? "ส่งซ้ำสำเร็จ");
+      } else {
+        toast.error(json.message ?? json.error ?? "ส่งซ้ำไม่สำเร็จ");
+      }
+      fetchSpsStatus(appointments);
+    } catch {
+      toast.error("เกิดข้อผิดพลาดขณะส่งซ้ำ");
+    } finally {
+      setRetryingId(null);
+    }
+  };
 
   const handleStatusChange = async (id: string, status: Appointment["status"]) => {
     setUpdating(id);
@@ -150,6 +190,8 @@ export default function AdminAppointments() {
             <tbody className="divide-y divide-gray-50">
               {filtered.map(apt => {
                 const isExpanded = expandedId === apt.id;
+                const sps = apt.type === "service" ? spsStatus[apt.id] : undefined;
+                const spsFailed = sps && !sps.success;
                 return (
                   <tr key={apt.id} className="group">
                     <td colSpan={6} className="p-0">
@@ -161,10 +203,29 @@ export default function AdminAppointments() {
                           <p className="text-sm font-medium text-[#0F172A]">{apt.customerName}</p>
                           <p className="text-xs text-gray-400">{apt.customerPhone}</p>
                         </div>
-                        <div className="px-5 py-4 w-32 shrink-0">
+                        <div className="px-5 py-4 w-32 shrink-0 space-y-1">
                           <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
                             {TYPE_LABEL[apt.type] ?? apt.type}
                           </span>
+                          {spsFailed && (
+                            <div className="flex items-center gap-1" onClick={e => e.stopPropagation()}>
+                              <span className="flex items-center gap-1 text-[10px] font-medium text-red-600">
+                                <AlertTriangle className="w-3 h-3" />
+                                ส่ง SPS ไม่สำเร็จ
+                              </span>
+                              {isAdmin && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleRetry(apt)}
+                                  disabled={retryingId === apt.id}
+                                  title="ลองส่งใหม่เข้า SPS"
+                                  className="text-red-600 hover:text-red-700 disabled:opacity-50"
+                                >
+                                  <RotateCw className={`w-3 h-3 ${retryingId === apt.id ? "animate-spin" : ""}`} />
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <div className="px-5 py-4 flex-1 min-w-0">
                           <p className="text-sm text-gray-600">{apt.carModel || "—"}</p>

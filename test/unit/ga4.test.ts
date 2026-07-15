@@ -39,14 +39,14 @@ describe("runGa4Funnel", () => {
       funnelTable: {
         dimensionHeaders: [{ name: "funnelStepName" }],
         metricHeaders: [
-          { name: "activeUsers", type: "TYPE_INTEGER" },
-          { name: "funnelStepCompletionRate", type: "TYPE_INTEGER" },
           { name: "funnelStepAbandonments", type: "TYPE_INTEGER" },
           { name: "funnelStepAbandonmentRate", type: "TYPE_INTEGER" },
+          { name: "activeUsers", type: "TYPE_INTEGER" },
+          { name: "funnelStepCompletionRate", type: "TYPE_INTEGER" },
         ],
         rows: [
-          { dimensionValues: [{ value: "step1" }], metricValues: [{ value: "100" }, { value: "100" }, { value: "0" }, { value: "0" }] },
-          { dimensionValues: [{ value: "step2" }], metricValues: [{ value: "40" }, { value: "40" }, { value: "60" }, { value: "60" }] },
+          { dimensionValues: [{ value: "step1" }], metricValues: [{ value: "0" }, { value: "0" }, { value: "100" }, { value: "100" }] },
+          { dimensionValues: [{ value: "step2" }], metricValues: [{ value: "60" }, { value: "60" }, { value: "40" }, { value: "40" }] },
         ],
       },
     };

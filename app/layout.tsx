@@ -7,6 +7,7 @@ import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { JsonLd, organizationGraph, websiteJsonLd } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import OutboundClickTracker from "@/components/OutboundClickTracker";
 import Script from "next/script";
 
 // Unset on staging on purpose — a second GA4 property/env var would be
@@ -85,6 +86,7 @@ export default function RootLayout({
         <Toaster richColors position="top-right" />
         <Analytics />
         <SpeedInsights />
+        <OutboundClickTracker />
         {GA_MEASUREMENT_ID && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />

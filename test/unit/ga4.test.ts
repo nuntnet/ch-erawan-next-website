@@ -77,3 +77,50 @@ describe("runGa4Funnel", () => {
     expect(result).toEqual([]);
   });
 });
+
+describe("getChannels / getTopSources / getDeviceBreakdown", () => {
+  it("getChannels maps channel group rows", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [
+        { dimensionValues: [{ value: "Organic Search" }], metricValues: [{ value: "50" }, { value: "40" }] },
+        { dimensionValues: [{ value: "Direct" }], metricValues: [{ value: "20" }, { value: "18" }] },
+      ],
+    }]);
+    const { getChannels } = await import("@/lib/ga4");
+    const result = await getChannels(30);
+    expect(result).toEqual([
+      { channel: "Organic Search", sessions: 50, users: 40 },
+      { channel: "Direct", sessions: 20, users: 18 },
+    ]);
+  });
+
+  it("getTopSources includes campaign, null when (not set)", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [
+        { dimensionValues: [{ value: "facebook" }, { value: "cpc" }, { value: "july_motor_show" }], metricValues: [{ value: "12" }] },
+        { dimensionValues: [{ value: "google" }, { value: "organic" }, { value: "(not set)" }], metricValues: [{ value: "30" }] },
+      ],
+    }]);
+    const { getTopSources } = await import("@/lib/ga4");
+    const result = await getTopSources(30);
+    expect(result).toEqual([
+      { source: "facebook", medium: "cpc", campaign: "july_motor_show", sessions: 12 },
+      { source: "google", medium: "organic", campaign: null, sessions: 30 },
+    ]);
+  });
+
+  it("getDeviceBreakdown maps device rows", async () => {
+    mockRunReport.mockResolvedValueOnce([{
+      rows: [
+        { dimensionValues: [{ value: "mobile" }], metricValues: [{ value: "80" }] },
+        { dimensionValues: [{ value: "desktop" }], metricValues: [{ value: "20" }] },
+      ],
+    }]);
+    const { getDeviceBreakdown } = await import("@/lib/ga4");
+    const result = await getDeviceBreakdown(30);
+    expect(result).toEqual([
+      { device: "mobile", sessions: 80 },
+      { device: "desktop", sessions: 20 },
+    ]);
+  });
+});

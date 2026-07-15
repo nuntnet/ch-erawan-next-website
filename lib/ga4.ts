@@ -95,3 +95,57 @@ export async function runGa4Funnel(steps: FunnelStepDef[], days: number): Promis
     return [];
   }
 }
+
+export type ChannelRow = { channel: string; sessions: number; users: number };
+
+export async function getChannels(days: number): Promise<ChannelRow[]> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "sessionDefaultChannelGroup" }],
+    metrics: [{ name: "sessions" }, { name: "activeUsers" }],
+  });
+  if (!response?.rows) return [];
+  return response.rows.map((row) => ({
+    channel: row.dimensionValues?.[0]?.value ?? "",
+    sessions: Number(row.metricValues?.[0]?.value ?? 0),
+    users: Number(row.metricValues?.[1]?.value ?? 0),
+  }));
+}
+
+export type SourceRow = { source: string; medium: string; campaign: string | null; sessions: number };
+
+export async function getTopSources(days: number): Promise<SourceRow[]> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "sessionSource" }, { name: "sessionMedium" }, { name: "sessionCampaignName" }],
+    metrics: [{ name: "sessions" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    limit: 20,
+  });
+  if (!response?.rows) return [];
+  return response.rows.map((row) => {
+    const campaign = row.dimensionValues?.[2]?.value ?? null;
+    return {
+      source: row.dimensionValues?.[0]?.value ?? "",
+      medium: row.dimensionValues?.[1]?.value ?? "",
+      campaign: campaign === "(not set)" ? null : campaign,
+      sessions: Number(row.metricValues?.[0]?.value ?? 0),
+    };
+  });
+}
+
+export type DeviceRow = { device: string; sessions: number };
+
+export async function getDeviceBreakdown(days: number): Promise<DeviceRow[]> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "deviceCategory" }],
+    metrics: [{ name: "sessions" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+  });
+  if (!response?.rows) return [];
+  return response.rows.map((row) => ({
+    device: row.dimensionValues?.[0]?.value ?? "",
+    sessions: Number(row.metricValues?.[0]?.value ?? 0),
+  }));
+}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
-import { BarChart3, BookOpen, Calendar, Car, KeyRound, LogOut, Mail, MessageSquare, Tag, Wrench, MessageSquareWarning, Share2, Video, TrendingUp, Users, ScrollText } from "lucide-react";
+import { BarChart3, BookOpen, Calendar, Car, KeyRound, LogOut, Mail, MessageSquare, Tag, Wrench, MessageSquareWarning, Share2, Video, TrendingUp, Users, ScrollText, Send } from "lucide-react";
 import CompanyLogo from "@/components/CompanyLogo";
 import ChangePasswordDialog from "@/components/admin/ChangePasswordDialog";
 import {
@@ -33,6 +33,7 @@ const menuItems = [
   // ── System (admin-only) ───────────────────
   { icon: Users,                label: "จัดการผู้ใช้",    href: "/admin/users", adminOnly: true },
   { icon: ScrollText,           label: "Audit Log",       href: "/admin/audit", adminOnly: true },
+  { icon: Send,                 label: "SPS Log",         href: "/admin/sps-log", adminOnly: true },
 ];
 
 

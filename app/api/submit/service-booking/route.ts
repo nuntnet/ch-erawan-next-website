@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Client } from "@notionhq/client";
 import { sendAppointmentNotification, resolveBrandFromBranch } from "@/lib/email";
+import { logSpsCall } from "@/lib/sps-log";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -102,19 +103,25 @@ export async function POST(req: NextRequest) {
 
     // POST to SPS
     let spsSuccess = false;
+    let spsStatus: number | undefined;
+    let spsResponseBody: string | undefined;
+    let spsErrorMessage: string | undefined;
     try {
       const spsRes = await fetch(SPS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: spsParams.toString(),
       });
+      spsStatus = spsRes.status;
       const html = await spsRes.text();
+      spsResponseBody = html;
       spsSuccess = html.includes("ขอขอบคุณสำหรับการนัดหมาย");
       if (!spsSuccess) {
         console.error("[service-booking] SPS did not return success marker");
       }
     } catch (err) {
-      console.error("[service-booking] SPS proxy error:", err instanceof Error ? err.message : err);
+      spsErrorMessage = err instanceof Error ? err.message : String(err);
+      console.error("[service-booking] SPS proxy error:", spsErrorMessage);
     }
 
     // Fold service details into Notes (appointments DB has no dedicated
@@ -126,9 +133,11 @@ export async function POST(req: NextRequest) {
       data.notes,
     ].filter(Boolean).join("\n");
 
-    // Also save to Notion as backup
+    // Also save to Notion as backup — created before the SPS log entry so a
+    // later retry (from /admin/sps-log) can flip this page's Status.
+    let notionPageId: string | undefined;
     try {
-      await notion.pages.create({
+      const page = await notion.pages.create({
         parent: { database_id: process.env.NOTION_APPOINTMENTS_DB_ID! },
         properties: {
           "Customer Name": { title: [{ text: { content: data.customerName } }] },
@@ -145,9 +154,29 @@ export async function POST(req: NextRequest) {
           "Submitted At": { date: { start: new Date().toISOString() } },
         },
       });
+      notionPageId = page.id;
     } catch (notionErr) {
       console.error("[service-booking] Notion backup error:", notionErr);
     }
+
+    // Persist the call outcome for /admin/sps-log — redact the shared API
+    // key before storing since this log is otherwise just JSON in Turso.
+    const loggedPayload = Object.fromEntries(spsParams);
+    if (loggedPayload.api_key) loggedPayload.api_key = "[redacted]";
+    await logSpsCall({
+      branch: data.branch,
+      branchId,
+      customerName: data.customerName,
+      customerPhone: data.customerPhone,
+      preferredDate: data.preferredDate,
+      preferredTime: data.preferredTime,
+      requestPayload: loggedPayload,
+      responseStatus: spsStatus,
+      responseBody: spsResponseBody,
+      success: spsSuccess,
+      errorMessage: spsErrorMessage,
+      notionPageId,
+    });
 
     // Send email notification
     await sendAppointmentNotification({

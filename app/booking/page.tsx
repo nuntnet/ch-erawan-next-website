@@ -88,6 +88,13 @@ function BookingForm() {
 
   useEffect(() => { if (typeParam) setSelectedType(typeParam); }, [typeParam]);
 
+  // The success view replaces the long form with a short confirmation card —
+  // without this, the page stays scrolled to wherever the user was in the
+  // form (often near the bottom) and they land looking at the footer.
+  useEffect(() => {
+    if (submitted) window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [submitted]);
+
   useEffect(() => {
     if (selectedType !== "service" || !form.branch || !form.preferredDate) {
       setSlots([]);

@@ -117,6 +117,15 @@ turso db tokens create ch-erawan
 |----------|----------|----------|
 | `NEXT_PUBLIC_SITE_URL` | แนะนำ prod | Canonical/OG base URL (default: `https://www.ch-erawan.com`) |
 
+## Google Analytics / Search Console
+
+| Variable | Required | คำอธิบาย |
+|----------|----------|----------|
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | optional | GA4 Measurement ID (`G-XXXXXXXXXX`) — ถ้าไม่ตั้ง จะไม่โหลด gtag.js เลย |
+| `GOOGLE_SITE_VERIFICATION` | optional | Verification code จาก Search Console (meta tag method) |
+
+**ตั้งใจให้ `NEXT_PUBLIC_GA_MEASUREMENT_ID` ไม่ set บน staging** — ป้องกันไม่ให้ traffic ทดสอบปนกับข้อมูลจริงใน GA4 property เดียวกัน ถ้าต้องการแยก tracking staging ให้สร้าง GA4 property ที่สอง แล้วตั้งค่าเฉพาะบน staging env
+
 ## Revalidation
 
 | Variable | Required | คำอธิบาย |
@@ -154,6 +163,10 @@ NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSy...
 
 # Site URL (canonical / OG)
 NEXT_PUBLIC_SITE_URL=https://www.ch-erawan.com
+
+# Google Analytics / Search Console (prod only — leave unset on staging)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+GOOGLE_SITE_VERIFICATION=your-search-console-verification-code
 
 # SPS (Service Booking System)
 SPS_BASE_URL=https://system.ch-erawan.com/sps

@@ -126,6 +126,23 @@ turso db tokens create ch-erawan
 
 **ตั้งใจให้ `NEXT_PUBLIC_GA_MEASUREMENT_ID` ไม่ set บน staging** — ป้องกันไม่ให้ traffic ทดสอบปนกับข้อมูลจริงใน GA4 property เดียวกัน ถ้าต้องการแยก tracking staging ให้สร้าง GA4 property ที่สอง แล้วตั้งค่าเฉพาะบน staging env
 
+### GA4 Data API (reporting — สำหรับดึงข้อมูลออกมา ไม่ใช่ tracking script)
+
+Service account แยกจาก Measurement ID ข้างบน — ใช้อ่านข้อมูลจาก GA4 property ผ่าน `lib/ga4.ts` (`runGa4Report()`)
+
+| Variable | Required | คำอธิบาย |
+|----------|----------|----------|
+| `GA4_PROPERTY_ID` | optional | GA4 Property ID (ตัวเลข เช่น `399827199`) — หาได้ที่ Admin > Property Settings |
+| `GA4_CLIENT_EMAIL` | optional | Service account email จาก Google Cloud (`...@...iam.gserviceaccount.com`) |
+| `GA4_PRIVATE_KEY` | optional | Private key จาก service account JSON — ใส่ทั้งบรรทัด `-----BEGIN PRIVATE KEY-----...` ใน quotes |
+
+**Setup:**
+1. สร้าง Service Account ใน Google Cloud Console + เปิดใช้ "Google Analytics Data API"
+2. ดาวน์โหลด JSON key
+3. เพิ่ม service account email เป็น **Viewer** ใน GA4 → Admin → Property Access Management
+4. Copy `client_email`/`private_key`/property ID เข้า env vars ด้านบน
+5. **ลบไฟล์ JSON key ทิ้งหลังตั้งค่าเสร็จ** — ไม่ควรมี private key แบบ plaintext ค้างอยู่ในเครื่อง
+
 ## Revalidation
 
 | Variable | Required | คำอธิบาย |
@@ -167,6 +184,11 @@ NEXT_PUBLIC_SITE_URL=https://www.ch-erawan.com
 # Google Analytics / Search Console (prod only — leave unset on staging)
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 GOOGLE_SITE_VERIFICATION=your-search-console-verification-code
+
+# GA4 Data API (reporting) — separate service account, not the Measurement ID above
+GA4_PROPERTY_ID=123456789
+GA4_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
+GA4_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 
 # SPS (Service Booking System)
 SPS_BASE_URL=https://system.ch-erawan.com/sps

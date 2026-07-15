@@ -129,8 +129,8 @@ describe("getExitPages / getTopVehicles / getLeadCounts", () => {
   it("getExitPages maps page rows sorted by exits", async () => {
     mockRunReport.mockResolvedValueOnce([{
       rows: [
-        { dimensionValues: [{ value: "/cars" }], metricValues: [{ value: "40" }, { value: "60" }, { value: "45.5" }] },
-        { dimensionValues: [{ value: "/booking" }], metricValues: [{ value: "25" }, { value: "30" }, { value: "50" }] },
+        { dimensionValues: [{ value: "/cars" }], metricValues: [{ value: "40" }, { value: "60" }, { value: "0.455" }] },
+        { dimensionValues: [{ value: "/booking" }], metricValues: [{ value: "25" }, { value: "30" }, { value: "0.5" }] },
       ],
     }]);
     const { getExitPages } = await import("@/lib/ga4");
@@ -176,6 +176,15 @@ describe("getExitPages / getTopVehicles / getLeadCounts", () => {
     const { getLeadCounts } = await import("@/lib/ga4");
     const result = await getLeadCounts(30);
     expect(result).toEqual({ form: 3, line: 0, call: 0 });
+  });
+});
+
+describe("runGa4Report error handling", () => {
+  it("getChannels resolves to [] when the underlying runReport call rejects", async () => {
+    mockRunReport.mockRejectedValueOnce(new Error("GA4 down"));
+    const { getChannels } = await import("@/lib/ga4");
+    const result = await getChannels(30);
+    expect(result).toEqual([]);
   });
 });
 

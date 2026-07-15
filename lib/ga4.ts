@@ -25,11 +25,16 @@ export async function runGa4Report(request: Omit<RunReportRequest, "property">) 
   const ga4Client = getClient();
   const propertyId = process.env.GA4_PROPERTY_ID;
   if (!ga4Client || !propertyId) return null;
-  const [response] = await ga4Client.runReport({
-    property: `properties/${propertyId}`,
-    ...request,
-  });
-  return response;
+  try {
+    const [response] = await ga4Client.runReport({
+      property: `properties/${propertyId}`,
+      ...request,
+    });
+    return response;
+  } catch (err) {
+    console.error("[ga4] runGa4Report error", err);
+    return null;
+  }
 }
 
 export type FunnelStepDef = {
@@ -165,7 +170,7 @@ export async function getExitPages(days: number): Promise<ExitPageRow[]> {
     path: row.dimensionValues?.[0]?.value ?? "",
     exits: Number(row.metricValues?.[0]?.value ?? 0),
     entrances: Number(row.metricValues?.[1]?.value ?? 0),
-    bounceRate: Number(row.metricValues?.[2]?.value ?? 0),
+    bounceRate: Number(row.metricValues?.[2]?.value ?? 0) * 100,
   }));
 }
 

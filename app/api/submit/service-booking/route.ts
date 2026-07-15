@@ -71,10 +71,15 @@ export async function POST(req: NextRequest) {
     if (process.env.SPS_API_KEY) {
       spsParams.set("api_key", process.env.SPS_API_KEY);
     }
+    // preferredTime is a 2-hour window like "08:00-10:00" — split into SPS's
+    // own start/end fields instead of leaving svb_time2 unused.
+    const [timeStart, timeEnd] = data.preferredTime.includes("-")
+      ? data.preferredTime.split("-")
+      : [data.preferredTime, ""];
     spsParams.set("branch_id", branchId);
     spsParams.set("svb_date", toSpsDate(data.preferredDate));
-    spsParams.set("svb_time", data.preferredTime);
-    spsParams.set("svb_time2", "");
+    spsParams.set("svb_time", timeStart);
+    spsParams.set("svb_time2", timeEnd);
     spsParams.set("sbth_id", "");
     spsParams.set("svb_iscustomer", "n");
     spsParams.set("vehicle_owner_code", "");

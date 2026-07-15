@@ -32,11 +32,9 @@ const branches = [
 
 const timeSlots = ["08:00", "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
-const serviceTimeSlots = [
-  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-  "11:00", "11:30", "13:00", "13:30", "14:00", "14:30",
-  "15:00", "15:30", "16:00", "16:30",
-];
+// Service bookings use 2-hour windows instead of per-hour slots — matches
+// the aggregation /api/slots does over SPS's own hourly availability.
+const serviceTimeSlots = ["08:00-10:00", "10:00-12:00", "13:00-15:00", "15:00-17:00"];
 
 const spsServiceTypes = [
   { value: "เช็คระยะ", label: "เช็คระยะ" },
@@ -382,7 +380,7 @@ function BookingForm() {
                       </div>
                     ) : slots.length > 0 ? (
                       <>
-                        <div className="grid grid-cols-4 sm:grid-cols-4 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                           {slots.map(slot => {
                             const isSelected = form.preferredTime === slot.time;
                             if (!slot.available) {

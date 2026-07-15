@@ -1,5 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Service appointment windows — SPS itself returns hourly slots, but we book
+// customers into 2-hour windows instead (fewer, coarser options).
+const WINDOWS = [
+  { start: "08:00", end: "10:00" },
+  { start: "10:00", end: "12:00" },
+  { start: "13:00", end: "15:00" },
+  { start: "15:00", end: "17:00" },
+];
+
+function toMinutes(t: string): number {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + (m || 0);
+}
+
+/** Groups SPS's raw hourly {time, available} slots into the fixed windows above. */
+function aggregateToWindows(rawSlots: { time: string; available: boolean }[]) {
+  return WINDOWS.map((w) => {
+    const startMin = toMinutes(w.start);
+    const endMin = toMinutes(w.end);
+    const contained = rawSlots.filter((s) => {
+      const t = toMinutes(s.time);
+      return t >= startMin && t < endMin;
+    });
+    // No matching raw slots for this window → nothing says it's full, so
+    // default to available rather than hiding the option outright.
+    const available = contained.length === 0 ? true : contained.some((s) => s.available);
+    return { time: `${w.start}-${w.end}`, available };
+  });
+}
+
 const BRANCH_SPS_ID: Record<string, string> = {
   "มาสด้า ช.เอราวัณ นครปฐม": "1",
   "มาสด้า ช.เอราวัณ ศาลายา": "2",
@@ -39,6 +69,9 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await res.json();
+    if (Array.isArray(data.slots)) {
+      data.slots = aggregateToWindows(data.slots);
+    }
     return NextResponse.json(data);
   } catch {
     return NextResponse.json({ error: "Failed to fetch slots" }, { status: 502 });

@@ -178,3 +178,34 @@ describe("getExitPages / getTopVehicles / getLeadCounts", () => {
     expect(result).toEqual({ form: 3, line: 0, call: 0 });
   });
 });
+
+describe("getFunnels", () => {
+  it("runs all 4 hardcoded funnels and labels each result", async () => {
+    // getFunnels calls runGa4Funnel internally (same module) — rather than
+    // self-mocking a sibling export of the module under test (fragile in
+    // Vitest/ESM), mock the same underlying transport runGa4Funnel uses:
+    // fetch (auth is already mocked once, at the top of this file in Task 1
+    // — google-auth-library must NOT be re-mocked here, vi.mock is
+    // file-scoped and hoisted; a second vi.mock("google-auth-library", ...)
+    // call in this describe block would conflict with Task 1's).
+    global.fetch = vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        funnelTable: {
+          dimensionHeaders: [{ name: "funnelStepName" }],
+          metricHeaders: [
+            { name: "activeUsers", type: "TYPE_INTEGER" },
+            { name: "funnelStepCompletionRate", type: "TYPE_INTEGER" },
+          ],
+          rows: [{ dimensionValues: [{ value: "s1" }], metricValues: [{ value: "10" }, { value: "100" }] }],
+        },
+      }),
+    })) as unknown as typeof fetch;
+
+    const { getFunnels } = await import("@/lib/ga4");
+    const result = await getFunnels(30);
+    expect(result).toHaveLength(4);
+    expect(result.map((f) => f.key)).toEqual(["test_drive", "service", "promotions", "blog"]);
+    expect(result[0].steps).toEqual([{ name: "s1", users: 10, completionRate: 100 }]);
+  });
+});

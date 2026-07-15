@@ -223,3 +223,52 @@ export async function getLeadCounts(days: number): Promise<LeadCounts> {
   }
   return counts;
 }
+
+const FUNNELS: { key: string; label: string; steps: FunnelStepDef[] }[] = [
+  {
+    key: "test_drive",
+    label: "หน้ารถ → ดูรถ → จองทดลองขับสำเร็จ",
+    steps: [
+      { name: "หน้ารายการรถ", field: "pageLocation", matchType: "CONTAINS", value: "/cars" },
+      { name: "หน้ารายละเอียดรถ", field: "pageLocation", matchType: "CONTAINS", value: "/cars/" },
+      { name: "จองทดลองขับสำเร็จ", field: "eventName", matchType: "EXACT", value: "generate_lead" },
+    ],
+  },
+  {
+    key: "service",
+    label: "หน้าแบรนด์บริการ → จองเข้าศูนย์บริการสำเร็จ",
+    steps: [
+      { name: "หน้าบริการ", field: "pageLocation", matchType: "CONTAINS", value: "/service" },
+      { name: "จองเข้าศูนย์บริการสำเร็จ", field: "eventName", matchType: "EXACT", value: "generate_lead" },
+    ],
+  },
+  {
+    key: "promotions",
+    label: "โปรโมชั่น → จอง/ติดต่อสำเร็จ",
+    steps: [
+      { name: "หน้าโปรโมชั่น", field: "pageLocation", matchType: "CONTAINS", value: "/promotions" },
+      { name: "จอง/ติดต่อสำเร็จ", field: "eventName", matchType: "EXACT", value: "generate_lead" },
+    ],
+  },
+  {
+    key: "blog",
+    label: "บทความ/บล็อก → จองทดลองขับสำเร็จ",
+    steps: [
+      { name: "หน้าบทความ", field: "pageLocation", matchType: "CONTAINS", value: "/blog/" },
+      { name: "จองทดลองขับสำเร็จ", field: "eventName", matchType: "EXACT", value: "generate_lead" },
+    ],
+  },
+];
+
+export type FunnelResult = { key: string; label: string; steps: FunnelStepResult[] };
+
+export async function getFunnels(days: number): Promise<FunnelResult[]> {
+  const results = await Promise.all(
+    FUNNELS.map(async (f) => ({
+      key: f.key,
+      label: f.label,
+      steps: await runGa4Funnel(f.steps, days),
+    }))
+  );
+  return results;
+}

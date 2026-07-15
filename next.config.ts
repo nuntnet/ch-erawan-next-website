@@ -9,17 +9,17 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   // Permissions policy
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
-  // Basic CSP — allows Google Maps, YouTube, Cloudinary, LINE, Notion
+  // Basic CSP — allows Google Maps, YouTube, Cloudinary, LINE, Notion, Google Analytics (GA4)
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' maps.googleapis.com *.googleapis.com www.youtube.com va.vercel-scripts.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' maps.googleapis.com *.googleapis.com www.youtube.com va.vercel-scripts.com *.googletagmanager.com",
       "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
       "font-src 'self' fonts.gstatic.com",
-      "img-src 'self' data: blob: res.cloudinary.com *.notion.so images.unsplash.com *.s3.amazonaws.com *.cloudfront.net *.amazonaws.com img.youtube.com files.manuscdn.com d2xsxph8kpxj0f.cloudfront.net www.gwm.co.th www.kia.com www.mitsubishi-motors.co.th www.mitsubishi-motors.com www.ford.co.th www.changan.co.th imgcdn.zigwheels.co.th upload.wikimedia.org *.tile.openstreetmap.org",
+      "img-src 'self' data: blob: res.cloudinary.com *.notion.so images.unsplash.com *.s3.amazonaws.com *.cloudfront.net *.amazonaws.com img.youtube.com files.manuscdn.com d2xsxph8kpxj0f.cloudfront.net www.gwm.co.th www.kia.com www.mitsubishi-motors.co.th www.mitsubishi-motors.com www.ford.co.th www.changan.co.th imgcdn.zigwheels.co.th upload.wikimedia.org *.tile.openstreetmap.org *.google-analytics.com *.googletagmanager.com",
       "media-src 'self' res.cloudinary.com",
-      "connect-src 'self' *.notion.so api.notion.com *.googleapis.com vitals.vercel-insights.com *.vercel-insights.com *.tile.openstreetmap.org",
+      "connect-src 'self' *.notion.so api.notion.com *.googleapis.com vitals.vercel-insights.com *.vercel-insights.com *.tile.openstreetmap.org *.google-analytics.com *.analytics.google.com *.googletagmanager.com",
       "frame-src www.youtube.com www.google.com maps.google.com *.googlemaps.com *.google.com www.tiktok.com *.tiktok.com",
       "worker-src 'self' blob:",
     ].join("; "),

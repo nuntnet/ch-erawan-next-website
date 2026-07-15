@@ -6,7 +6,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
 } from "recharts";
 import {
-  Car, Calendar, Mail, TrendingUp, Eye, BarChart2, Clock, RefreshCw,
+  Car, Calendar, Mail, TrendingUp, Eye, Clock, RefreshCw, MessageSquare, Phone, Smartphone, Monitor,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +21,26 @@ type AnalyticsData = {
   topBrands: { brand: string | null; count: number }[];
   daily: { date: string; event: string; count: number }[];
   recent: { id: number; event: string; path: string | null; brand: string | null; model: string | null; createdAt: number }[];
+};
+
+type ChannelRow = { channel: string; sessions: number; users: number };
+type SourceRow = { source: string; medium: string; campaign: string | null; sessions: number };
+type ExitPageRow = { path: string; exits: number; entrances: number; bounceRate: number };
+type VehicleRow = { slug: string; label: string; views: number };
+type DeviceRow = { device: string; sessions: number };
+type LeadCounts = { form: number; line: number; call: number };
+type FunnelStepResult = { name: string; users: number; completionRate: number };
+type FunnelResult = { key: string; label: string; steps: FunnelStepResult[] };
+
+type Ga4Data = {
+  configured: boolean;
+  channels: ChannelRow[];
+  topSources: SourceRow[];
+  exitPages: ExitPageRow[];
+  topVehicles: VehicleRow[];
+  deviceBreakdown: DeviceRow[];
+  leadCounts: LeadCounts;
+  funnels: FunnelResult[];
 };
 
 const EVENT_LABELS: Record<string, string> = {
@@ -68,6 +88,7 @@ export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [days, setDays] = useState(30);
   const [loading, setLoading] = useState(true);
+  const [ga4, setGa4] = useState<Ga4Data | null>(null);
 
   async function load(d: number) {
     setLoading(true);
@@ -79,7 +100,16 @@ export default function AnalyticsPage() {
     }
   }
 
-  useEffect(() => { load(days); }, [days]);
+  async function loadGa4(d: number) {
+    try {
+      const res = await fetch(`/api/admin/analytics/ga4?days=${d}`);
+      setGa4(await res.json());
+    } catch {
+      setGa4(null);
+    }
+  }
+
+  useEffect(() => { load(days); loadGa4(days); }, [days]);
 
   // Build daily chart data (last 14 days)
   const chartData = (() => {
@@ -121,24 +151,26 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Vercel Analytics link */}
-      <div className="bg-gradient-to-r from-[#0F172A] to-[#1e293b] rounded-xl p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <BarChart2 className="w-5 h-5 text-white/60" />
-          <div>
-            <p className="text-white font-medium text-sm">Vercel Analytics</p>
-            <p className="text-white/50 text-xs">Page views, unique visitors, Web Vitals, referrers</p>
+      {/* GA4 not configured banner */}
+      {ga4 && !ga4.configured && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-700">
+          ยังไม่ได้ตั้งค่า GA4 — ดู <code className="font-mono">specs/env-vars.md</code>
+        </div>
+      )}
+
+      {/* Lead counts */}
+      {ga4?.configured && (
+        <div>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            Leads — {days} วันล่าสุด
+          </h2>
+          <div className="grid grid-cols-3 gap-4">
+            <StatCard label="จองผ่านฟอร์ม" value={ga4.leadCounts.form} icon={Calendar} color="#0F172A" />
+            <StatCard label="ทัก LINE" value={ga4.leadCounts.line} icon={MessageSquare} color="#06C755" />
+            <StatCard label="โทรศัพท์" value={ga4.leadCounts.call} icon={Phone} color="#3B82F6" />
           </div>
         </div>
-        <a
-          href="https://vercel.com/ch-erawan/ch-erawanwebsite/analytics"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition-colors"
-        >
-          เปิด Dashboard →
-        </a>
-      </div>
+      )}
 
       {/* Event count cards */}
       <div>
@@ -252,6 +284,143 @@ export default function AnalyticsPage() {
           })}
         </div>
       </div>
+
+      {ga4?.configured && (
+        <>
+          {/* Traffic Sources */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl border border-gray-100 p-5">
+              <h2 className="text-sm font-semibold text-[#0F172A] mb-4">Traffic Sources</h2>
+              {ga4.channels.length === 0 && <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>}
+              <div className="space-y-2">
+                {ga4.channels.map((c, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="text-[#0F172A]">{c.channel}</span>
+                    <span className="font-semibold text-gray-700">{c.sessions.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-100 p-5">
+              <h2 className="text-sm font-semibold text-[#0F172A] mb-4">Top Sources / Campaigns</h2>
+              {ga4.topSources.length === 0 && <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>}
+              <div className="space-y-2">
+                {ga4.topSources.slice(0, 8).map((s, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="text-[#0F172A] truncate">
+                      {s.source} / {s.medium}
+                      {s.campaign && <span className="text-gray-400"> · {s.campaign}</span>}
+                    </span>
+                    <span className="font-semibold text-gray-700 shrink-0 ml-2">{s.sessions.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Top Vehicles + Device split */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl border border-gray-100 p-5">
+              <h2 className="text-sm font-semibold text-[#0F172A] mb-4">รถที่มีคนสนใจมากที่สุด</h2>
+              {ga4.topVehicles.length === 0 && <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>}
+              <div className="space-y-2">
+                {ga4.topVehicles.map((v, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="text-[#0F172A] truncate">{v.label}</span>
+                    <span className="font-semibold text-gray-700 shrink-0 ml-2">{v.views.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-100 p-5">
+              <h2 className="text-sm font-semibold text-[#0F172A] mb-4">Mobile vs Desktop</h2>
+              {ga4.deviceBreakdown.length === 0 && <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>}
+              <div className="space-y-3">
+                {ga4.deviceBreakdown.map((d, i) => {
+                  const max = ga4.deviceBreakdown[0]?.sessions ?? 1;
+                  const pct = Math.round((d.sessions / max) * 100);
+                  const Icon = d.device === "mobile" ? Smartphone : Monitor;
+                  return (
+                    <div key={i}>
+                      <div className="flex items-center justify-between mb-1 text-sm">
+                        <span className="flex items-center gap-1.5 text-[#0F172A]"><Icon className="w-3.5 h-3.5" />{d.device}</span>
+                        <span className="text-gray-500">{d.sessions.toLocaleString()}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-[#0F172A] rounded-full" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Exit Pages */}
+          <div className="bg-white rounded-xl border border-gray-100 p-5">
+            <h2 className="text-sm font-semibold text-[#0F172A] mb-4">หน้าที่คนออกจากเว็บมากที่สุด</h2>
+            {ga4.exitPages.length === 0 ? (
+              <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
+                    <th className="pb-2 font-medium">หน้า</th>
+                    <th className="pb-2 font-medium text-right">Entrances</th>
+                    <th className="pb-2 font-medium text-right">Exits</th>
+                    <th className="pb-2 font-medium text-right">Bounce Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ga4.exitPages.filter((p) => p.entrances >= 10).map((p, i) => (
+                    <tr key={i} className="border-b border-gray-50 last:border-0">
+                      <td className="py-2 text-[#0F172A] truncate max-w-[240px]">{p.path}</td>
+                      <td className="py-2 text-right text-gray-600">{p.entrances.toLocaleString()}</td>
+                      <td className="py-2 text-right text-gray-600">{p.exits.toLocaleString()}</td>
+                      <td className="py-2 text-right text-gray-600">{p.bounceRate.toFixed(1)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Funnels */}
+          <div>
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Funnel — เส้นทางสำคัญ</h2>
+            <div className="grid lg:grid-cols-2 gap-6">
+              {ga4.funnels.map((f) => {
+                const maxUsers = f.steps[0]?.users ?? 1;
+                return (
+                  <div key={f.key} className="bg-white rounded-xl border border-gray-100 p-5">
+                    <p className="text-sm font-semibold text-[#0F172A] mb-4">{f.label}</p>
+                    {f.steps.length === 0 ? (
+                      <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {f.steps.map((s, i) => {
+                          const pct = maxUsers > 0 ? Math.round((s.users / maxUsers) * 100) : 0;
+                          return (
+                            <div key={i}>
+                              <div className="flex items-center justify-between mb-1 text-xs">
+                                <span className="text-[#0F172A]">{s.name}</span>
+                                <span className="text-gray-500">{s.users.toLocaleString()} ({s.completionRate}%)</span>
+                              </div>
+                              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div className="h-full bg-[#DD5259] rounded-full" style={{ width: `${pct}%` }} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -134,6 +134,32 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
+// ── SPS Booking Call Log ─────────────────────────────
+export const spsCallLog = sqliteTable(
+  "sps_call_log",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    branch: text("branch").notNull(),
+    branchId: text("branch_id"),
+    customerName: text("customer_name"),
+    customerPhone: text("customer_phone"),
+    preferredDate: text("preferred_date"),
+    preferredTime: text("preferred_time"),
+    requestPayload: text("request_payload"), // JSON string of the form fields sent (api_key redacted)
+    responseStatus: integer("response_status"),
+    responseBody: text("response_body"), // SPS response body, truncated
+    success: integer("success", { mode: "boolean" }).notNull(),
+    errorMessage: text("error_message"),
+    notionPageId: text("notion_page_id"), // linked Appointments-DB page, so a retry can flip its Status
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  },
+  (t) => [
+    index("sps_branch_idx").on(t.branch),
+    index("sps_success_idx").on(t.success),
+    index("sps_created_idx").on(t.createdAt),
+  ]
+);
+
 // ── Audit Log ─────────────────────────────────────────
 export const auditLog = sqliteTable(
   "audit_log",

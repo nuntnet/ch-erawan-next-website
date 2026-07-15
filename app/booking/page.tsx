@@ -329,7 +329,21 @@ function BookingForm() {
                 </div>
                 <div>
                   <Label htmlFor="date" className="text-gray-600 text-sm">วันที่ต้องการ {selectedType === "service" ? "*" : ""}</Label>
-                  <Input id="date" type="date" value={form.preferredDate} onChange={e => setForm(f => ({ ...f, preferredDate: e.target.value }))} className="mt-1.5 border-gray-200 focus:border-[#0F172A]" min={new Date().toISOString().split("T")[0]} />
+                  <Input
+                    id="date" type="date" value={form.preferredDate}
+                    onChange={e => {
+                      const value = e.target.value;
+                      if (selectedType === "service" && value && new Date(value).getDay() === 0) {
+                        toast.error("ศูนย์บริการปิดทำการวันอาทิตย์ กรุณาเลือกวันอื่น");
+                        return;
+                      }
+                      setForm(f => ({ ...f, preferredDate: value }));
+                    }}
+                    className="mt-1.5 border-gray-200 focus:border-[#0F172A]" min={new Date().toISOString().split("T")[0]}
+                  />
+                  {selectedType === "service" && (
+                    <p className="text-xs text-gray-400 mt-1">ศูนย์บริการปิดทำการทุกวันอาทิตย์</p>
+                  )}
                 </div>
               </div>
 

@@ -19,9 +19,14 @@ describe("ga4-events", () => {
     });
   });
 
-  it("trackClickLine fires click_line", () => {
+  it("trackClickLine fires click_line without brand for an unrecognized URL", () => {
     trackClickLine({ path: "/gwm", lineUrl: "https://lin.ee/abc" });
     expect(window.gtag).toHaveBeenCalledWith("event", "click_line", { path: "/gwm", line_url: "https://lin.ee/abc" });
+  });
+
+  it("trackClickLine includes the resolved brand for a known LINE URL", () => {
+    trackClickLine({ path: "/", lineUrl: "https://lin.ee/NLeKZy6" });
+    expect(window.gtag).toHaveBeenCalledWith("event", "click_line", { path: "/", line_url: "https://lin.ee/NLeKZy6", brand: "Mazda" });
   });
 
   it("trackClickCall fires click_call", () => {

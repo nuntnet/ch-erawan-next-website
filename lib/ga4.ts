@@ -239,6 +239,34 @@ export async function getLeadCounts(days: number): Promise<LeadCounts> {
   return counts;
 }
 
+export type BrandClicks = { brand: string; clicks: number };
+
+/**
+ * LINE-click counts broken down by brand — from the `brand` param on
+ * click_line events. Requires "brand" registered as an Event-scoped custom
+ * dimension in GA4 (dimension name `customEvent:brand`); returns [] until
+ * then (or when unconfigured/no data).
+ */
+export async function getLineClicksByBrand(days: number): Promise<BrandClicks[]> {
+  const response = await runGa4Report({
+    dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
+    dimensions: [{ name: "customEvent:brand" }],
+    dimensionFilter: {
+      filter: { fieldName: "eventName", stringFilter: { matchType: "EXACT", value: "click_line" } },
+    },
+    metrics: [{ name: "eventCount" }],
+    orderBys: [{ metric: { metricName: "eventCount" }, desc: true }],
+  });
+  if (!response?.rows) return [];
+  return response.rows
+    .map((row) => ({
+      brand: row.dimensionValues?.[0]?.value ?? "",
+      clicks: Number(row.metricValues?.[0]?.value ?? 0),
+    }))
+    // drop GA4's "(not set)" bucket (clicks before the dimension existed / unmapped URLs)
+    .filter((r) => r.brand && r.brand !== "(not set)");
+}
+
 const FUNNELS: { key: string; label: string; steps: FunnelStepDef[] }[] = [
   {
     key: "test_drive",

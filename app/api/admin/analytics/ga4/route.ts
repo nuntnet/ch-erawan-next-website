@@ -7,6 +7,7 @@ import {
   getTopVehicles,
   getDeviceBreakdown,
   getLeadCounts,
+  getLineClicksByBrand,
   getFunnels,
   isGa4Configured,
 } from "@/lib/ga4";
@@ -35,19 +36,21 @@ export async function GET(req: NextRequest) {
       topVehicles: [],
       deviceBreakdown: [],
       leadCounts: { form: 0, line: 0, call: 0 },
+      lineByBrand: [],
       funnels: [],
     });
   }
 
-  const [channels, topSources, exitPages, topVehicles, deviceBreakdown, leadCounts, funnels] = await Promise.all([
+  const [channels, topSources, exitPages, topVehicles, deviceBreakdown, leadCounts, lineByBrand, funnels] = await Promise.all([
     getChannels(days),
     getTopSources(days),
     getExitPages(days),
     getTopVehicles(days),
     getDeviceBreakdown(days),
     getLeadCounts(days),
+    getLineClicksByBrand(days),
     getFunnels(days),
   ]);
 
-  return NextResponse.json({ configured: true, channels, topSources, exitPages, topVehicles, deviceBreakdown, leadCounts, funnels });
+  return NextResponse.json({ configured: true, channels, topSources, exitPages, topVehicles, deviceBreakdown, leadCounts, lineByBrand, funnels });
 }

@@ -1,3 +1,5 @@
+import { brandFromLineUrl } from "@/lib/lineAccounts";
+
 export type InquiryType = "test_drive" | "service" | "body_paint" | "contact";
 
 declare global {
@@ -22,7 +24,15 @@ export function trackGenerateLead(params: { inquiryType: InquiryType; branch?: s
 
 /** Fired by OutboundClickTracker for any line.me/lin.ee link click. */
 export function trackClickLine(params: { path: string; lineUrl: string }): void {
-  fire("click_line", { path: params.path, line_url: params.lineUrl });
+  const brand = brandFromLineUrl(params.lineUrl);
+  fire("click_line", {
+    path: params.path,
+    line_url: params.lineUrl,
+    // brand of the LINE OA clicked — lets GA4 break clicks down per brand
+    // (requires "brand" registered as a custom dimension). Omitted when the
+    // URL isn't a recognized per-brand account.
+    ...(brand ? { brand } : {}),
+  });
 }
 
 /** Fired by OutboundClickTracker for any tel: link click. */

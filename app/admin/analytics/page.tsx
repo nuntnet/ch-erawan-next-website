@@ -32,6 +32,7 @@ type LeadCounts = { form: number; line: number; call: number };
 type FunnelStepResult = { name: string; users: number; completionRate: number };
 type FunnelResult = { key: string; label: string; steps: FunnelStepResult[] };
 
+type BrandClicks = { brand: string; clicks: number };
 type Ga4Data = {
   configured: boolean;
   channels: ChannelRow[];
@@ -40,6 +41,7 @@ type Ga4Data = {
   topVehicles: VehicleRow[];
   deviceBreakdown: DeviceRow[];
   leadCounts: LeadCounts;
+  lineByBrand: BrandClicks[];
   funnels: FunnelResult[];
 };
 
@@ -183,6 +185,32 @@ export default function AnalyticsPage() {
             <StatCard label="ทัก LINE" value={ga4.leadCounts.line} icon={MessageSquare} color="#06C755" />
             <StatCard label="โทรศัพท์" value={ga4.leadCounts.call} icon={Phone} color="#3B82F6" />
           </div>
+          {/* Per-brand LINE breakdown (needs "brand" custom dimension in GA4) */}
+          {ga4.lineByBrand.length > 0 && (
+            <div className="mt-3 bg-white rounded-xl border border-gray-100 p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <MessageSquare className="w-4 h-4 text-[#06C755]" />
+                <h3 className="text-sm font-semibold text-[#0F172A]">ทัก LINE แยกตามแบรนด์</h3>
+              </div>
+              <div className="space-y-2.5">
+                {ga4.lineByBrand.map((b, i) => {
+                  const max = ga4.lineByBrand[0]?.clicks ?? 1;
+                  const pct = max > 0 ? Math.round((b.clicks / max) * 100) : 0;
+                  return (
+                    <div key={i}>
+                      <div className="flex items-center justify-between mb-1 text-sm">
+                        <span className="text-[#0F172A]">{b.brand}</span>
+                        <span className="font-semibold text-gray-700">{b.clicks.toLocaleString()}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full bg-[#06C755]" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

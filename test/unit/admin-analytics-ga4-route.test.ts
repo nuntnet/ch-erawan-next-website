@@ -13,6 +13,7 @@ vi.mock("@/lib/ga4", () => ({
   getTopVehicles: vi.fn(async () => []),
   getDeviceBreakdown: vi.fn(async () => []),
   getLeadCounts: vi.fn(async () => ({ form: 0, line: 0, call: 0 })),
+  getLineClicksByBrand: vi.fn(async () => [{ brand: "Mazda", clicks: 3 }]),
   getFunnels: vi.fn(async () => []),
 }));
 
@@ -29,6 +30,7 @@ describe("GET /api/admin/analytics/ga4", () => {
     expect(json.configured).toBe(true);
     expect(json.channels).toEqual([{ channel: "Direct", sessions: 5, users: 5 }]);
     expect(json.leadCounts).toEqual({ form: 0, line: 0, call: 0 });
+    expect(json.lineByBrand).toEqual([{ brand: "Mazda", clicks: 3 }]);
   });
 
   it("returns configured:false and empty data when GA4_PROPERTY_ID is missing", async () => {
@@ -39,6 +41,7 @@ describe("GET /api/admin/analytics/ga4", () => {
     const json = await res.json();
     expect(json.configured).toBe(false);
     expect(json.channels).toEqual([]);
+    expect(json.lineByBrand).toEqual([]);
     expect(json.funnels).toEqual([]);
   });
 

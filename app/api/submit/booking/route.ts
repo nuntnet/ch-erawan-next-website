@@ -69,6 +69,8 @@ export async function POST(req: NextRequest) {
       preferredDate: data.preferredDate,
       preferredTime: data.preferredTime,
       notes: data.notes,
+      damagePhotoUrls: data.damagePhotoUrls,
+      insuranceDocUrls: data.insuranceDocUrls,
     });
     console.log("[booking] Email result:", JSON.stringify(emailResult));
 

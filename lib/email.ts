@@ -44,6 +44,8 @@ export interface AppointmentEmailPayload {
   preferredDate?: string;
   preferredTime?: string;
   notes?: string;
+  damagePhotoUrls?: string[];
+  insuranceDocUrls?: string[];
 }
 
 function buildPlainTextBody(data: AppointmentEmailPayload): string {
@@ -60,11 +62,54 @@ function buildPlainTextBody(data: AppointmentEmailPayload): string {
   if (data.preferredDate) lines.push(`วันที่ต้องการ: ${data.preferredDate}`);
   if (data.preferredTime) lines.push(`เวลา: ${data.preferredTime}`);
   if (data.notes) lines.push(`หมายเหตุ: ${data.notes}`);
+  if (data.damagePhotoUrls?.length) lines.push("", "รูปความเสียหาย:", ...data.damagePhotoUrls);
+  if (data.insuranceDocUrls?.length) lines.push("", "เอกสารแนบ/ประกัน:", ...data.insuranceDocUrls);
   lines.push("", "กรุณาติดต่อลูกค้าภายใน 24 ชั่วโมง");
   return lines.join("\n");
 }
 
-async function sendViaResend(to: string, subject: string, text: string): Promise<boolean> {
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/** HTML version with inline photo thumbnails — only built when there's something to attach,
+ * so a normal test_drive/service booking email stays plain text. */
+function buildAppointmentHtmlBody(data: AppointmentEmailPayload): string | undefined {
+  if (!data.damagePhotoUrls?.length && !data.insuranceDocUrls?.length) return undefined;
+
+  const rows: string[] = [
+    `<p>มีการนัดหมายใหม่จากเว็บไซต์ ช.เอราวัณ กรุ๊ป</p>`,
+    `<p><b>ประเภท:</b> ${escapeHtml(TYPE_LABELS[data.type] ?? data.type)}<br/>`,
+    `<b>ชื่อลูกค้า:</b> ${escapeHtml(data.customerName)}<br/>`,
+    `<b>เบอร์โทร:</b> ${escapeHtml(data.customerPhone)}` +
+      (data.customerEmail ? `<br/><b>อีเมล:</b> ${escapeHtml(data.customerEmail)}` : "") +
+      (data.carModel ? `<br/><b>รุ่นรถ:</b> ${escapeHtml(data.carModel)}` : "") +
+      (data.branch ? `<br/><b>สาขา:</b> ${escapeHtml(data.branch)}` : "") +
+      (data.preferredDate ? `<br/><b>วันที่ต้องการ:</b> ${escapeHtml(data.preferredDate)}` : "") +
+      (data.preferredTime ? `<br/><b>เวลา:</b> ${escapeHtml(data.preferredTime)}` : "") +
+      `</p>`,
+  ];
+  if (data.notes) rows.push(`<p><b>หมายเหตุ:</b><br/>${escapeHtml(data.notes).replace(/\n/g, "<br/>")}</p>`);
+
+  if (data.damagePhotoUrls?.length) {
+    rows.push(`<p><b>รูปความเสียหาย (${data.damagePhotoUrls.length}):</b></p>`);
+    rows.push(
+      `<div>${data.damagePhotoUrls
+        .map((url) => `<a href="${url}"><img src="${url}" width="160" style="border-radius:8px;margin:0 8px 8px 0" /></a>`)
+        .join("")}</div>`
+    );
+  }
+  if (data.insuranceDocUrls?.length) {
+    rows.push(`<p><b>เอกสารแนบ/ประกัน (${data.insuranceDocUrls.length}):</b></p>`);
+    rows.push(
+      `<p>${data.insuranceDocUrls.map((url, i) => `<a href="${url}">เอกสาร ${i + 1}</a>`).join(" · ")}</p>`
+    );
+  }
+  rows.push(`<p>กรุณาติดต่อลูกค้าภายใน 24 ชั่วโมง</p>`);
+  return rows.join("\n");
+}
+
+async function sendViaResend(to: string, subject: string, text: string, html?: string): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
   if (!apiKey) return false;
@@ -75,7 +120,7 @@ async function sendViaResend(to: string, subject: string, text: string): Promise
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ from, to, subject, text }),
+    body: JSON.stringify({ from, to, subject, text, ...(html ? { html } : {}) }),
   });
 
   if (!res.ok) {
@@ -86,7 +131,7 @@ async function sendViaResend(to: string, subject: string, text: string): Promise
   return true;
 }
 
-async function sendViaSmtp(to: string, subject: string, text: string): Promise<boolean> {
+async function sendViaSmtp(to: string, subject: string, text: string, html?: string): Promise<boolean> {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
@@ -104,6 +149,7 @@ async function sendViaSmtp(to: string, subject: string, text: string): Promise<b
     to,
     subject,
     text,
+    ...(html ? { html } : {}),
   });
   return true;
 }
@@ -204,12 +250,13 @@ export async function sendAppointmentNotification(
   const brandLabel = brandSlug ? BRANDS.find((b) => b.slug === brandSlug)?.displayName : undefined;
   const subject = `[นัดหมายใหม่]${brandLabel ? ` ${brandLabel} —` : ""} ${TYPE_LABELS[data.type] ?? data.type} — ${data.customerName}`;
   const text = buildPlainTextBody(data);
+  const html = buildAppointmentHtmlBody(data);
 
   try {
-    if (await sendViaResend(to, subject, text)) {
+    if (await sendViaResend(to, subject, text, html)) {
       return { sent: true, channel: "resend" };
     }
-    if (await sendViaSmtp(to, subject, text)) {
+    if (await sendViaSmtp(to, subject, text, html)) {
       return { sent: true, channel: "smtp" };
     }
     console.warn("[email] No email provider configured — notification logged only");

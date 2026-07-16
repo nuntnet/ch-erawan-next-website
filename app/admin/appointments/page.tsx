@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Search, ChevronDown, Phone, Mail, FileText, Car, MapPin, Clock, MessageSquare, Shield, AlertTriangle, RotateCw } from "lucide-react";
+import { Calendar, Search, ChevronDown, Phone, Mail, FileText, Car, MapPin, Clock, MessageSquare, Shield, AlertTriangle, RotateCw, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "@/lib/auth-client";
 import type { Appointment } from "@/lib/notion-types";
@@ -40,6 +40,48 @@ function DetailItem({ icon: Icon, label, value }: { icon: React.ElementType; lab
       <div>
         <p className="text-xs text-gray-400">{label}</p>
         <p className="text-sm text-gray-700 whitespace-pre-line break-words">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function isImageUrl(url: string): boolean {
+  return /\.(jpe?g|png|webp|gif)($|\?)/i.test(url);
+}
+
+function AttachmentGallery({ label, icon: Icon, urls }: { label: string; icon: React.ElementType; urls: string[] }) {
+  if (urls.length === 0) return null;
+  return (
+    <div className="col-span-2 md:col-span-3">
+      <div className="flex items-center gap-2 mb-2">
+        <Icon className="w-4 h-4 text-gray-400" />
+        <p className="text-xs text-gray-400">{label} ({urls.length})</p>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {urls.map((url, i) => (
+          isImageUrl(url) ? (
+            <a
+              key={i}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-20 h-20 rounded-lg overflow-hidden border border-gray-200 hover:opacity-80 transition-opacity shrink-0"
+            >
+              <img src={url} alt={`${label} ${i + 1}`} className="w-full h-full object-cover" />
+            </a>
+          ) : (
+            <a
+              key={i}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-600 hover:bg-gray-50 shrink-0"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              เอกสาร {i + 1}
+            </a>
+          )
+        ))}
       </div>
     </div>
   );
@@ -267,6 +309,8 @@ export default function AdminAppointments() {
                             <DetailItem icon={Car} label="ทะเบียนรถ" value={apt.vehicleRegistration} />
                             <DetailItem icon={Shield} label="ประเภทความคุ้มครอง" value={apt.coverageType} />
                             <DetailItem icon={Calendar} label="วันที่ส่ง" value={apt.submittedAt ? new Date(apt.submittedAt).toLocaleString("th-TH", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }) : undefined} />
+                            <AttachmentGallery label="รูปความเสียหาย" icon={ImageIcon} urls={apt.damagePhotoUrls} />
+                            <AttachmentGallery label="เอกสารแนบ/ประกัน" icon={Shield} urls={apt.insuranceDocUrls} />
                           </div>
                         </div>
                       )}

@@ -80,6 +80,8 @@ export interface Appointment {
   vehicleRegistration: string;
   coverageType: string;
   submittedAt: string;
+  damagePhotoUrls: string[];
+  insuranceDocUrls: string[];
 }
 
 export interface ContactSubmission {

@@ -353,6 +353,59 @@ describe("pageToStory / pageToAppointment / pageToContact (via list fns)", () =>
     expect(appts[0].status).toBe("pending");
   });
 
+  it("splits damage photo / insurance doc URLs out of Notes, leaving the customer's own notes intact", async () => {
+    notionMock.databases.query.mockResolvedValue({
+      results: [
+        {
+          id: "a2",
+          created_time: "2024-03-03T00:00:00.000Z",
+          properties: {
+            "Customer Name": richText("Somchai"),
+            Type: select("body_paint"),
+            Status: select("pending"),
+            Phone: { phone_number: "08" },
+            Notes: richText(
+              [
+                "รถโดนชนท้าย",
+                "รูปความเสียหาย:\nhttps://res.cloudinary.com/demo/image/upload/damage1.jpg\nhttps://res.cloudinary.com/demo/image/upload/damage2.jpg",
+                "เอกสารแนบ/ประกัน:\nhttps://res.cloudinary.com/demo/raw/upload/doc1.pdf",
+              ].join("\n\n")
+            ),
+          },
+        },
+      ],
+    });
+    const appts = await notion.getAllAppointments();
+    expect(appts[0].notes).toBe("รถโดนชนท้าย");
+    expect(appts[0].damagePhotoUrls).toEqual([
+      "https://res.cloudinary.com/demo/image/upload/damage1.jpg",
+      "https://res.cloudinary.com/demo/image/upload/damage2.jpg",
+    ]);
+    expect(appts[0].insuranceDocUrls).toEqual(["https://res.cloudinary.com/demo/raw/upload/doc1.pdf"]);
+  });
+
+  it("returns empty attachment arrays when Notes has no photo/doc markers", async () => {
+    notionMock.databases.query.mockResolvedValue({
+      results: [
+        {
+          id: "a3",
+          created_time: "2024-03-03T00:00:00.000Z",
+          properties: {
+            "Customer Name": richText("Nina"),
+            Type: select("test_drive"),
+            Status: select("pending"),
+            Phone: { phone_number: "08" },
+            Notes: richText("อยากทดลองขับช่วงเย็น"),
+          },
+        },
+      ],
+    });
+    const appts = await notion.getAllAppointments();
+    expect(appts[0].notes).toBe("อยากทดลองขับช่วงเย็น");
+    expect(appts[0].damagePhotoUrls).toEqual([]);
+    expect(appts[0].insuranceDocUrls).toEqual([]);
+  });
+
   it("getPublicStories filters approved + public", async () => {
     notionMock.databases.query.mockResolvedValue({ results: [] });
     await notion.getPublicStories();

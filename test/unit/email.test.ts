@@ -190,4 +190,32 @@ describe("sendAppointmentNotification", () => {
     const result = await sendAppointmentNotification(appointmentData);
     expect(result).toEqual({ sent: false, channel: "none" });
   });
+
+  it("sends no html and no photo lines for a plain booking with no attachments", async () => {
+    mocks.getNotifyEmailForBrand.mockResolvedValue("gwm@dealer.com");
+    process.env.RESEND_API_KEY = "re_test_key";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+    await sendAppointmentNotification(appointmentData);
+    const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+    expect(body.html).toBeUndefined();
+    expect(body.text).not.toContain("รูปความเสียหาย");
+  });
+
+  it("includes an inline HTML gallery and plain-text link fallback when damage photos are attached", async () => {
+    mocks.getNotifyEmailForBrand.mockResolvedValue("gwm@dealer.com");
+    process.env.RESEND_API_KEY = "re_test_key";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+    await sendAppointmentNotification({
+      ...appointmentData,
+      damagePhotoUrls: ["https://res.cloudinary.com/demo/image/upload/damage1.jpg"],
+      insuranceDocUrls: ["https://res.cloudinary.com/demo/raw/upload/doc1.pdf"],
+    });
+    const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+    expect(body.html).toContain("https://res.cloudinary.com/demo/image/upload/damage1.jpg");
+    expect(body.html).toContain("<img");
+    expect(body.text).toContain("https://res.cloudinary.com/demo/image/upload/damage1.jpg");
+    expect(body.text).toContain("https://res.cloudinary.com/demo/raw/upload/doc1.pdf");
+  });
 });

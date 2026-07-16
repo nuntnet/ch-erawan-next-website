@@ -744,7 +744,33 @@ export async function getAllStories(status?: CustomerStory["status"]): Promise<C
 
 // ─── Appointments ─────────────────────────────────────────────────────────────
 
+// The appointments DB has no dedicated URL columns (see app/api/submit/booking/route.ts),
+// so uploaded photo/doc URLs are appended into Notes under these Thai markers. Split
+// them back out here so the admin UI can render a gallery instead of raw URL text.
+const DAMAGE_PHOTOS_MARKER = "รูปความเสียหาย:";
+const INSURANCE_DOCS_MARKER = "เอกสารแนบ/ประกัน:";
+
+function extractUrlBlock(notes: string, marker: string): string[] {
+  const idx = notes.indexOf(marker);
+  if (idx === -1) return [];
+  const afterMarker = notes.slice(idx + marker.length);
+  const blockEnd = afterMarker.indexOf("\n\n");
+  const block = blockEnd === -1 ? afterMarker : afterMarker.slice(0, blockEnd);
+  return block.split("\n").map((s) => s.trim()).filter(Boolean);
+}
+
+function splitAppointmentNotes(rawNotes: string): { notes: string; damagePhotoUrls: string[]; insuranceDocUrls: string[] } {
+  const markerIndexes = [rawNotes.indexOf(DAMAGE_PHOTOS_MARKER), rawNotes.indexOf(INSURANCE_DOCS_MARKER)].filter((i) => i !== -1);
+  const firstMarker = markerIndexes.length ? Math.min(...markerIndexes) : -1;
+  return {
+    notes: (firstMarker === -1 ? rawNotes : rawNotes.slice(0, firstMarker)).trim(),
+    damagePhotoUrls: extractUrlBlock(rawNotes, DAMAGE_PHOTOS_MARKER),
+    insuranceDocUrls: extractUrlBlock(rawNotes, INSURANCE_DOCS_MARKER),
+  };
+}
+
 function pageToAppointment(page: NotionPage): Appointment {
+  const { notes, damagePhotoUrls, insuranceDocUrls } = splitAppointmentNotes(propText(page, "Notes"));
   return {
     id: page.id,
     customerName: propTitle(page, "Customer Name") || propText(page, "Customer Name") || propTitle(page, "Name"),
@@ -756,12 +782,14 @@ function pageToAppointment(page: NotionPage): Appointment {
     branch: propText(page, "Branch"),
     preferredDate: propDate(page, "Preferred Date"),
     preferredTime: propText(page, "Preferred Time"),
-    notes: propText(page, "Notes"),
+    notes,
     damageDescription: propText(page, "Damage Description"),
     insuranceCompany: propText(page, "Insurance Company"),
     vehicleRegistration: propText(page, "Vehicle Registration"),
     coverageType: propText(page, "Coverage Type"),
     submittedAt: propCreatedTime(page),
+    damagePhotoUrls,
+    insuranceDocUrls,
   };
 }
 

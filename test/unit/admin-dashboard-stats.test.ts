@@ -87,6 +87,8 @@ describe("admin-dashboard-stats", () => {
         vehicleRegistration: "",
         coverageType: "",
         submittedAt: new Date().toISOString(),
+        damagePhotoUrls: [],
+        insuranceDocUrls: [],
       },
       {
         id: "2",
@@ -105,6 +107,8 @@ describe("admin-dashboard-stats", () => {
         vehicleRegistration: "",
         coverageType: "",
         submittedAt: "2020-01-01",
+        damagePhotoUrls: [],
+        insuranceDocUrls: [],
       },
     ];
     const stats = computeAppointmentStats(appointments);

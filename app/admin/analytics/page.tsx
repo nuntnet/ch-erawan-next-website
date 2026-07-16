@@ -447,15 +447,31 @@ export default function AnalyticsPage() {
                       <div className="space-y-3">
                         {f.steps.map((s, i) => {
                           const pct = maxUsers > 0 ? Math.round((s.users / maxUsers) * 100) : 0;
+                          const prevUsers = i > 0 ? f.steps[i - 1].users : null;
+                          // Step-over-step conversion — literally s.users ÷ prevUsers, so the
+                          // label can say exactly what's being divided by what. GA4's own
+                          // completionRate is cumulative-from-step-1 instead, which reads as an
+                          // unlabeled bare "(33%)" and doesn't answer "where do people drop off."
+                          const stepConversion = prevUsers && prevUsers > 0 ? Math.round((s.users / prevUsers) * 1000) / 10 : null;
                           return (
                             <div key={i}>
                               <div className="flex items-center justify-between mb-1 text-xs">
                                 <span className="text-[#0F172A]">{s.name}</span>
-                                <span className="text-gray-500">{s.users.toLocaleString()} ({s.completionRate}%)</span>
+                                <span className="text-gray-500">
+                                  {s.users.toLocaleString()} คน
+                                  {stepConversion !== null && (
+                                    <span className="ml-1.5 font-medium text-[#0F172A]">
+                                      · ต่อจากขั้นก่อนหน้า {stepConversion}%
+                                    </span>
+                                  )}
+                                </span>
                               </div>
                               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                                 <div className="h-full bg-[#DD5259] rounded-full" style={{ width: `${pct}%` }} />
                               </div>
+                              {i === 0 && (
+                                <p className="text-[10px] text-gray-400 mt-1">จุดเริ่มต้นของเส้นทางนี้</p>
+                              )}
                             </div>
                           );
                         })}

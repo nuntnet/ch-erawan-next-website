@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Client } from "@notionhq/client";
 import { sendAppointmentNotification, resolveBrandFromBranch } from "@/lib/email";
+import { sendServiceCheckinNotification } from "@/lib/bola";
 import { trackEvent } from "@/lib/analytics";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -73,6 +74,20 @@ export async function POST(req: NextRequest) {
       insuranceDocUrls: data.insuranceDocUrls,
     });
     console.log("[booking] Email result:", JSON.stringify(emailResult));
+
+    if (data.type === "service") {
+      const bolaResult = await sendServiceCheckinNotification({
+        customerName: data.customerName,
+        customerPhone: data.customerPhone,
+        customerEmail: data.customerEmail || undefined,
+        carModel: data.carModel,
+        branch: data.branch,
+        preferredDate: data.preferredDate,
+        preferredTime: data.preferredTime,
+        notes: data.notes,
+      });
+      console.log("[booking] Bola LINE notification result:", JSON.stringify(bolaResult));
+    }
 
     void trackEvent("booking", { model: data.carModel, path: "/booking" });
     return NextResponse.json({ success: true });

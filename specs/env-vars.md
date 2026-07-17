@@ -100,6 +100,51 @@ turso db tokens create ch-erawan
 
 ถ้าไม่ตั้ง email — booking ยังทำงาน แต่ระบบจะ log-only (ไม่ส่งอีเมล)
 
+## Bola LINE Notification (Service Bookings)
+
+ช่องทางแจ้งเตือนเพิ่มเติมจากอีเมล — เมื่อลูกค้านัดหมาย `type: "service"` (เข้าศูนย์บริการ)
+ระบบจะยิง webhook ไปที่ Bola ให้ส่งข้อความ LINE ว่า `"{customer_name} มาเข้าศูนย์"`
+
+| Variable | Required | คำอธิบาย |
+|----------|----------|----------|
+| `BOLA_SERVICE_WEBHOOK_URL` | optional | Bola webhook URL — **ค่าต่างกันระหว่าง staging/production** ตั้งแยกกันใน Vercel (ดู "Bola webhook URL: staging vs production" ด้านล่าง) |
+
+Payload: `POST` JSON ส่งครบทุก field ของการนัดหมาย (Bola เลือก field ที่ต้องใช้เอง):
+
+```json
+{
+  "customer_name": "สมชาย ทดสอบ",
+  "customer_phone": "0812345678",
+  "customer_email": "somchai@example.com",
+  "car_model": "Mazda CX-5",
+  "branch": "มาสด้า ช.เอราวัณ นครปฐม",
+  "preferred_date": "2026-07-20",
+  "preferred_time": "14:00",
+  "notes": "นัดเช็คระยะ 20,000 กม."
+}
+```
+
+Field ที่ลูกค้าไม่ได้กรอกจะส่งเป็น `""` (string ว่าง) ไม่ใช่ omit ออกจาก payload
+
+ถ้าไม่ตั้งค่า — booking ยังทำงานปกติ แต่ข้ามการแจ้งเตือน LINE (log-only)
+
+### Bola webhook URL: staging vs production
+
+**สำคัญ:** โปรเจกต์นี้มี Vercel project เดียว (`ch-erawanwebsite`) ไม่ใช่ 2 project แยกกัน —
+staging คือ **Preview deployment** ของ branch `staging` ในโปรเจกต์เดียวกัน ส่วน production คือ
+deployment ของ branch `master` Vercel แยกค่า env var ตาม **Environment scope** (Production /
+Preview / Development) ไม่ใช่แยกตาม project
+
+วิธีตั้งค่า:
+1. Vercel dashboard → project `ch-erawanwebsite` → Settings → Environment Variables
+2. เพิ่ม key `BOLA_SERVICE_WEBHOOK_URL` **2 รายการ** (key ซ้ำกันได้ ถ้า scope คนละ environment):
+   - Environment = **Preview** → value = staging Bola URL (`https://bola-api.staging-th.bearyweb.com/webhook/apm/...`)
+   - Environment = **Production** → value = production Bola URL (ขอจากทีม Bola ตอนพร้อมขึ้น prod จริง — คนละ URL กับ staging)
+3. Save แล้ว trigger deploy ใหม่ (push commit ไปที่ branch นั้นๆ) ค่าถึงจะมีผล
+
+⚠️ อย่ากด "Promote to Production" บน deployment ของ branch `staging` — จะ rebuild ด้วย
+Production env vars แล้ว alias ของ staging จะไปชี้ deployment ที่ใช้ข้อมูล production แทน
+
 ## SPS (Service Booking System)
 
 | Variable | Required | คำอธิบาย |

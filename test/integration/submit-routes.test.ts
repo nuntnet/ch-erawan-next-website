@@ -16,6 +16,10 @@ const emailMock = vi.hoisted(() => ({
   resolveBrandFromBranch: vi.fn(() => undefined),
 }));
 
+const bolaMock = vi.hoisted(() => ({
+  sendServiceCheckinNotification: vi.fn(async () => ({ sent: false })),
+}));
+
 vi.mock("@notionhq/client", () => ({
   Client: vi.fn(function () {
     return notionMock;
@@ -26,6 +30,10 @@ vi.mock("@/lib/email", () => ({
   sendAppointmentNotification: emailMock.sendAppointmentNotification,
   sendFormNotification: emailMock.sendFormNotification,
   resolveBrandFromBranch: emailMock.resolveBrandFromBranch,
+}));
+
+vi.mock("@/lib/bola", () => ({
+  sendServiceCheckinNotification: bolaMock.sendServiceCheckinNotification,
 }));
 
 import { POST as bookingPOST } from "@/app/api/submit/booking/route";
@@ -44,6 +52,8 @@ beforeEach(() => {
   emailMock.sendAppointmentNotification.mockResolvedValue({ sent: false, channel: "none" });
   emailMock.sendFormNotification.mockReset();
   emailMock.sendFormNotification.mockResolvedValue({ sent: false, channel: "none" });
+  bolaMock.sendServiceCheckinNotification.mockReset();
+  bolaMock.sendServiceCheckinNotification.mockResolvedValue({ sent: false });
 });
 
 afterEach(() => {
@@ -126,6 +136,34 @@ describe("POST /api/submit/booking", () => {
       makeRequest("/api/submit/booking", { method: "POST", body: validBookingBody })
     );
     expect(res.status).toBe(500);
+  });
+
+  it("fires the Bola LINE check-in webhook with the full appointment payload for service bookings", async () => {
+    const res = await bookingPOST(
+      makeRequest("/api/submit/booking", {
+        method: "POST",
+        body: { ...validBookingBody, type: "service" },
+      })
+    );
+    expect(res.status).toBe(200);
+    expect(bolaMock.sendServiceCheckinNotification).toHaveBeenCalledWith({
+      customerName: validBookingBody.customerName,
+      customerPhone: validBookingBody.customerPhone,
+      customerEmail: undefined,
+      carModel: validBookingBody.carModel,
+      branch: validBookingBody.branch,
+      preferredDate: undefined,
+      preferredTime: undefined,
+      notes: undefined,
+    });
+  });
+
+  it("does not fire the Bola webhook for non-service booking types", async () => {
+    const res = await bookingPOST(
+      makeRequest("/api/submit/booking", { method: "POST", body: validBookingBody })
+    );
+    expect(res.status).toBe(200);
+    expect(bolaMock.sendServiceCheckinNotification).not.toHaveBeenCalled();
   });
 });
 

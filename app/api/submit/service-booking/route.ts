@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Client } from "@notionhq/client";
 import { sendAppointmentNotification, resolveBrandFromBranch } from "@/lib/email";
+import { sendServiceCheckinNotification } from "@/lib/bola";
 import { logSpsCall } from "@/lib/sps-log";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -199,6 +200,20 @@ export async function POST(req: NextRequest) {
       preferredTime: data.preferredTime,
       notes: data.notes,
     });
+
+    // Extra LINE notification channel (via Bola), alongside the email above.
+    const bolaResult = await sendServiceCheckinNotification({
+      customerName: data.customerName,
+      customerPhone: data.customerPhone,
+      customerEmail: data.customerEmail || undefined,
+      carModel: data.carModel,
+      branch: data.branch,
+      preferredDate: data.preferredDate,
+      preferredTime: data.preferredTime,
+      notes: data.notes,
+    });
+    console.log("[service-booking] Bola LINE notification result:", JSON.stringify(bolaResult));
+
     if (!spsSuccess) {
       return NextResponse.json({
         success: true,

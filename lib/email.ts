@@ -236,12 +236,20 @@ export async function sendFormNotification(
   }
 }
 
-/** Notify dealer of a new appointment. Routes to brand-specific email when available. */
+/**
+ * Notify dealer of a new appointment. The Notion Settings per-brand emails
+ * are the sales department's own list (test_drive interest only) — every
+ * other appointment type (service/body_paint/insurance_quote) goes to a
+ * fixed inbox instead (for now), regardless of brand.
+ */
 export async function sendAppointmentNotification(
   data: AppointmentEmailPayload
 ): Promise<{ sent: boolean; channel?: "resend" | "smtp" | "none" }> {
   const brandSlug = data.brandSlug ?? resolveBrandFromBranch(data.branch);
-  const to = await resolveNotifyEmail(brandSlug);
+  const to =
+    data.type === "test_drive"
+      ? await resolveNotifyEmail(brandSlug)
+      : process.env.NON_SALES_APPOINTMENT_NOTIFY_EMAIL || "nuntawit@ch-erawan.com";
   if (!to) {
     console.warn("[email] No notify email configured — skipping notification");
     return { sent: false, channel: "none" };

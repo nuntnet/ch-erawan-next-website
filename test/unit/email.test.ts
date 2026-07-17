@@ -33,6 +33,7 @@ beforeEach(() => {
   delete process.env.SMTP_SECURE;
   delete process.env.SMTP_FROM;
   delete process.env.APPOINTMENT_NOTIFY_EMAIL;
+  delete process.env.NON_SALES_APPOINTMENT_NOTIFY_EMAIL;
   globalThis.fetch = vi.fn();
 });
 
@@ -189,6 +190,44 @@ describe("sendAppointmentNotification", () => {
 
     const result = await sendAppointmentNotification(appointmentData);
     expect(result).toEqual({ sent: false, channel: "none" });
+  });
+
+  it.each(["service", "body_paint", "insurance_quote"] as const)(
+    "routes %s bookings to the fixed inbox instead of the brand's Notion email",
+    async (type) => {
+      // Even though a brand-specific email exists in Notion, only test_drive
+      // (sales dept interest) should use it — everything else must not.
+      mocks.getNotifyEmailForBrand.mockResolvedValue("gwm@dealer.com");
+      process.env.RESEND_API_KEY = "re_test_key";
+      (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+      const result = await sendAppointmentNotification({ ...appointmentData, type });
+      expect(result).toEqual({ sent: true, channel: "resend" });
+      expect(mocks.getNotifyEmailForBrand).not.toHaveBeenCalled();
+      const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+      expect(body.to).toBe("nuntawit@ch-erawan.com");
+    }
+  );
+
+  it("resolves test_drive bookings via the brand's Notion email (sales dept)", async () => {
+    mocks.getNotifyEmailForBrand.mockResolvedValue("gwm@dealer.com");
+    process.env.RESEND_API_KEY = "re_test_key";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+    await sendAppointmentNotification({ ...appointmentData, type: "test_drive" });
+    expect(mocks.getNotifyEmailForBrand).toHaveBeenCalledWith("gwm");
+    const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+    expect(body.to).toBe("gwm@dealer.com");
+  });
+
+  it("lets NON_SALES_APPOINTMENT_NOTIFY_EMAIL override the fixed non-sales inbox", async () => {
+    process.env.NON_SALES_APPOINTMENT_NOTIFY_EMAIL = "non-sales-team@ch-erawan.com";
+    process.env.RESEND_API_KEY = "re_test_key";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+    await sendAppointmentNotification({ ...appointmentData, type: "service" });
+    const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+    expect(body.to).toBe("non-sales-team@ch-erawan.com");
   });
 
   it("sends no html and no photo lines for a plain booking with no attachments", async () => {

@@ -86,8 +86,9 @@ turso db tokens create ch-erawan
 | `SMTP_PASS` | optional | SMTP password |
 | `SMTP_FROM` | optional | From header (default: `SMTP_USER`) |
 | `SMTP_SECURE` | optional | `"true"` สำหรับ port 465 |
+| `NON_SALES_APPOINTMENT_NOTIFY_EMAIL` | optional | override อีเมลรับแจ้ง service/body_paint/insurance_quote (default: `nuntawit@ch-erawan.com`) |
 
-**อีเมลแจ้งเตือนแยกตามแบรนด์:** ตั้งค่าใน **Notion Settings DB** (`NOTION_SETTINGS_DB_ID`)
+**อีเมลแจ้งเตือนแยกตามแบรนด์ (เฉพาะแผนกขาย — `test_drive` เท่านั้น):** ตั้งค่าใน **Notion Settings DB** (`NOTION_SETTINGS_DB_ID`)
 
 | Key (title) | Value (rich_text) | คำอธิบาย |
 |-------------|-------------------|----------|
@@ -96,7 +97,9 @@ turso db tokens create ch-erawan
 | `notify_email_gwm` | `gwm@example.com` | อีเมลผจก. GWM |
 | ... | ... | ทุกแบรนด์ |
 
-**ลำดับการหา email:** Notion Settings (`notify_email_{brand}`) → `APPOINTMENT_NOTIFY_EMAIL` → log-only
+**ลำดับการหา email:**
+- `type: "test_drive"` (แผนกขาย) → Notion Settings (`notify_email_{brand}`) → `APPOINTMENT_NOTIFY_EMAIL` → log-only
+- ทุกประเภทอื่น (`service`/`body_paint`/`insurance_quote`) → ส่งเข้า `NON_SALES_APPOINTMENT_NOTIFY_EMAIL` หรือ `nuntawit@ch-erawan.com` เสมอ (**ไม่ใช้** Notion Settings แยกแบรนด์ — ไปก่อนจนกว่าจะมีรายชื่อแยกแผนก)
 
 ถ้าไม่ตั้ง email — booking ยังทำงาน แต่ระบบจะ log-only (ไม่ส่งอีเมล)
 

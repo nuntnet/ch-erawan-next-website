@@ -35,12 +35,15 @@ describe("sendServiceCheckinNotification", () => {
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
-  it("posts every appointment field to the configured webhook and returns sent:true on success", async () => {
+  it("posts every appointment field to the configured webhook, returns sent:true and the delivery_log_id on success", async () => {
     process.env.BOLA_SERVICE_WEBHOOK_URL = "https://bola-api.staging-th.bearyweb.com/webhook/apm/test";
-    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ status: "queued_for_delivery", delivery_log_id: "abc-123" })),
+    });
 
     const result = await sendServiceCheckinNotification(fullData);
-    expect(result).toEqual({ sent: true });
+    expect(result).toEqual({ sent: true, deliveryLogId: "abc-123" });
     expect(globalThis.fetch).toHaveBeenCalledWith(
       "https://bola-api.staging-th.bearyweb.com/webhook/apm/test",
       expect.objectContaining({
@@ -62,7 +65,7 @@ describe("sendServiceCheckinNotification", () => {
 
   it("defaults optional fields to empty strings when omitted", async () => {
     process.env.BOLA_SERVICE_WEBHOOK_URL = "https://bola-api.staging-th.bearyweb.com/webhook/apm/test";
-    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true, text: () => Promise.resolve("{}") });
 
     await sendServiceCheckinNotification({ customerName: "Somchai" });
     const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
@@ -76,6 +79,14 @@ describe("sendServiceCheckinNotification", () => {
       preferred_time: "",
       notes: "",
     });
+  });
+
+  it("still returns sent:true with no deliveryLogId when the response body isn't JSON", async () => {
+    process.env.BOLA_SERVICE_WEBHOOK_URL = "https://bola-api.staging-th.bearyweb.com/webhook/apm/test";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true, text: () => Promise.resolve("OK") });
+
+    const result = await sendServiceCheckinNotification(fullData);
+    expect(result).toEqual({ sent: true, deliveryLogId: undefined });
   });
 
   it("returns sent:false when the webhook responds with a non-ok status", async () => {

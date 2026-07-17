@@ -207,9 +207,13 @@ export async function POST(req: NextRequest) {
       customerPhone: data.customerPhone,
       customerEmail: data.customerEmail || undefined,
       carModel: data.carModel,
+      vehicleRegistration: data.vehicleRegistration,
       branch: data.branch,
       preferredDate: data.preferredDate,
       preferredTime: data.preferredTime,
+      serviceType: data.serviceType,
+      mileage: data.mileage,
+      repairDetails: data.repairDetails,
       notes: data.notes,
     });
     console.log("[service-booking] Bola LINE notification result:", JSON.stringify(bolaResult));

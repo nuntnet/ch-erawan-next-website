@@ -46,6 +46,10 @@ const validServiceBookingBody = {
   branch: "GWM ช.เอราวัณ นครปฐม",
   preferredDate: "2026-07-20", // a Monday
   preferredTime: "08:00-10:00",
+  vehicleRegistration: "กข 1234 นครปฐม",
+  serviceType: "ซ่อมทั่วไป",
+  mileage: "20000",
+  repairDetails: "เสียงดังตอนเบรก",
 };
 
 const originalFetch = globalThis.fetch;
@@ -100,6 +104,10 @@ describe("POST /api/submit/service-booking", () => {
         branch: "GWM ช.เอราวัณ นครปฐม",
         preferredDate: "2026-07-20",
         preferredTime: "08:00-10:00",
+        vehicleRegistration: "กข 1234 นครปฐม",
+        serviceType: "ซ่อมทั่วไป",
+        mileage: "20000",
+        repairDetails: "เสียงดังตอนเบรก",
       })
     );
   });

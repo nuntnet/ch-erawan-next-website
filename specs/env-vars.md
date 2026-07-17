@@ -120,9 +120,13 @@ Payload: `POST` JSON ส่งครบทุก field ของการนั�
   "customer_phone": "0812345678",
   "customer_email": "somchai@example.com",
   "car_model": "Mazda CX-5",
+  "vehicle_registration": "กข 1234 นครปฐม",
   "branch": "มาสด้า ช.เอราวัณ นครปฐม",
   "preferred_date": "2026-07-20",
   "preferred_time": "14:00",
+  "service_type": "ซ่อมทั่วไป",
+  "mileage": "20000",
+  "repair_details": "เสียงดังตอนเบรก",
   "notes": "นัดเช็คระยะ 20,000 กม."
 }
 ```

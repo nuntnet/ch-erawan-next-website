@@ -9,9 +9,13 @@ const fullData = {
   customerPhone: "0812345678",
   customerEmail: "somchai@example.com",
   carModel: "CX-5",
+  vehicleRegistration: "กข 1234 นครปฐม",
   branch: "นครปฐม",
   preferredDate: "2026-07-20",
   preferredTime: "14:00",
+  serviceType: "ซ่อมทั่วไป",
+  mileage: "20000",
+  repairDetails: "เสียงดังตอนเบรก",
   notes: "นัดเช็คระยะ 20,000 กม.",
 };
 
@@ -54,9 +58,13 @@ describe("sendServiceCheckinNotification", () => {
           customer_phone: "0812345678",
           customer_email: "somchai@example.com",
           car_model: "CX-5",
+          vehicle_registration: "กข 1234 นครปฐม",
           branch: "นครปฐม",
           preferred_date: "2026-07-20",
           preferred_time: "14:00",
+          service_type: "ซ่อมทั่วไป",
+          mileage: "20000",
+          repair_details: "เสียงดังตอนเบรก",
           notes: "นัดเช็คระยะ 20,000 กม.",
         }),
       })
@@ -74,9 +82,13 @@ describe("sendServiceCheckinNotification", () => {
       customer_phone: "",
       customer_email: "",
       car_model: "",
+      vehicle_registration: "",
       branch: "",
       preferred_date: "",
       preferred_time: "",
+      service_type: "",
+      mileage: "",
+      repair_details: "",
       notes: "",
     });
   });

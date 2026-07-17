@@ -9,9 +9,13 @@ export interface ServiceCheckinPayload {
   customerPhone?: string;
   customerEmail?: string;
   carModel?: string;
+  vehicleRegistration?: string;
   branch?: string;
   preferredDate?: string;
   preferredTime?: string;
+  serviceType?: string;
+  mileage?: string;
+  repairDetails?: string;
   notes?: string;
 }
 
@@ -33,9 +37,13 @@ export async function sendServiceCheckinNotification(data: ServiceCheckinPayload
     customer_phone: data.customerPhone ?? "",
     customer_email: data.customerEmail ?? "",
     car_model: data.carModel ?? "",
+    vehicle_registration: data.vehicleRegistration ?? "",
     branch: data.branch ?? "",
     preferred_date: data.preferredDate ?? "",
     preferred_time: data.preferredTime ?? "",
+    service_type: data.serviceType ?? "",
+    mileage: data.mileage ?? "",
+    repair_details: data.repairDetails ?? "",
     notes: data.notes ?? "",
   };
 

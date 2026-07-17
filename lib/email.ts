@@ -39,10 +39,14 @@ export interface AppointmentEmailPayload {
   customerEmail?: string;
   type: string;
   carModel?: string;
+  vehicleRegistration?: string;
   branch?: string;
   brandSlug?: BrandSlug;
   preferredDate?: string;
   preferredTime?: string;
+  serviceType?: string;
+  mileage?: string;
+  repairDetails?: string;
   notes?: string;
   damagePhotoUrls?: string[];
   insuranceDocUrls?: string[];
@@ -55,13 +59,19 @@ function buildPlainTextBody(data: AppointmentEmailPayload): string {
     `ประเภท: ${TYPE_LABELS[data.type] ?? data.type}`,
     `ชื่อลูกค้า: ${data.customerName}`,
     `เบอร์โทร: ${data.customerPhone}`,
+    // Every field below always renders — "" when a booking type doesn't
+    // collect it — so the email format is fixed/predictable regardless of type.
+    `อีเมล: ${data.customerEmail ?? ""}`,
+    `รุ่นรถ: ${data.carModel ?? ""}`,
+    `ทะเบียนรถ: ${data.vehicleRegistration ?? ""}`,
+    `สาขา: ${data.branch ?? ""}`,
+    `วันที่ต้องการ: ${data.preferredDate ?? ""}`,
+    `เวลา: ${data.preferredTime ?? ""}`,
+    `ประเภทบริการ: ${data.serviceType ?? ""}`,
+    `เลขไมล์: ${data.mileage ?? ""}`,
+    `รายละเอียด/อาการ: ${data.repairDetails ?? ""}`,
+    `หมายเหตุ: ${data.notes ?? ""}`,
   ];
-  if (data.customerEmail) lines.push(`อีเมล: ${data.customerEmail}`);
-  if (data.carModel) lines.push(`รุ่นรถ: ${data.carModel}`);
-  if (data.branch) lines.push(`สาขา: ${data.branch}`);
-  if (data.preferredDate) lines.push(`วันที่ต้องการ: ${data.preferredDate}`);
-  if (data.preferredTime) lines.push(`เวลา: ${data.preferredTime}`);
-  if (data.notes) lines.push(`หมายเหตุ: ${data.notes}`);
   if (data.damagePhotoUrls?.length) lines.push("", "รูปความเสียหาย:", ...data.damagePhotoUrls);
   if (data.insuranceDocUrls?.length) lines.push("", "เอกสารแนบ/ประกัน:", ...data.insuranceDocUrls);
   lines.push("", "กรุณาติดต่อลูกค้าภายใน 24 ชั่วโมง");
@@ -81,15 +91,21 @@ function buildAppointmentHtmlBody(data: AppointmentEmailPayload): string | undef
     `<p>มีการนัดหมายใหม่จากเว็บไซต์ ช.เอราวัณ กรุ๊ป</p>`,
     `<p><b>ประเภท:</b> ${escapeHtml(TYPE_LABELS[data.type] ?? data.type)}<br/>`,
     `<b>ชื่อลูกค้า:</b> ${escapeHtml(data.customerName)}<br/>`,
-    `<b>เบอร์โทร:</b> ${escapeHtml(data.customerPhone)}` +
-      (data.customerEmail ? `<br/><b>อีเมล:</b> ${escapeHtml(data.customerEmail)}` : "") +
-      (data.carModel ? `<br/><b>รุ่นรถ:</b> ${escapeHtml(data.carModel)}` : "") +
-      (data.branch ? `<br/><b>สาขา:</b> ${escapeHtml(data.branch)}` : "") +
-      (data.preferredDate ? `<br/><b>วันที่ต้องการ:</b> ${escapeHtml(data.preferredDate)}` : "") +
-      (data.preferredTime ? `<br/><b>เวลา:</b> ${escapeHtml(data.preferredTime)}` : "") +
+    `<b>เบอร์โทร:</b> ${escapeHtml(data.customerPhone)}<br/>` +
+      // Every field below always renders — "" when a booking type doesn't
+      // collect it — so the email format is fixed/predictable regardless of type.
+      `<b>อีเมล:</b> ${escapeHtml(data.customerEmail ?? "")}<br/>` +
+      `<b>รุ่นรถ:</b> ${escapeHtml(data.carModel ?? "")}<br/>` +
+      `<b>ทะเบียนรถ:</b> ${escapeHtml(data.vehicleRegistration ?? "")}<br/>` +
+      `<b>สาขา:</b> ${escapeHtml(data.branch ?? "")}<br/>` +
+      `<b>วันที่ต้องการ:</b> ${escapeHtml(data.preferredDate ?? "")}<br/>` +
+      `<b>เวลา:</b> ${escapeHtml(data.preferredTime ?? "")}<br/>` +
+      `<b>ประเภทบริการ:</b> ${escapeHtml(data.serviceType ?? "")}<br/>` +
+      `<b>เลขไมล์:</b> ${escapeHtml(data.mileage ?? "")}<br/>` +
+      `<b>รายละเอียด/อาการ:</b> ${escapeHtml(data.repairDetails ?? "")}` +
       `</p>`,
+    `<p><b>หมายเหตุ:</b><br/>${escapeHtml(data.notes ?? "").replace(/\n/g, "<br/>")}</p>`,
   ];
-  if (data.notes) rows.push(`<p><b>หมายเหตุ:</b><br/>${escapeHtml(data.notes).replace(/\n/g, "<br/>")}</p>`);
 
   if (data.damagePhotoUrls?.length) {
     rows.push(`<p><b>รูปความเสียหาย (${data.damagePhotoUrls.length}):</b></p>`);

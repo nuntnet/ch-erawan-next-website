@@ -95,7 +95,14 @@ describe("POST /api/submit/service-booking", () => {
       })
     );
     expect(emailMock.sendAppointmentNotification).toHaveBeenCalledWith(
-      expect.objectContaining({ customerName: "Somchai", type: "service" })
+      expect.objectContaining({
+        customerName: "Somchai",
+        type: "service",
+        vehicleRegistration: "กข 1234 นครปฐม",
+        serviceType: "ซ่อมทั่วไป",
+        mileage: "20000",
+        repairDetails: "เสียงดังตอนเบรก",
+      })
     );
     expect(bolaMock.sendServiceCheckinNotification).toHaveBeenCalledWith(
       expect.objectContaining({

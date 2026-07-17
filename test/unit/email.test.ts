@@ -241,6 +241,47 @@ describe("sendAppointmentNotification", () => {
     expect(body.text).not.toContain("รูปความเสียหาย");
   });
 
+  it("renders every optional field as an empty string line rather than omitting it", async () => {
+    // appointmentData only sets customerName/customerPhone/type/branch — every
+    // other optional field (email, carModel, vehicleRegistration, dates,
+    // service fields, notes) is missing and must still show up as "".
+    mocks.getNotifyEmailForBrand.mockResolvedValue("gwm@dealer.com");
+    process.env.RESEND_API_KEY = "re_test_key";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+    await sendAppointmentNotification(appointmentData);
+    const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+    expect(body.text).toContain("อีเมล: \n");
+    expect(body.text).toContain("รุ่นรถ: \n");
+    expect(body.text).toContain("ทะเบียนรถ: \n");
+    expect(body.text).toContain("วันที่ต้องการ: \n");
+    expect(body.text).toContain("เวลา: \n");
+    expect(body.text).toContain("ประเภทบริการ: \n");
+    expect(body.text).toContain("เลขไมล์: \n");
+    expect(body.text).toContain("รายละเอียด/อาการ: \n");
+    expect(body.text).toContain("หมายเหตุ: \n");
+  });
+
+  it("includes vehicle registration, service type, mileage, and repair details for service bookings", async () => {
+    process.env.NON_SALES_APPOINTMENT_NOTIFY_EMAIL = "non-sales-team@ch-erawan.com";
+    process.env.RESEND_API_KEY = "re_test_key";
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
+
+    await sendAppointmentNotification({
+      ...appointmentData,
+      type: "service",
+      vehicleRegistration: "กข 1234 นครปฐม",
+      serviceType: "ซ่อมทั่วไป",
+      mileage: "20000",
+      repairDetails: "เสียงดังตอนเบรก",
+    });
+    const body = JSON.parse((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
+    expect(body.text).toContain("ทะเบียนรถ: กข 1234 นครปฐม");
+    expect(body.text).toContain("ประเภทบริการ: ซ่อมทั่วไป");
+    expect(body.text).toContain("เลขไมล์: 20000");
+    expect(body.text).toContain("รายละเอียด/อาการ: เสียงดังตอนเบรก");
+  });
+
   it("includes an inline HTML gallery and plain-text link fallback when damage photos are attached", async () => {
     mocks.getNotifyEmailForBrand.mockResolvedValue("gwm@dealer.com");
     process.env.RESEND_API_KEY = "re_test_key";

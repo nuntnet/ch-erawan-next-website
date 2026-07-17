@@ -194,10 +194,14 @@ export async function POST(req: NextRequest) {
       customerEmail: data.customerEmail || undefined,
       type: "service",
       carModel: data.carModel,
+      vehicleRegistration: data.vehicleRegistration,
       branch: data.branch,
       brandSlug: resolveBrandFromBranch(data.branch),
       preferredDate: data.preferredDate,
       preferredTime: data.preferredTime,
+      serviceType: data.serviceType,
+      mileage: data.mileage,
+      repairDetails: data.repairDetails,
       notes: data.notes,
     });
 

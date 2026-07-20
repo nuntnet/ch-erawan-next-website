@@ -370,7 +370,7 @@ function BookingForm() {
                         key={name}
                         type="button"
                         onClick={() => setForm(f => ({ ...f, branch: name }))}
-                        className={`flex items-center gap-2 p-2.5 rounded-xl border-2 text-left transition-all ${
+                        className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 text-center transition-all ${
                           isSelected
                             ? "border-[#0F172A] bg-[#0F172A] text-white"
                             : "border-gray-200 bg-white hover:border-gray-300"
@@ -378,7 +378,10 @@ function BookingForm() {
                       >
                         {brand && (
                           <BrandLogo
-                            src={brand.logoPath}
+                            // Dark-background brands ship a dedicated light-variant asset
+                            // (e.g. Deepal) — same swap BrandHero uses, so the wordmark
+                            // stays visible instead of rendering its light-bg colors here.
+                            src={isSelected ? (brand.logoLightPath ?? brand.logoPath) : brand.logoPath}
                             alt={brand.displayName}
                             brandSlug={brand.slug}
                             size="xs"

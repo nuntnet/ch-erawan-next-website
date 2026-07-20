@@ -10,7 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, Wrench, Shield, CheckCircle, X, FileText, Image as ImageIcon, Phone, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { isValidEmail, EMAIL_ERROR } from "@/lib/form-validation";
-import { getBranchContact } from "@/lib/branchData";
+import { getBranchContact, branches as branchDirectory } from "@/lib/branchData";
+import { BRANDS } from "@/lib/brandConfig";
+import BrandLogo from "@/components/BrandLogo";
 import { trackGenerateLead } from "@/lib/ga4-events";
 
 type BookingType = "test_drive" | "service" | "body_paint" | "insurance_quote";
@@ -21,7 +23,7 @@ const bookingTypes = [
   { id: "body_paint" as BookingType, icon: Shield, title: "แจ้งซ่อมตัวถังและสี", desc: "ส่งรูปและเอกสารล่วงหน้า ประกันอนุมัติก่อน" },
 ];
 
-const branches = [
+const BOOKABLE_BRANCH_NAMES = [
   "มาสด้า ช.เอราวัณ นครปฐม",
   "มาสด้า ช.เอราวัณ ศาลายา",
   "Deepal ช.เอราวัณ ศาลายา",
@@ -30,6 +32,27 @@ const branches = [
   "GWM ช.เอราวัณ นครปฐม",
   "Kia ช.เอราวัณ นครปฐม",
 ];
+
+// Each bookable branch paired with its brand's logo, for the radio-card picker.
+const branches = BOOKABLE_BRANCH_NAMES.map((name) => {
+  const branch = branchDirectory.find((b) => b.name === name);
+  const brand = branch ? BRANDS.find((b) => b.notionBrand === branch.brand) : undefined;
+  return { name, brand };
+});
+
+// Bookings must be at least 2 days out ("วันมะรืน" — the day after tomorrow) —
+// same-day/next-day doesn't give staff enough lead time to prepare.
+function toDateInputValue(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+function getMinBookableDate(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 2);
+  return toDateInputValue(d);
+}
 
 const timeSlots = ["08:00", "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
@@ -166,6 +189,10 @@ function BookingForm() {
     }
     if (selectedType === "service" && new Date(form.preferredDate).getDay() === 0) {
       toast.error("ไม่สามารถจองวันอาทิตย์ได้ ศูนย์บริการปิดทำการ");
+      return;
+    }
+    if (form.preferredDate && form.preferredDate < getMinBookableDate()) {
+      toast.error("กรุณาเลือกวันนัดหมายล่วงหน้าอย่างน้อย 2 วัน");
       return;
     }
     if (damagePhotos.some((f) => f.uploading) || insuranceDocs.some((f) => f.uploading)) {
@@ -333,32 +360,57 @@ function BookingForm() {
                 <Input id="car" value={form.carModel} onChange={e => setForm(f => ({ ...f, carModel: e.target.value }))} placeholder={selectedType === "service" ? "เช่น Mazda 3, GWM ORA Good Cat" : "เช่น Mazda CX-5, Ford Ranger"} className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-gray-600 text-sm">สาขา {selectedType === "service" ? "*" : ""}</Label>
-                  <Select value={form.branch} onValueChange={v => setForm(f => ({ ...f, branch: v }))}>
-                    <SelectTrigger className="mt-1.5 border-gray-200"><SelectValue placeholder="เลือกสาขา" /></SelectTrigger>
-                    <SelectContent>{branches.map(b => <SelectItem key={b} value={b}>{b}</SelectItem>)}</SelectContent>
-                  </Select>
+              <div>
+                <Label className="text-gray-600 text-sm">สาขา {selectedType === "service" ? "*" : ""}</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1.5">
+                  {branches.map(({ name, brand }) => {
+                    const isSelected = form.branch === name;
+                    return (
+                      <button
+                        key={name}
+                        type="button"
+                        onClick={() => setForm(f => ({ ...f, branch: name }))}
+                        className={`flex items-center gap-2 p-2.5 rounded-xl border-2 text-left transition-all ${
+                          isSelected
+                            ? "border-[#0F172A] bg-[#0F172A] text-white"
+                            : "border-gray-200 bg-white hover:border-gray-300"
+                        }`}
+                      >
+                        {brand && (
+                          <BrandLogo
+                            src={brand.logoPath}
+                            alt={brand.displayName}
+                            brandSlug={brand.slug}
+                            size="xs"
+                            bare
+                            white={isSelected && brand.logoOnDark !== "native"}
+                            nativeOnDark={isSelected && brand.logoOnDark === "native"}
+                          />
+                        )}
+                        <span className="text-xs font-medium leading-snug">{name}</span>
+                      </button>
+                    );
+                  })}
                 </div>
-                <div>
-                  <Label htmlFor="date" className="text-gray-600 text-sm">วันที่ต้องการ {selectedType === "service" ? "*" : ""}</Label>
-                  <Input
-                    id="date" type="date" value={form.preferredDate}
-                    onChange={e => {
-                      const value = e.target.value;
-                      if (selectedType === "service" && value && new Date(value).getDay() === 0) {
-                        toast.error("ศูนย์บริการปิดทำการวันอาทิตย์ กรุณาเลือกวันอื่น");
-                        return;
-                      }
-                      setForm(f => ({ ...f, preferredDate: value }));
-                    }}
-                    className="mt-1.5 border-gray-200 focus:border-[#0F172A]" min={new Date().toISOString().split("T")[0]}
-                  />
-                  {selectedType === "service" && (
-                    <p className="text-xs text-gray-400 mt-1">ศูนย์บริการปิดทำการทุกวันอาทิตย์</p>
-                  )}
-                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="date" className="text-gray-600 text-sm">วันที่ต้องการ {selectedType === "service" ? "*" : ""}</Label>
+                <Input
+                  id="date" type="date" value={form.preferredDate}
+                  onChange={e => {
+                    const value = e.target.value;
+                    if (selectedType === "service" && value && new Date(value).getDay() === 0) {
+                      toast.error("ศูนย์บริการปิดทำการวันอาทิตย์ กรุณาเลือกวันอื่น");
+                      return;
+                    }
+                    setForm(f => ({ ...f, preferredDate: value }));
+                  }}
+                  className="mt-1.5 border-gray-200 focus:border-[#0F172A] max-w-xs" min={getMinBookableDate()}
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  {selectedType === "service" ? "จองล่วงหน้าอย่างน้อย 2 วัน — ศูนย์บริการปิดทำการทุกวันอาทิตย์" : "จองล่วงหน้าอย่างน้อย 2 วัน"}
+                </p>
               </div>
 
               {form.preferredDate && selectedType !== "service" && (

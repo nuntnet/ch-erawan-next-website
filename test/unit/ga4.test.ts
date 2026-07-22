@@ -125,19 +125,19 @@ describe("getChannels / getTopSources / getDeviceBreakdown", () => {
   });
 });
 
-describe("getExitPages / getTopVehicles / getLeadCounts", () => {
-  it("getExitPages maps page rows sorted by exits", async () => {
+describe("getLandingPages / getTopVehicles / getLeadCounts", () => {
+  it("getLandingPages maps landing page rows sorted by sessions", async () => {
     mockRunReport.mockResolvedValueOnce([{
       rows: [
-        { dimensionValues: [{ value: "/cars" }], metricValues: [{ value: "40" }, { value: "60" }, { value: "0.455" }] },
-        { dimensionValues: [{ value: "/booking" }], metricValues: [{ value: "25" }, { value: "30" }, { value: "0.5" }] },
+        { dimensionValues: [{ value: "/cars" }], metricValues: [{ value: "60" }, { value: "0.455" }] },
+        { dimensionValues: [{ value: "/booking" }], metricValues: [{ value: "30" }, { value: "0.5" }] },
       ],
     }]);
-    const { getExitPages } = await import("@/lib/ga4");
-    const result = await getExitPages(30);
+    const { getLandingPages } = await import("@/lib/ga4");
+    const result = await getLandingPages(30);
     expect(result).toEqual([
-      { path: "/cars", exits: 40, entrances: 60, bounceRate: 45.5 },
-      { path: "/booking", exits: 25, entrances: 30, bounceRate: 50 },
+      { path: "/cars", sessions: 60, bounceRate: 45.5 },
+      { path: "/booking", sessions: 30, bounceRate: 50 },
     ]);
   });
 

@@ -3,7 +3,7 @@ import { requireStaff } from "@/lib/admin-auth";
 import {
   getChannels,
   getTopSources,
-  getExitPages,
+  getLandingPages,
   getTopVehicles,
   getDeviceBreakdown,
   getLeadCounts,
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
       configured: false,
       channels: [],
       topSources: [],
-      exitPages: [],
+      landingPages: [],
       topVehicles: [],
       deviceBreakdown: [],
       leadCounts: { form: 0, line: 0, call: 0 },
@@ -41,10 +41,10 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  const [channels, topSources, exitPages, topVehicles, deviceBreakdown, leadCounts, lineByBrand, funnels] = await Promise.all([
+  const [channels, topSources, landingPages, topVehicles, deviceBreakdown, leadCounts, lineByBrand, funnels] = await Promise.all([
     getChannels(days),
     getTopSources(days),
-    getExitPages(days),
+    getLandingPages(days),
     getTopVehicles(days),
     getDeviceBreakdown(days),
     getLeadCounts(days),
@@ -52,5 +52,5 @@ export async function GET(req: NextRequest) {
     getFunnels(days),
   ]);
 
-  return NextResponse.json({ configured: true, channels, topSources, exitPages, topVehicles, deviceBreakdown, leadCounts, lineByBrand, funnels });
+  return NextResponse.json({ configured: true, channels, topSources, landingPages, topVehicles, deviceBreakdown, leadCounts, lineByBrand, funnels });
 }

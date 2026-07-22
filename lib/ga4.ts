@@ -165,22 +165,24 @@ export async function getDeviceBreakdown(days: number): Promise<DeviceRow[]> {
   }));
 }
 
-export type ExitPageRow = { path: string; exits: number; entrances: number; bounceRate: number };
+export type LandingPageRow = { path: string; sessions: number; bounceRate: number };
 
-export async function getExitPages(days: number): Promise<ExitPageRow[]> {
+// GA4's Data API has no "exits"/"entrances" metrics (those are Universal
+// Analytics-only concepts) — landingPage + sessions/bounceRate is the closest
+// GA4-native equivalent: which pages people land on, and how many bounce.
+export async function getLandingPages(days: number): Promise<LandingPageRow[]> {
   const response = await runGa4Report({
     dateRanges: [{ startDate: `${days}daysAgo`, endDate: "today" }],
-    dimensions: [{ name: "pagePath" }],
-    metrics: [{ name: "exits" }, { name: "entrances" }, { name: "bounceRate" }],
-    orderBys: [{ metric: { metricName: "exits" }, desc: true }],
+    dimensions: [{ name: "landingPage" }],
+    metrics: [{ name: "sessions" }, { name: "bounceRate" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
     limit: 15,
   });
   if (!response?.rows) return [];
   return response.rows.map((row) => ({
     path: row.dimensionValues?.[0]?.value ?? "",
-    exits: Number(row.metricValues?.[0]?.value ?? 0),
-    entrances: Number(row.metricValues?.[1]?.value ?? 0),
-    bounceRate: Number(row.metricValues?.[2]?.value ?? 0) * 100,
+    sessions: Number(row.metricValues?.[0]?.value ?? 0),
+    bounceRate: Number(row.metricValues?.[1]?.value ?? 0) * 100,
   }));
 }
 

@@ -25,7 +25,7 @@ type AnalyticsData = {
 
 type ChannelRow = { channel: string; sessions: number; users: number };
 type SourceRow = { source: string; medium: string; campaign: string | null; sessions: number };
-type ExitPageRow = { path: string; exits: number; entrances: number; bounceRate: number };
+type LandingPageRow = { path: string; sessions: number; bounceRate: number };
 type VehicleRow = { slug: string; label: string; views: number };
 type DeviceRow = { device: string; sessions: number };
 type LeadCounts = { form: number; line: number; call: number };
@@ -37,7 +37,7 @@ type Ga4Data = {
   configured: boolean;
   channels: ChannelRow[];
   topSources: SourceRow[];
-  exitPages: ExitPageRow[];
+  landingPages: LandingPageRow[];
   topVehicles: VehicleRow[];
   deviceBreakdown: DeviceRow[];
   leadCounts: LeadCounts;
@@ -433,39 +433,34 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          {/* Exit Pages — filter first so the empty state reflects what's actually shown */}
-          {(() => {
-            const exitRows = ga4.exitPages.filter((p) => p.entrances >= 10);
-            return (
-              <div className="bg-white rounded-xl border border-gray-100 p-5">
-                <h2 className="text-sm font-semibold text-[#0F172A] mb-4">หน้าที่คนออกจากเว็บมากที่สุด</h2>
-                {exitRows.length === 0 ? (
-                  <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>
-                ) : (
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
-                        <th className="pb-2 font-medium">หน้า</th>
-                        <th className="pb-2 font-medium text-right">Entrances</th>
-                        <th className="pb-2 font-medium text-right">Exits</th>
-                        <th className="pb-2 font-medium text-right">Bounce Rate</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {exitRows.map((p, i) => (
-                        <tr key={i} className="border-b border-gray-50 last:border-0">
-                          <td className="py-2 text-[#0F172A] truncate max-w-[240px]">{p.path}</td>
-                          <td className="py-2 text-right text-gray-600">{p.entrances.toLocaleString()}</td>
-                          <td className="py-2 text-right text-gray-600">{p.exits.toLocaleString()}</td>
-                          <td className="py-2 text-right text-gray-600">{p.bounceRate.toFixed(1)}%</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            );
-          })()}
+          {/* Landing Pages — GA4's Data API has no exits/entrances metrics (those
+              are Universal Analytics-only), so this shows landing page + bounce
+              rate instead, the closest GA4-native equivalent. */}
+          <div className="bg-white rounded-xl border border-gray-100 p-5">
+            <h2 className="text-sm font-semibold text-[#0F172A] mb-4">หน้า Landing Page ยอดนิยม</h2>
+            {ga4.landingPages.length === 0 ? (
+              <p className="text-sm text-gray-400 py-4 text-center">ยังไม่มีข้อมูล</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-gray-400 border-b border-gray-100">
+                    <th className="pb-2 font-medium">หน้า</th>
+                    <th className="pb-2 font-medium text-right">Sessions</th>
+                    <th className="pb-2 font-medium text-right">Bounce Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ga4.landingPages.map((p, i) => (
+                    <tr key={i} className="border-b border-gray-50 last:border-0">
+                      <td className="py-2 text-[#0F172A] truncate max-w-[240px]">{p.path}</td>
+                      <td className="py-2 text-right text-gray-600">{p.sessions.toLocaleString()}</td>
+                      <td className="py-2 text-right text-gray-600">{p.bounceRate.toFixed(1)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
       </>
       )}
 

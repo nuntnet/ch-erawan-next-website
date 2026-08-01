@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,12 +113,34 @@ function BookingForm() {
   const [damagePhotos, setDamagePhotos] = useState<UploadedFile[]>([]);
   const [insuranceDocs, setInsuranceDocs] = useState<UploadedFile[]>([]);
   const [form, setForm] = useState({ ...emptyForm, carModel: carParam });
+  const formRef = useRef<HTMLDivElement>(null);
   const [slots, setSlots] = useState<SlotInfo[]>([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [slotsError, setSlotsError] = useState(false);
 
+  // /booking is statically prerendered, so a plain getMinBookableDate() call in
+  // JSX bakes whatever "today" was at the last build/deploy into the static
+  // HTML forever — it doesn't advance with real time between deploys, which
+  // silently lets people book dates that are now in the past. Same fix as
+  // searchParams above: best-effort value for the initial paint, corrected
+  // to the browser's real clock once mounted.
+  const [minDate, setMinDate] = useState<string>(() => getMinBookableDate());
+  useEffect(() => { setMinDate(getMinBookableDate()); }, []);
+
   useEffect(() => { if (typeParam) setSelectedType(typeParam); }, [typeParam]);
   useEffect(() => { if (carParam) setForm(f => ({ ...f, carModel: carParam })); }, [carParam]);
+
+  // On mobile the type cards are tall enough that the form below (which
+  // changes per type) sits off-screen — tapping a card gave no visible sign
+  // anything happened. Tied to the selectedType commit itself (not a guessed
+  // setTimeout in the click handler) so it always fires after React has
+  // actually painted the new type's fields, and skipped on the initial
+  // mount/URL-driven sync so the page doesn't jump on first load.
+  const hasUserSelectedType = useRef(false);
+  useEffect(() => {
+    if (!hasUserSelectedType.current) return;
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [selectedType]);
 
   // The success view replaces the long form with a short confirmation card —
   // without this, the page stays scrolled to wherever the user was in the
@@ -145,6 +167,7 @@ function BookingForm() {
   }, [selectedType, form.branch, form.preferredDate]);
 
   const handleTypeChange = (type: BookingType) => {
+    hasUserSelectedType.current = true;
     setSelectedType(type);
     const params = new URLSearchParams(searchParams.toString());
     params.set("type", type);
@@ -325,7 +348,7 @@ function BookingForm() {
 
         {/* Form */}
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 lg:p-8 shadow-sm">
+          <div ref={formRef} className="bg-white rounded-2xl border border-gray-100 p-6 lg:p-8 shadow-sm scroll-mt-20">
             <div className="flex items-center gap-3 mb-6 pb-5 border-b border-gray-50">
               <div className="w-10 h-10 rounded-xl bg-[#0F172A] flex items-center justify-center">
                 <currentType.icon className="w-5 h-5 text-white/70" />
@@ -409,7 +432,7 @@ function BookingForm() {
                     }
                     setForm(f => ({ ...f, preferredDate: value }));
                   }}
-                  className="mt-1.5 border-gray-200 focus:border-[#0F172A] max-w-xs" min={getMinBookableDate()}
+                  className="mt-1.5 border-gray-200 focus:border-[#0F172A] max-w-xs" min={minDate}
                 />
                 <p className="text-xs text-gray-400 mt-1">
                   {selectedType === "service" ? "จองล่วงหน้าอย่างน้อย 2 วัน — ศูนย์บริการปิดทำการทุกวันอาทิตย์" : "จองล่วงหน้าอย่างน้อย 2 วัน"}

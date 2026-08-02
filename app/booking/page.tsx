@@ -327,21 +327,23 @@ function BookingForm() {
       </div>
 
       <div className="container py-10 lg:py-14">
-        {/* Type Selection */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        {/* Type Selection — compact 3-across on mobile so all options are visible
+            without scrolling; the fuller left-aligned card with description
+            returns from sm: up where there's room for it. */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-10">
           {bookingTypes.map((type) => (
             <button
               key={type.id}
               onClick={() => handleTypeChange(type.id)}
-              className={`p-5 rounded-2xl border-2 text-left transition-all duration-200 ${
+              className={`p-2.5 sm:p-5 rounded-xl sm:rounded-2xl border-2 text-center sm:text-left transition-all duration-200 ${
                 selectedType === type.id
                   ? "border-[#0F172A] bg-[#0F172A] text-white shadow-lg shadow-[#0F172A]/20"
                   : "border-gray-100 bg-white hover:border-gray-300"
               }`}
             >
-              <type.icon className={`w-7 h-7 mb-3 ${selectedType === type.id ? "text-white/70" : "text-[#0F172A]"}`} />
-              <div className={`font-semibold text-sm mb-1 ${selectedType === type.id ? "text-white" : "text-[#0F172A]"}`}>{type.title}</div>
-              <div className={`text-xs leading-relaxed ${selectedType === type.id ? "text-white/60" : "text-gray-400"}`}>{type.desc}</div>
+              <type.icon className={`w-5 h-5 sm:w-7 sm:h-7 mb-1 sm:mb-3 mx-auto sm:mx-0 ${selectedType === type.id ? "text-white/70" : "text-[#0F172A]"}`} />
+              <div className={`font-semibold text-[11px] sm:text-sm leading-tight sm:mb-1 ${selectedType === type.id ? "text-white" : "text-[#0F172A]"}`}>{type.title}</div>
+              <div className={`hidden sm:block text-xs leading-relaxed ${selectedType === type.id ? "text-white/60" : "text-gray-400"}`}>{type.desc}</div>
             </button>
           ))}
         </div>

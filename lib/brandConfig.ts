@@ -324,8 +324,7 @@ export const BRANDS: BrandConfig[] = [
     displayName: "Lepas",
     displayNameTh: "เลพาส",
     tagline: "Drive Your Elegance",
-    descriptionTh:
-      "แบรนด์รถยนต์พรีเมียมใหม่จาก Chery Group เตรียมเปิดตัวในไทยกลางปี 2569 ด้วยกลุ่มรถ L4, L6 และ L8 — เร็วๆ นี้ที่ ช.เอราวัณ นครปฐม",
+    descriptionTh: "แบรนด์รถยนต์พรีเมียมใหม่จาก Chery Group",
     logoPath: "/brands/lepas.svg",
     logoScale: 1,
     accentColor: "#0E8C7F",
@@ -333,7 +332,6 @@ export const BRANDS: BrandConfig[] = [
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783779581/ch-erawan/brands/lepas-hero-leopard.jpg",
     showroomImageUrl:
       "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783785401/ch-erawan/brands/lepas-showroom.jpg",
-    comingSoonLabel: "เตรียมเปิดตัวในไทย · Coming Soon กลางปี 2569",
     hubPath: "/lepas",
     featuredModels: [
       { name: "L8", slug: "lepas-l8-2026" },

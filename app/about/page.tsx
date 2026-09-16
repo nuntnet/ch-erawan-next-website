@@ -126,7 +126,7 @@ const timeline: TimelineItem[] = [
   {
     year: "2569",
     title: "GAC และ Lepas",
-    desc: "ขยายสู่ 8 แบรนด์ ภายใต้ บริษัท ช.เอราวัณ เนกซ์ จำกัด — ก่อสร้างโชว์รูม GAC (AION, HYPTEC, GAC MOTOR) ที่ ต.ลำพยา กำหนดเปิดตุลาคม 2569 พร้อมเตรียมเปิดตัว Lepas แบรนด์พรีเมียมจาก Chery Group",
+    desc: "ขยายสู่ 8 แบรนด์ ภายใต้ บริษัท ช.เอราวัณ เนกซ์ จำกัด — ก่อสร้างโชว์รูม GAC (AION, HYPTEC, GAC MOTOR) ที่ ต.ลำพยา กำหนดเปิดตุลาคม 2569 พร้อมเปิดตัว Lepas แบรนด์พรีเมียมจาก Chery Group ซึ่งเริ่มเปิดขายรถแล้วระหว่างที่โชว์รูมกำลังก่อสร้าง",
     milestone: "GAC · Lepas",
     image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1783781107/ch-erawan/brands/gac-nakhonpathom-exterior-render.png",
     imageAlt: "โชว์รูม GAC ช.เอราวัณ นครปฐม (แบบจำลอง 3 มิติ)",
@@ -282,12 +282,13 @@ const brandCards = [
   { name: "Kia", since: "2568", branches: "1 สาขา", highlight: "Sorento · Carnival · EV5 · EV9", rank: "อันดับ 26", sales: "1,889 คัน", color: "bg-emerald-50 border-emerald-100", dot: "bg-emerald-600", slug: "kia" as const, comingSoon: false },
 ];
 
-// GAC/Lepas aren't open yet — shown in the brand roster grid (real, honest "coming soon"
-// status) but deliberately excluded from the 2568 sales-share strip below, which is real
-// Thai-market registration data these two brands have zero of yet.
+// GAC is still pre-launch (showroom under construction, no sales yet). Lepas has launched
+// for sales (L6 is live) but its showroom is still under construction and it has zero 2568
+// Thai-market registration data (it didn't exist that year) — both stay out of the real
+// 2568 sales-share strip below and use custom status fields instead of fake market stats.
 const upcomingBrandCards = [
   { name: "GAC", since: "2569", branches: "เร็วๆ นี้", highlight: "AION · HYPTEC · GAC MOTOR", rank: "เปิดตัว 2569", sales: "อยู่ระหว่างก่อสร้าง", color: "bg-rose-50 border-rose-100", dot: "bg-rose-600", slug: "gac" as const, comingSoon: true },
-  { name: "Lepas", since: "2569", branches: "เร็วๆ นี้", highlight: "L4 · L6 · L8", rank: "เปิดตัว 2569", sales: "เตรียมเปิดตัว", color: "bg-teal-50 border-teal-100", dot: "bg-teal-600", slug: "lepas" as const, comingSoon: true },
+  { name: "Lepas", since: "2569", branches: "เร็วๆ นี้", highlight: "L4 · L6 · L8", rank: "เปิดขายแล้ว", sales: "โชว์รูมอยู่ระหว่างก่อสร้าง", color: "bg-teal-50 border-teal-100", dot: "bg-teal-600", slug: "lepas" as const, comingSoon: true },
 ];
 
 const rosterCards = [...brandCards, ...upcomingBrandCards];

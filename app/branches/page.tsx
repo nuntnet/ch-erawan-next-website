@@ -36,6 +36,7 @@ const brandColors: Record<string, { bg: string; text: string; dot: string }> = {
   "Kia":        { bg: "bg-green-50",   text: "text-green-700",  dot: "bg-green-600" },
   "GAC":        { bg: "bg-red-50",     text: "text-red-700",    dot: "bg-red-600" },
   "Lepas":      { bg: "bg-teal-50",    text: "text-teal-700",   dot: "bg-teal-600" },
+  "Geely":      { bg: "bg-sky-50",     text: "text-sky-700",    dot: "bg-sky-600" },
 };
 
 const serviceMenuByBrand: Record<string, { category: string; items: string[] }[]> = {
@@ -119,7 +120,7 @@ export default function ServiceLocator() {
   const [filterBrand, setFilterBrand] = useState("ทั้งหมด");
   const [activeTab, setActiveTab] = useState<"map" | "info" | "services">("map");
 
-  const brands = ["ทั้งหมด", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"];
+  const brands = ["ทั้งหมด", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas", "Geely"];
   const filtered = filterBrand === "ทั้งหมด" ? branches : branches.filter(b => b.brand === filterBrand);
   const selected = branches.find((b) => b.id === selectedBranch);
 
@@ -130,7 +131,7 @@ export default function ServiceLocator() {
         <div className="container">
           <p className="text-[#0F172A] text-sm font-medium mb-2 tracking-wider uppercase">สาขาของเรา</p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">ค้นหาสาขาและศูนย์บริการ</h1>
-          <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุ๊ป มี 9 สาขาครอบคลุมจังหวัดนครปฐมและสามพราน พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
+          <p className="text-white/70 max-w-xl">ช.เอราวัณ กรุ๊ป มี 10 สาขาครอบคลุมจังหวัดนครปฐม สามพราน และกรุงเทพฯ (รัชดา) พร้อมให้บริการทั้งการขายและบริการหลังการขาย</p>
         </div>
       </div>
 
@@ -304,6 +305,7 @@ export default function ServiceLocator() {
                             นัดบริการ
                           </Button>
                         </Link>
+                        {selected.lineUrl ? (
                         <a href={selected.lineUrl} target="_blank" rel="noopener noreferrer">
                           <Button size="sm" variant="outline" className="w-full text-xs border-[#06C755] text-[#06C755] hover:bg-[#06C755] hover:text-white">
                             <svg className="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="currentColor">
@@ -312,6 +314,11 @@ export default function ServiceLocator() {
                             LINE
                           </Button>
                         </a>
+                        ) : (
+                        <Button size="sm" variant="outline" disabled title="LINE OA กำลังจัดทำ" className="w-full text-xs cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400">
+                          LINE
+                        </Button>
+                        )}
                       </div>
                       )}
                     </div>
@@ -368,8 +375,8 @@ export default function ServiceLocator() {
         {/* Summary Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
           {[
-            { value: "9", label: "สาขาทั่วนครปฐม" },
-            { value: "8", label: "แบรนด์รถยนต์" },
+            { value: "10", label: "สาขานครปฐม & กรุงเทพฯ" },
+            { value: "9", label: "แบรนด์รถยนต์" },
             { value: "4", label: "ศูนย์ Body & Paint" },
             { value: "034-305-500", label: "Call Center" },
           ].map(stat => (

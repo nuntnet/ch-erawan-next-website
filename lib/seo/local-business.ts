@@ -15,7 +15,7 @@ export function localBusinessGraph() {
       address: {
         "@type": "PostalAddress",
         streetAddress: branch.address,
-        addressLocality: "นครปฐม",
+        addressLocality: branch.locality ?? "นครปฐม",
         addressCountry: "TH",
       },
       telephone: branch.phone,

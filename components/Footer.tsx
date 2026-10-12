@@ -4,13 +4,15 @@ import CompanyLogo from "@/components/CompanyLogo";
 import { branches } from "@/lib/branchData";
 import { getYearsOfExperience } from "@/lib/company";
 
-const LINE_ACCOUNTS = [
+// url: null = LINE OA not created yet → rendered greyed-out and non-clickable.
+const LINE_ACCOUNTS: { brand: string; lineId: string; url: string | null; color: string }[] = [
   { brand: "Mazda",      lineId: "ฝ่ายขาย", url: "https://lin.ee/NLeKZy6", color: "#910023" },
   { brand: "Deepal",     lineId: "ฝ่ายขาย", url: "https://lin.ee/vK6Z54v", color: "#0066FF" },
   { brand: "Ford",       lineId: "ฝ่ายขาย", url: "https://lin.ee/PhIWeTl", color: "#003478" },
   { brand: "Mitsubishi", lineId: "ฝ่ายขาย", url: "https://lin.ee/N7UjCTE", color: "#E60012" },
   { brand: "GWM",        lineId: "ฝ่ายขาย", url: "https://lin.ee/xKFaZcUG", color: "#C8102E" },
   { brand: "Kia",        lineId: "ฝ่ายขาย", url: "https://lin.ee/XQiajzI", color: "#BB162B" },
+  { brand: "Geely",      lineId: "เร็วๆ นี้", url: null, color: "#0B5CAD" },
 ];
 
 const LINE_SVG = (
@@ -53,7 +55,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-white/70 text-sm leading-relaxed mb-6">
-              {`กลุ่มบริษัท ช.เอราวัณ ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 8 แบรนด์ชั้นนำ ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี ในจังหวัดนครปฐม`}
+              {`กลุ่มบริษัท ช.เอราวัณ ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 9 แบรนด์ชั้นนำ ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี ในจังหวัดนครปฐม`}
             </p>
 
             {/* Contact details */}
@@ -106,7 +108,8 @@ export default function Footer() {
             <h3 className="text-white font-semibold text-sm mb-2 tracking-wide uppercase">Line Official</h3>
             <p className="text-white/65 text-xs mb-5">เพิ่มเพื่อนเพื่อรับโปรโมชั่นและข่าวสาร</p>
             <div className="space-y-2.5">
-              {LINE_ACCOUNTS.map((account) => (
+              {LINE_ACCOUNTS.map((account) =>
+                account.url ? (
                 <a
                   key={account.brand}
                   href={account.url}
@@ -127,7 +130,26 @@ export default function Footer() {
                     เพิ่มเพื่อน
                   </span>
                 </a>
-              ))}
+                ) : (
+                <div
+                  key={account.brand}
+                  aria-disabled="true"
+                  title="LINE OA กำลังจัดทำ"
+                  className="flex items-center justify-between gap-3 bg-white/[0.03] border border-white/5 rounded-xl px-3.5 py-2.5 cursor-not-allowed select-none"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center shrink-0 text-white/30">
+                      {LINE_SVG}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-white/30 truncate">{account.brand}</p>
+                      <p className="text-[11px] text-white/20">{account.lineId}</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-white/20 shrink-0 font-medium">เพิ่มเพื่อน</span>
+                </div>
+                )
+              )}
             </div>
 
             <div className="mt-6">

@@ -80,10 +80,11 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
 
   // Resolve LINE OA URL: prefer Notion CMS social links, then brandConfig, then generic fallback
   const lineFromNotion = socialLinks.find((l) => l.platform === "LINE")?.url;
-  const lineUrl =
+  // Brands without a LINE OA yet (Geely) get a greyed-out button instead of a guessed URL.
+  const lineUrl: string | undefined =
     lineFromNotion ??
     brand.social?.line ??
-    `https://line.me/R/ti/p/@${slug}ch.erawan`;
+    (brand.slug === "geely" ? undefined : `https://line.me/R/ti/p/@${slug}ch.erawan`);
 
   const accentColor = brand.accentColor ?? "#DD5259";
 
@@ -141,11 +142,17 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
                   ยังไม่มีโปรโมชั่นในขณะนี้ — ติดต่อเราเพื่อสอบถามข้อเสนอพิเศษ
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center">
+                  {lineUrl ? (
                   <a href={lineUrl} target="_blank" rel="noopener noreferrer">
                     <Button className="bg-[#06C755] hover:bg-[#05a847] text-white border-0">
                       สอบถามผ่าน LINE
                     </Button>
                   </a>
+                ) : (
+                  <Button disabled title="LINE OA กำลังจัดทำ" className="cursor-not-allowed border-0 bg-gray-200 text-gray-400">
+                    สอบถามผ่าน LINE
+                  </Button>
+                )}
                   <Link href="/contact">
                     <Button variant="outline">ติดต่อสอบถาม</Button>
                   </Link>
@@ -191,11 +198,17 @@ export default async function BrandPromotionsPage({ params }: PageProps) {
               ติดตาม LINE Official เพื่อรับข่าวสารโปรโมชั่นใหม่ก่อนใคร
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <a href={lineUrl} target="_blank" rel="noopener noreferrer">
+              {lineUrl ? (
+                  <a href={lineUrl} target="_blank" rel="noopener noreferrer">
                 <Button className="bg-[#06C755] hover:bg-[#05a847] text-white border-0">
                   ติดตามผ่าน LINE
                 </Button>
               </a>
+                ) : (
+                  <Button disabled title="LINE OA กำลังจัดทำ" className="cursor-not-allowed border-0 bg-white/10 text-white/30">
+                    ติดตามผ่าน LINE
+                  </Button>
+                )}
               <Link href={`/booking?type=test_drive&brand=${brand.notionBrand}`}>
                 <Button
                   variant="outline"

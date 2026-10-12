@@ -19,12 +19,18 @@ export function trackGenerateLead(params: { inquiryType: InquiryType; branch?: s
     inquiry_type: params.inquiryType,
     ...(params.branch ? { branch: params.branch } : {}),
     ...(params.carModel ? { car_model: params.carModel } : {}),
+    // mstack GA4 taxonomy (website-cro / ga4-event-schema-architect)
+    lead_type: params.inquiryType,
+    ...(params.branch ? { showroom_branch: params.branch } : {}),
+    ...(params.carModel ? { model_interest: params.carModel } : {}),
   });
 }
 
 /** Fired by OutboundClickTracker for any line.me/lin.ee link click. */
 export function trackClickLine(params: { path: string; lineUrl: string }): void {
-  const brand = brandFromLineUrl(params.lineUrl);
+  // Geely Ratchada shares the Mitsubishi LINE OA for now, so the URL alone would be
+  // attributed to Mitsubishi — fall back to the page the click came from.
+  const brand = params.path.startsWith("/geely") ? "Geely" : brandFromLineUrl(params.lineUrl);
   fire("click_line", {
     path: params.path,
     line_url: params.lineUrl,

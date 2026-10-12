@@ -16,6 +16,9 @@ describe("ga4-events", () => {
       inquiry_type: "test_drive",
       branch: "มาสด้า ช.เอราวัณ ศาลายา",
       car_model: "CX-5",
+      lead_type: "test_drive",
+      showroom_branch: "มาสด้า ช.เอราวัณ ศาลายา",
+      model_interest: "CX-5",
     });
   });
 

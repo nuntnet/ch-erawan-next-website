@@ -29,6 +29,9 @@ export const BRAND_IMAGES: Record<string, string> = {
   // Lepas — official "Leopard Aesthetics" brand lifestyle photo (Chery Lepas site)
   Lepas:
     "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1783779581/ch-erawan/brands/lepas-hero-leopard.jpg",
+  // Geely — AI-generated illustration (no real dealer signage). Replace with a real photo of the
+  // Ratchada showroom once available.
+  Geely: "/brands/geely-showroom.jpg",
   default:
     "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:good/v1780245610/ch-erawan/hero/mazda-cx5-hero-2026.jpg",
 };

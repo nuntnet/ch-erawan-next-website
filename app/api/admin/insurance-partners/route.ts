@@ -7,7 +7,7 @@ import {
   updateInsurancePartner, archiveInsurancePartner,
 } from "@/lib/notion";
 
-const BRANDS = ["ทุกแบรนด์", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"] as const;
+const BRANDS = ["ทุกแบรนด์", "Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas", "Geely"] as const;
 
 export async function GET() {
   const denied = await requireStaff();

@@ -195,6 +195,7 @@ const BRAND_COLORS: Record<BrandName, string> = {
   Kia: "bg-orange-500",
   GAC: "bg-rose-600",
   Lepas: "bg-teal-600",
+  Geely: "bg-sky-600",
 };
 
 async function fetchJson<T>(url: string): Promise<T[]> {

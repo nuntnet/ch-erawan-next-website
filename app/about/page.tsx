@@ -132,8 +132,16 @@ const timeline: TimelineItem[] = [
     imageAlt: "โชว์รูม GAC ช.เอราวัณ นครปฐม (แบบจำลอง 3 มิติ)",
   },
   {
+    year: "2569",
+    title: "Geely รัชดา",
+    desc: "ขยายสู่ 9 แบรนด์ เปิดโชว์รูม GEELY ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ เริ่มให้บริการตั้งแต่ 1 ตุลาคม 2569 ภายใต้ บริษัท ช.เอราวัณ ออโตเทค จำกัด — สาขาแรกของกลุ่มในกรุงเทพมหานคร",
+    milestone: "Geely Dealer",
+    image: BRAND_IMAGES.Geely,
+    imageAlt: "ภาพประกอบโชว์รูม GEELY (ภาพที่สร้างด้วย AI)",
+  },
+  {
     year: "ปัจจุบัน",
-    title: "8 แบรนด์ 9 สาขา",
+    title: "9 แบรนด์ 10 สาขา",
     desc: "ช.เอราวัณ กรุ๊ป เติบโตเป็นกลุ่มดีลเลอร์ชั้นนำในภาคตะวันตก ครอบคลุม ICE, Hybrid และ EV ครบทุกกลุ่ม ส่วนแบ่งตลาดรวม ~13.1%",
     milestone: "ผู้นำภาคตะวันตก",
     image: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1780245672/ch-erawan/team/team-photo-2.jpg",
@@ -266,8 +274,8 @@ const management = [
 
 const stats = [
   { value: getYearsLabel(), label: "ปีแห่งประสบการณ์", sub: `ก่อตั้งปี ${FOUNDED_YEAR_BE}` },
-  { value: "8", label: "แบรนด์รถยนต์", sub: "Mazda · Ford · Mitsubishi · GWM · Deepal · Kia · GAC · Lepas" },
-  { value: "9", label: "สาขาทั่วนครปฐม", sub: "ครอบคลุมทุกพื้นที่" },
+  { value: "9", label: "แบรนด์รถยนต์", sub: "Mazda · Ford · Mitsubishi · GWM · Deepal · Kia · GAC · Lepas · Geely" },
+  { value: "10", label: "สาขานครปฐม & กรุงเทพฯ", sub: "นครปฐม · สามพราน · รัชดา" },
   { value: "4", label: "ศูนย์ Body & Paint", sub: "มาตรฐาน OEM" },
   { value: "13.1%", label: "ส่วนแบ่งตลาดรวม", sub: "แบรนด์ในเครือ ปี 2568" },
   { value: "#1", label: "ผู้นำภาคตะวันตก", sub: "ดีลเลอร์อันดับ 1 ในภูมิภาค" },
@@ -289,6 +297,7 @@ const brandCards = [
 const upcomingBrandCards = [
   { name: "GAC", since: "2569", branches: "เร็วๆ นี้", highlight: "AION · HYPTEC · GAC MOTOR", rank: "เปิดตัว 2569", sales: "อยู่ระหว่างก่อสร้าง", color: "bg-rose-50 border-rose-100", dot: "bg-rose-600", slug: "gac" as const, comingSoon: true },
   { name: "Lepas", since: "2569", branches: "เร็วๆ นี้", highlight: "L4 · L6 · L8", rank: "เปิดขายแล้ว", sales: "โชว์รูมอยู่ระหว่างก่อสร้าง", color: "bg-teal-50 border-teal-100", dot: "bg-teal-600", slug: "lepas" as const, comingSoon: true },
+  { name: "Geely", since: "2569", branches: "1 สาขา", highlight: "EX2 · EX5 · STARRAY EM-R", rank: "เปิดให้บริการ 1 ต.ค. 2569", sales: "โชว์รูมรัชดาเปิดแล้ว", color: "bg-sky-50 border-sky-100", dot: "bg-sky-600", slug: "geely" as const, comingSoon: true },
 ];
 
 const rosterCards = [...brandCards, ...upcomingBrandCards];
@@ -395,7 +404,7 @@ export default function About() {
                 <span className="text-white/80">ที่พร้อมดูแลรถคุณ&rdquo;</span>
               </h1>
               <p className="text-white/55 text-base lg:text-lg leading-relaxed max-w-xl">
-                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐม ตั้งแต่ปี พ.ศ. 2510 — 8 แบรนด์ 9 สาขา
+                ตัวแทนจำหน่ายรถยนต์ชั้นนำจ.นครปฐมและกรุงเทพฯ ตั้งแต่ปี พ.ศ. 2510 — 9 แบรนด์ 10 สาขา
                 ครอบคลุม ICE, Hybrid และ EV ด้วยทีมงานมืออาชีพกว่า 200 คน
               </p>
 
@@ -403,7 +412,7 @@ export default function About() {
               <div className="grid grid-cols-3 gap-4 mt-8 mb-8">
                 {[
                   { value: getYearsLabel(), label: "ปี" },
-                  { value: "9", label: "สาขา" },
+                  { value: "10", label: "สาขา" },
                   { value: "200+", label: "ทีมงาน" },
                 ].map((s) => (
                   <div key={s.label} className="text-center bg-white/5 rounded-xl p-3 border border-white/10">
@@ -417,7 +426,7 @@ export default function About() {
                 <Link href="/branches">
                   <Button className="bg-[#DD5259] hover:bg-[#c9454c] text-white font-semibold">
                     <MapPin className="w-4 h-4 mr-1.5" />
-                    ดู 9 สาขา
+                    ดู 10 สาขา
                   </Button>
                 </Link>
                 <Link href="/awards">
@@ -480,7 +489,7 @@ export default function About() {
       {/* Brand strip */}
       <section className="bg-white border-b border-gray-100">
         <div className="container py-5">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2">
+          <div className="grid grid-cols-3 md:grid-cols-9 gap-y-2">
             {BRANDS.map((brand) => (
               <Link
                 key={brand.slug}
@@ -556,7 +565,7 @@ export default function About() {
               <div className="space-y-8">
                 {timeline.map((item, i) => (
                   <div
-                    key={item.year}
+                    key={`${item.year}-${item.milestone}`}
                     className={`relative flex gap-6 md:gap-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
                   >
                     <div className={`pl-16 md:pl-0 flex-1 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
@@ -589,7 +598,7 @@ export default function About() {
             <div className="max-w-3xl mb-10">
               <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">แบรนด์รถยนต์ในเครือ</h2>
               <p className="text-gray-500 leading-relaxed">
-                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 8 แบรนด์ชั้นนำ
+                ช.เอราวัณ กรุ๊ป เป็นตัวแทนจำหน่ายอย่างเป็นทางการของ 9 แบรนด์ชั้นนำ
                 ครอบคลุมทุกกลุ่มรถยนต์ตั้งแต่ ICE, Hybrid ไปจนถึง EV เต็มรูปแบบ
               </p>
             </div>
@@ -597,7 +606,8 @@ export default function About() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {rosterCards.map((b) => {
                 const brandConfig = BRANDS.find((br) => br.slug === b.slug)!;
-                const heroImage = BRAND_IMAGES[b.name] ?? BRAND_IMAGES.default;
+                // No default fallback: a brand without its own photo (Geely) must not show another brand's car.
+                const heroImage = BRAND_IMAGES[b.name];
 
                 return (
                   <Link
@@ -606,17 +616,19 @@ export default function About() {
                     className={`group rounded-2xl border overflow-hidden hover:shadow-lg transition-all ${b.color}`}
                   >
                     <div className="relative h-32 overflow-hidden bg-slate-900">
-                      <Image
-                        src={heroImage}
-                        alt={b.name}
-                        fill
-                        className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 400px"
-                      />
+                      {heroImage && (
+                        <Image
+                          src={heroImage}
+                          alt={b.name}
+                          fill
+                          className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 400px"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-3 left-4">
                         <BrandLogo
-                          src={brandConfig.logoPath}
+                          src={brandConfig.logoLightPath ?? brandConfig.logoPath}
                           alt={b.name}
                           brandSlug={b.slug}
                           size="sm"
@@ -704,12 +716,12 @@ export default function About() {
                   </h3>
                   <p className="text-white/60 leading-relaxed mb-5">
                     {`ตระกูลจันทร์วาววาม ผู้บุกเบิกธุรกิจยานยนต์นครปฐมกว่า ${getYearsOfExperience()} ปี`}
-                    ด้วยเครือข่ายดีลเลอร์ครบ 8 แบรนด์ 9 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่
+                    ด้วยเครือข่ายดีลเลอร์ครบ 9 แบรนด์ 10 สาขา ดูแลลูกค้าทั่วโซนนครปฐม–ศาลายา–สามพราน–อ้อมใหญ่ และรัชดา–บางซื่อในกรุงเทพฯ
                   </p>
                   <div className="flex flex-wrap gap-5">
                     {[
-                      { value: "9", label: "สาขาในเครือ" },
-                      { value: "8", label: "แบรนด์ชั้นนำ" },
+                      { value: "10", label: "สาขาในเครือ" },
+                      { value: "9", label: "แบรนด์ชั้นนำ" },
                       { value: getYearsLabel(), label: "ปีแห่งประสบการณ์" },
                       { value: "200+", label: "ทีมงานทั่วสาขา" },
                     ].map((s) => (

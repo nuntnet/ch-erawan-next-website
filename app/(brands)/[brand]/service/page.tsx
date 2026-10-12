@@ -339,6 +339,7 @@ export default async function BrandServicePage({ params }: PageProps) {
                           นัดบริการ
                         </Button>
                       </Link>
+                      {branch.lineUrl ? (
                       <a
                         href={branch.lineUrl}
                         target="_blank"
@@ -354,6 +355,11 @@ export default async function BrandServicePage({ params }: PageProps) {
                           LINE
                         </Button>
                       </a>
+                      ) : (
+                      <Button size="sm" variant="outline" disabled title="LINE OA กำลังจัดทำ" className="flex-1 cursor-not-allowed border-white/10 bg-white/5 text-white/30">
+                        LINE
+                      </Button>
+                      )}
                     </div>
                     )}
                     {branch.lat && branch.lng && (

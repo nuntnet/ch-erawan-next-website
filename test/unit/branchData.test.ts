@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getBranchById } from "@/lib/branchData";
+import { resolveBrandFromBranch } from "@/lib/email";
 
 describe("branchData — GAC/Lepas", () => {
   it("adds GAC Nakhon Pathom co-located with Mitsubishi, not yet open", () => {
@@ -30,5 +31,21 @@ describe("branchData — GAC/Lepas", () => {
   it("existing branches have no openingDate (still-open stores)", () => {
     const mazda = getBranchById("mazda-nakhonpathom");
     expect(mazda!.openingDate).toBeUndefined();
+  });
+});
+
+describe("branchData — Geely Ratchada", () => {
+  it("adds Geely Ratchada as an already-open Bangkok branch", () => {
+    const geely = getBranchById("geely-ratchada");
+    expect(geely).toBeDefined();
+    expect(geely!.brand).toBe("Geely");
+    expect(geely!.companyName).toBe("บริษัท ช.เอราวัณ ออโตเทค จำกัด");
+    expect(geely!.address).toContain("161 ถนนรัชดาภิเษก");
+    expect(geely!.openingDate).toBeUndefined();
+    expect(geely!.locality).toBe("กรุงเทพมหานคร");
+  });
+
+  it("maps the Geely branch to the geely brand for notification routing", () => {
+    expect(resolveBrandFromBranch("GEELY ช.เอราวัณ รัชดา")).toBe("geely");
   });
 });

@@ -31,6 +31,7 @@ const BOOKABLE_BRANCH_NAMES = [
   "มิตซูบิชิ ช.เอราวัณ นครปฐม",
   "GWM ช.เอราวัณ นครปฐม",
   "Kia ช.เอราวัณ นครปฐม",
+  "GEELY ช.เอราวัณ รัชดา",
 ];
 
 // Each bookable branch paired with its brand's logo, for the radio-card picker.
@@ -106,6 +107,21 @@ function BookingForm() {
   useEffect(() => { setSearchParams(new URLSearchParams(window.location.search)); }, []);
   const typeParam = searchParams.get("type") as BookingType | null;
   const carParam = searchParams.get("car") ?? "";
+  // ?branch=<branch id or name> wins; else ?brand=<Notion brand> preselects only when that
+  // brand has exactly one bookable branch (Mazda has two, so it stays unselected).
+  const branchParam = searchParams.get("branch") ?? "";
+  const brandParam = searchParams.get("brand") ?? "";
+  const presetBranch = (() => {
+    if (branchParam) {
+      const hit = branchDirectory.find((b) => b.id === branchParam || b.name === branchParam);
+      return hit && BOOKABLE_BRANCH_NAMES.includes(hit.name) ? hit.name : "";
+    }
+    if (brandParam) {
+      const names = branches.filter((b) => b.brand?.notionBrand === brandParam).map((b) => b.name);
+      return names.length === 1 ? names[0] : "";
+    }
+    return "";
+  })();
 
   const [selectedType, setSelectedType] = useState<BookingType>(typeParam ?? "test_drive");
   const [submitted, setSubmitted] = useState(false);
@@ -129,6 +145,12 @@ function BookingForm() {
 
   useEffect(() => { if (typeParam) setSelectedType(typeParam); }, [typeParam]);
   useEffect(() => { if (carParam) setForm(f => ({ ...f, carModel: carParam })); }, [carParam]);
+  useEffect(() => { if (presetBranch) setForm(f => (f.branch ? f : { ...f, branch: presetBranch })); }, [presetBranch]);
+
+  // Geely Ratchada runs the 3-field lead form (name, phone, date/time): email is dropped
+  // for test-drive bookings there; the sales advisor asks the rest over phone/LINE.
+  const selectedBranchBrand = branchDirectory.find((b) => b.name === form.branch)?.brand;
+  const hideEmail = selectedType === "test_drive" && selectedBranchBrand === "Geely";
 
   // On mobile the type cards are tall enough that the form below (which
   // changes per type) sits off-screen — tapping a card gave no visible sign
@@ -373,10 +395,12 @@ function BookingForm() {
                 </div>
               </div>
 
+              {!hideEmail && (
               <div>
                 <Label htmlFor="email" className="text-gray-600 text-sm">อีเมล (ไม่บังคับ)</Label>
                 <Input id="email" type="email" value={form.customerEmail} onChange={e => setForm(f => ({ ...f, customerEmail: e.target.value }))} placeholder="email@example.com" className="mt-1.5 border-gray-200 focus:border-[#0F172A]" />
               </div>
+              )}
 
               <div>
                 <Label htmlFor="car" className="text-gray-600 text-sm">
@@ -557,9 +581,15 @@ function BookingForm() {
                       <a href={`tel:${branchContact.phone.replace(/[^0-9]/g, "")}`} className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#0F172A] text-white text-xs font-semibold rounded-lg hover:bg-[#1E293B] transition-colors">
                         <Phone className="w-3.5 h-3.5" /> {branchContact.phone}
                       </a>
-                      <a href={branchContact.lineUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05a847] transition-colors">
+                      {branchContact.lineUrl ? (
+                        <a href={branchContact.lineUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-xs font-semibold rounded-lg hover:bg-[#05a847] transition-colors">
                         <MessageCircle className="w-3.5 h-3.5" /> LINE
                       </a>
+                      ) : (
+                        <span aria-disabled="true" title="LINE OA กำลังจัดทำ" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-gray-200 text-gray-400 text-xs font-semibold rounded-lg cursor-not-allowed select-none">
+                          <MessageCircle className="w-3.5 h-3.5" /> LINE
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

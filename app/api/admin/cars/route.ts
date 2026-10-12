@@ -16,7 +16,7 @@ import type { CarInput } from "@/lib/notion-types";
 
 const carSchema = z.object({
   name: z.string().min(1),
-  brand: z.enum(["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"]),
+  brand: z.enum(["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas", "Geely"]),
   model: z.string().min(1),
   year: z.number().int(),
   type: z.enum(["sedan", "suv", "pickup", "hatchback", "mpv", "ev", "other"]),

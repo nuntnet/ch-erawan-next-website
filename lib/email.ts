@@ -18,6 +18,7 @@ const BRANCH_BRAND_MAP: Record<string, BrandSlug> = {
   "มิตซูบิชิ ช.เอราวัณ นครปฐม": "mitsubishi",
   "GWM ช.เอราวัณ นครปฐม": "gwm",
   "Kia ช.เอราวัณ นครปฐม": "kia",
+  "GEELY ช.เอราวัณ รัชดา": "geely",
 };
 
 async function resolveNotifyEmail(brandSlug?: BrandSlug): Promise<string | undefined> {

@@ -4,7 +4,7 @@
 export interface Car {
   id: string; // Notion page ID
   name: string;
-  brand: "Mazda" | "Ford" | "Mitsubishi" | "GWM" | "Deepal" | "Kia" | "GAC" | "Lepas";
+  brand: "Mazda" | "Ford" | "Mitsubishi" | "GWM" | "Deepal" | "Kia" | "GAC" | "Lepas" | "Geely";
   model: string;
   year: number;
   type: "sedan" | "suv" | "pickup" | "hatchback" | "mpv" | "ev" | "other";
@@ -97,7 +97,7 @@ export interface ContactSubmission {
 export interface Promotion {
   id: string; // Notion page ID
   title: string;
-  brand: "Mazda" | "Ford" | "Mitsubishi" | "GWM" | "Deepal" | "Kia" | "GAC" | "Lepas";
+  brand: "Mazda" | "Ford" | "Mitsubishi" | "GWM" | "Deepal" | "Kia" | "GAC" | "Lepas" | "Geely";
   coverImageUrl: string | null;
   linkUrl: string | null;
   startDate: string | null; // ISO date string

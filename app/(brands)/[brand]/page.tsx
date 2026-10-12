@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: PageProps) {
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug];
   return pageMetadata({
-    title: `${brand.displayName} นครปฐม ราคาและโปรโมชั่น 2568 | ช.เอราวัณ`,
-    description: `${brand.displayNameTh} นครปฐม — ตัวแทนจำหน่ายอย่างเป็นทางการ ราคาดีที่สุด ผ่อนสบาย ทดลองขับฟรี บริการหลังการขายครบวงจร. ${brand.descriptionTh}`,
+    title: `${brand.displayName} ${brand.locationTh ?? "นครปฐม"} ราคาและโปรโมชั่น 2569 | ช.เอราวัณ`,
+    description: `${brand.displayNameTh} ${brand.locationTh ?? "นครปฐม"} — ตัวแทนจำหน่ายอย่างเป็นทางการ ราคาดีที่สุด ผ่อนสบาย ทดลองขับฟรี บริการหลังการขายครบวงจร. ${brand.descriptionTh}`,
     path: brand.hubPath,
     openGraphImage: brand.logoPath,
   });

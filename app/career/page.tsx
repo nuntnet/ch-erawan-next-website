@@ -61,11 +61,11 @@ export default async function Career() {
           <p className="text-[#C8102E] text-sm font-medium tracking-widest uppercase mb-3">Join Our Team</p>
           <h1 className="text-3xl lg:text-5xl font-bold text-white mb-4">มาเป็นส่วนหนึ่งของทีมเรา</h1>
           <p className="text-white/60 max-w-xl leading-relaxed mb-6">
-            ร่วมงานกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 8 แบรนด์ชั้นนำ
-            {`ใน 9 สาขา จ.นครปฐม ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี`}
+            ร่วมงานกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์อย่างเป็นทางการ 9 แบรนด์ชั้นนำ
+            {`ใน 10 สาขา นครปฐมและกรุงเทพฯ ด้วยประสบการณ์กว่า ${getYearsOfExperience()} ปี`}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-white/50">
-            {["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas"].map((b) => (
+            {["Mazda", "Ford", "Mitsubishi", "GWM", "Deepal", "Kia", "GAC", "Lepas", "Geely"].map((b) => (
               <span key={b} className="bg-white/10 px-3 py-1 rounded-full">{b}</span>
             ))}
           </div>
@@ -77,8 +77,8 @@ export default async function Career() {
         <div className="container grid grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white">
           {[
             { num: getYearsLabel(), label: "ปีประสบการณ์" },
-            { num: "9", label: "สาขาทั่วนครปฐม" },
-            { num: "8", label: "แบรนด์รถยนต์" },
+            { num: "10", label: "สาขานครปฐม & กรุงเทพฯ" },
+            { num: "9", label: "แบรนด์รถยนต์" },
             { num: `${jobListings.length}+`, label: "ตำแหน่งที่เปิดรับ" },
           ].map((s) => (
             <div key={s.label}>
@@ -176,7 +176,7 @@ export default async function Career() {
           <p className="text-sm font-medium text-[#C8102E] uppercase tracking-wider mb-2">โอกาสสำหรับคุณ</p>
           <h2 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3">ตำแหน่งที่กำลังเปิดรับ</h2>
           <p className="text-gray-500 text-sm max-w-lg mx-auto">
-            {jobListings.length} ตำแหน่ง ใน 9 สาขา — พร้อมโอกาสเติบโตในสายงานยานยนต์และบริการ
+            {jobListings.length} ตำแหน่ง ใน 10 สาขา — พร้อมโอกาสเติบโตในสายงานยานยนต์และบริการ
           </p>
         </div>
 

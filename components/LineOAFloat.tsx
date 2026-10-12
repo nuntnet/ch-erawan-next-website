@@ -4,13 +4,15 @@ import { useState } from "react";
 import { X, MessageCircle } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const LINE_ACCOUNTS = [
+// url: null = LINE OA not created yet → rendered greyed-out and non-clickable.
+const LINE_ACCOUNTS: { brand: string; lineId: string; url: string | null }[] = [
   { brand: "Mazda",      lineId: "@mazdach.erawan", url: "https://line.me/R/ti/p/@mazdach.erawan" },
   { brand: "Deepal",     lineId: "@deepalch.erawan", url: "https://line.me/R/ti/p/@deepalch.erawan" },
   { brand: "Ford",       lineId: "@fordch.erawan",  url: "https://line.me/R/ti/p/@fordch.erawan" },
   { brand: "Mitsubishi", lineId: "@mitsuch.erawan", url: "https://line.me/R/ti/p/@mitsuch.erawan" },
   { brand: "GWM",        lineId: "@gwmch.erawan",   url: "https://line.me/R/ti/p/@gwmch.erawan" },
   { brand: "Kia",        lineId: "@kiach.erawan",   url: "https://line.me/R/ti/p/@kiach.erawan" },
+  { brand: "Geely",      lineId: "เร็วๆ นี้",        url: null },
 ];
 
 const LINE_SVG = (
@@ -51,7 +53,8 @@ export default function LineOAFloat() {
             {/* Accounts */}
             <div className="p-3 space-y-1.5">
               <p className="text-[11px] text-gray-400 px-1 mb-2">เลือกสาขาที่ต้องการติดต่อ</p>
-              {LINE_ACCOUNTS.map((account) => (
+              {LINE_ACCOUNTS.map((account) =>
+                account.url ? (
                 <a
                   key={account.lineId}
                   href={account.url}
@@ -69,7 +72,23 @@ export default function LineOAFloat() {
                     เพิ่มเพื่อน
                   </span>
                 </a>
-              ))}
+                ) : (
+                <div
+                  key={account.brand}
+                  aria-disabled="true"
+                  title="LINE OA กำลังจัดทำ"
+                  className="flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl cursor-not-allowed select-none"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-gray-400">{account.brand}</p>
+                    <p className="text-xs text-gray-300">{account.lineId}</p>
+                  </div>
+                  <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full shrink-0">
+                    เพิ่มเพื่อน
+                  </span>
+                </div>
+                )
+              )}
             </div>
 
             {/* Footer */}

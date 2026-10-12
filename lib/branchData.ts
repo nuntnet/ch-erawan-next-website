@@ -12,7 +12,7 @@ export interface BranchContact {
 
 export interface Branch {
   id: string;
-  brand: "Mazda" | "Deepal" | "Ford" | "Mitsubishi" | "GWM" | "Kia" | "Nissan" | "GAC" | "Lepas";
+  brand: "Mazda" | "Deepal" | "Ford" | "Mitsubishi" | "GWM" | "Kia" | "Nissan" | "GAC" | "Lepas" | "Geely";
   name: string;
   companyName: string;
   shortName: string;
@@ -34,6 +34,8 @@ export interface Branch {
   contacts: BranchContact[];
   /** Set when the branch is announced but not yet operating (e.g. under construction). */
   openingDate?: string;
+  /** Schema.org addressLocality; defaults to นครปฐม when omitted. */
+  locality?: string;
 }
 
 export const branches: Branch[] = [
@@ -389,6 +391,46 @@ export const branches: Branch[] = [
       { department: "ฝ่ายบริการ", phone: "086-316-0100" },
     ],
     openingDate: "ตุลาคม 2569",
+  },
+  {
+    id: "geely-ratchada",
+    locality: "กรุงเทพมหานคร",
+    brand: "Geely",
+    name: "GEELY ช.เอราวัณ รัชดา",
+    companyName: "บริษัท ช.เอราวัณ ออโตเทค จำกัด",
+    shortName: "Geely รัชดา",
+    isHQ: false,
+    address: "161 ถนนรัชดาภิเษก แขวงวงศ์สว่าง เขตบางซื่อ กรุงเทพมหานคร 10800",
+    phone: "098-354-2979",
+    fax: "",
+    // No LINE OA yet — empty lineUrl renders a greyed-out, non-clickable LINE button.
+    lineId: "",
+    lineUrl: "",
+    // TODO: confirm opening hours with the showroom (Facebook page shows "Closed now" only).
+    hours: "จ–ศ 08:30–18:00 · ส–อา 08:30–17:00",
+    services: [
+      "ขายรถยนต์ใหม่ GEELY (EX2, EX5, STARRAY EM-R)",
+      "ทดลองขับ GEELY EV",
+      "ที่ปรึกษาการขาย และข้อเสนอไฟแนนซ์",
+      "ประกันภัยรถยนต์",
+    ],
+    mapUrl:
+      "https://www.google.com/maps/search/?api=1&query=GEELY+%E0%B8%8A.%E0%B9%80%E0%B8%AD%E0%B8%A3%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%93+%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2+161+%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2%E0%B8%A0%E0%B8%B4%E0%B9%80%E0%B8%A9%E0%B8%81",
+    mapEmbed:
+      "https://www.google.com/maps?q=161+%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2%E0%B8%A0%E0%B8%B4%E0%B9%80%E0%B8%A9%E0%B8%81+%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B8%8B%E0%B8%B7%E0%B9%88%E0%B8%AD&output=embed",
+    // TODO: upload branch graphic map to Cloudinary (ch-erawan/branch-maps/) — empty shows a pin placeholder.
+    graphicMapUrl: "",
+    // TODO: approximate (Ratchadaphisek Rd., Wong Sawang, Bang Sue) — verify against the Google Maps pin.
+    lat: 13.8063,
+    lng: 100.5287,
+    color: "bg-sky-600",
+    directions: [
+      "ตั้งอยู่บนถนนรัชดาภิเษก แขวงวงศ์สว่าง เขตบางซื่อ กรุงเทพฯ",
+      "เดินทางสะดวกด้วยรถไฟฟ้า MRT สายสีน้ำเงิน สถานีวงศ์สว่าง / สถานีบางโพ (ตรวจสอบเส้นทางล่าสุดบน Google Maps)",
+    ],
+    contacts: [
+      { department: "ฝ่ายขาย", phone: "098-354-2979", email: "mkt.geelych.erawan@gmail.com" },
+    ],
   },
 ];
 

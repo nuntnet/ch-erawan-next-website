@@ -9,7 +9,8 @@ export type BrandSlug =
   | "deepal"
   | "kia"
   | "gac"
-  | "lepas";
+  | "lepas"
+  | "geely";
 export type GwmLineSlug = "haval" | "ora" | "tank" | "poer";
 export type GacLineSlug = "aion" | "hyptec" | "motor";
 export type LineSlug = GwmLineSlug | GacLineSlug;
@@ -53,6 +54,8 @@ export interface BrandConfig {
   /** Faint background image for nav mega menu tiles on hover */
   navBgImage?: string;
   hubPath: string;
+  /** Province/area shown in hub SEO title (default "นครปฐม"). */
+  locationTh?: string;
   featuredModels?: FeaturedModel[];
   subLines?: SubLine[];
   /**
@@ -210,7 +213,7 @@ export const BRANDS: BrandConfig[] = [
     notionBrand: "GWM",
     displayName: "GWM",
     displayNameTh: "จีดับเบิลยูเอ็ม",
-    tagline: "Great Wall Motor",
+    tagline: "Go With More",
     descriptionTh:
       "ตัวแทนจำหน่าย GWM อย่างเป็นทางการ ครบทั้ง HAVAL, ORA, TANK และ POER — SUV ไฮบริด รถไฟฟ้า และกระบะสมรรถนะสูง",
     logoPath: "/brands/gwm.png",
@@ -236,7 +239,7 @@ export const BRANDS: BrandConfig[] = [
     notionBrand: "Deepal",
     displayName: "Deepal",
     displayNameTh: "ดีพอล",
-    tagline: "Electric Future",
+    tagline: "Driving Forward with You",
     descriptionTh:
       "ตัวแทนจำหน่าย Deepal รถยนต์ไฟฟ้าและปลั๊กอินไฮบริดจาก Changan ประเทศไทย — SUV และซีดานสมรรถนะสูง พร้อมเทคโนโลยี ADAS",
     logoPath: "/brands/deepal-dark.svg",       // horizontal wordmark (icon + DEEPAL text) on light bg
@@ -340,6 +343,35 @@ export const BRANDS: BrandConfig[] = [
     social: {
       // No LINE OA yet — shares the Nakhon Pathom front desk with Mitsubishi until Lepas's own is created.
       line: "https://lin.ee/N7UjCTE",
+    },
+  },
+  {
+    slug: "geely",
+    notionBrand: "Geely",
+    displayName: "GEELY",
+    displayNameTh: "จีลี่",
+    tagline: "See the World in Full",
+    descriptionTh:
+      "ตัวแทนจำหน่าย GEELY อย่างเป็นทางการ โชว์รูม ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ เปิดให้บริการตั้งแต่ 1 ตุลาคม 2569 พบกับรถยนต์ไฟฟ้า EX2, EX5 และ STARRAY EM-R",
+    logoPath: "/brands/geely.png",
+    // Official 2023 mark (six-block grid + GEELY wordmark), white variant for dark backgrounds.
+    logoLightPath: "/brands/geely-light.png",
+    logoOnDark: "native",
+    logoScale: 1.1,
+    accentColor: "#3B8BEB",
+    // Stand-in: AI-generated showroom illustration. Swap for real photos (Cloudinary) after CI/renovation.
+    navBgImage: BRAND_IMAGES.Geely,
+    showroomImageUrl: BRAND_IMAGES.Geely,
+    hubPath: "/geely",
+    locationTh: "รัชดา กรุงเทพฯ",
+    featuredModels: [
+      { name: "EX5", slug: "geely-ex5-2026" },
+      { name: "STARRAY EM-R", slug: "geely-starray-em-r-2026" },
+    ],
+    social: {
+      facebook: "https://www.facebook.com/people/GEELY-%E0%B8%8A%E0%B9%80%E0%B8%AD%E0%B8%A3%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%93-%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2/61594950693980/",
+      instagram: "https://www.instagram.com/geely_ch.erawanratchada/",
+      tiktok: "https://www.tiktok.com/@geelych.erawanratchada",
     },
   },
 ];

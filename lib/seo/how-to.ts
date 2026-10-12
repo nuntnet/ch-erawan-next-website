@@ -37,7 +37,7 @@ export function contactPageJsonLd() {
     "@type": "ContactPage",
     name: "ติดต่อ ช.เอราวัณ กรุ๊ป",
     url: canonicalUrl("/contact"),
-    description: "ช่องทางติดต่อ ช.เอราวัณ กรุ๊ป 9 สาขาในนครปฐมและปริมณฑล",
+    description: "ช่องทางติดต่อ ช.เอราวัณ กรุ๊ป 10 สาขาในนครปฐมและกรุงเทพฯ",
     mainEntity: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,

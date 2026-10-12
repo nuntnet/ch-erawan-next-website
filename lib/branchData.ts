@@ -414,19 +414,17 @@ export const branches: Branch[] = [
       "ที่ปรึกษาการขาย และข้อเสนอไฟแนนซ์",
       "ประกันภัยรถยนต์",
     ],
-    mapUrl:
-      "https://www.google.com/maps/search/?api=1&query=GEELY+%E0%B8%8A.%E0%B9%80%E0%B8%AD%E0%B8%A3%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%93+%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2+161+%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2%E0%B8%A0%E0%B8%B4%E0%B9%80%E0%B8%A9%E0%B8%81",
-    mapEmbed:
-      "https://www.google.com/maps?q=161+%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2%E0%B8%A0%E0%B8%B4%E0%B9%80%E0%B8%A9%E0%B8%81+%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B8%8B%E0%B8%B7%E0%B9%88%E0%B8%AD&output=embed",
-    // TODO: upload branch graphic map to Cloudinary (ch-erawan/branch-maps/) — empty shows a pin placeholder.
-    graphicMapUrl: "",
-    // TODO: approximate (Ratchadaphisek Rd., Wong Sawang, Bang Sue) — verify against the Google Maps pin.
-    lat: 13.8063,
-    lng: 100.5287,
+    mapUrl: "https://maps.app.goo.gl/famd7Pu5vYeYZQMF6",
+    mapEmbed: "https://www.google.com/maps?q=13.8305909,100.5342816&hl=th&output=embed",
+    // Built from OpenStreetMap tiles (© OpenStreetMap contributors); swap for the illustrated style when designed.
+    graphicMapUrl: "/branch-maps/branch-map-geely-ratchada.png",
+    // Pin from the official Google Maps link for GEELY ช.เอราวัณ รัชดา.
+    lat: 13.8305909,
+    lng: 100.5342816,
     color: "bg-sky-600",
     directions: [
-      "ตั้งอยู่บนถนนรัชดาภิเษก แขวงวงศ์สว่าง เขตบางซื่อ กรุงเทพฯ",
-      "เดินทางสะดวกด้วยรถไฟฟ้า MRT สายสีน้ำเงิน สถานีวงศ์สว่าง / สถานีบางโพ (ตรวจสอบเส้นทางล่าสุดบน Google Maps)",
+      "ตั้งอยู่บนถนนรัชดาภิเษก ใกล้ซอยรัชดาภิเษก 41 แขวงวงศ์สว่าง เขตบางซื่อ กรุงเทพฯ",
+      "กดปุ่ม \"นำทาง\" เพื่อเปิด Google Maps และเดินทางตามเส้นทางล่าสุด",
     ],
     contacts: [
       { department: "ฝ่ายขาย", phone: "098-354-2979", email: "mkt.geelych.erawan@gmail.com" },

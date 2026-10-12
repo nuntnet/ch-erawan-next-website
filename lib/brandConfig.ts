@@ -352,7 +352,7 @@ export const BRANDS: BrandConfig[] = [
     displayNameTh: "จีลี่",
     tagline: "See the World in Full",
     descriptionTh:
-      "ตัวแทนจำหน่าย GEELY อย่างเป็นทางการ โชว์รูม ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ เปิดให้บริการตั้งแต่ 1 ตุลาคม 2569 พบกับรถยนต์ไฟฟ้า EX2, EX5 และ STARRAY EM-R",
+      "ตัวแทนจำหน่าย GEELY อย่างเป็นทางการ โชว์รูม ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ เปิดให้บริการตั้งแต่ 1 ตุลาคม 2569 พบกับ EX2, EX5 และ STARRAY EM-R",
     logoPath: "/brands/geely.png",
     // Official 2023 mark (six-block grid + GEELY wordmark), white variant for dark backgrounds.
     logoLightPath: "/brands/geely-light.png",

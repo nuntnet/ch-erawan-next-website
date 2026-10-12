@@ -15,6 +15,9 @@ import { getCarsByBrandLine, getSocialLinksByBrand } from "@/lib/notion";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
 import { ArrowRight } from "lucide-react";
 import BrandSocialLinks from "@/components/BrandSocialLinks";
+import { GeelyModelCards, GeelyShowroomAndFaq } from "@/components/brands/GeelyHubSections";
+import { GEELY_MODELS, geelyFaq } from "@/lib/geelyModels";
+import { faqPageJsonLd } from "@/lib/seo/faq";
 
 // All brands now have sub-pages via generic [brand]/service, [brand]/body-repair etc.
 const HAS_SUB_PAGES = new Set<BrandSlug>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia", "gac", "lepas"]);
@@ -51,6 +54,11 @@ export default async function BrandHubPage({ params }: PageProps) {
     getSocialLinksByBrand(brand.notionBrand),
   ]);
 
+  // Geely: until the models exist in Notion, show the static model list + showroom info + FAQ.
+  const isGeely = brand.slug === "geely";
+  const useStaticGeelyModels = isGeely && cars.length === 0;
+  const modelCount = useStaticGeelyModels ? GEELY_MODELS.length : cars.length;
+
   const breadcrumbs = [
     { name: "หน้าแรก", path: "/" },
     { name: brand.displayNameTh, path: brand.hubPath },
@@ -64,6 +72,12 @@ export default async function BrandHubPage({ params }: PageProps) {
           __html: JSON.stringify(breadcrumbJsonLd(breadcrumbs)),
         }}
       />
+      {isGeely && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(geelyFaq())) }}
+        />
+      )}
       <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
         <BrandHero
           brand={brand}
@@ -87,7 +101,7 @@ export default async function BrandHubPage({ params }: PageProps) {
                 รุ่นรถ {brand.displayNameTh}
               </h2>
               <p className="text-sm text-gray-500 mt-1">
-                พบ {cars.length} รุ่น
+                พบ {modelCount} รุ่น
               </p>
             </div>
             <Link
@@ -99,14 +113,20 @@ export default async function BrandHubPage({ params }: PageProps) {
             </Link>
           </div>
 
-          <BrandCarGrid
-            cars={cars}
-            emptyMessage={
-              brand.comingSoonLabel
-                ? `รุ่นรถ ${brand.displayNameTh} เร็วๆ นี้ — ${brand.comingSoonLabel}`
-                : undefined
-            }
-          />
+          {useStaticGeelyModels ? (
+            <GeelyModelCards />
+          ) : (
+            <BrandCarGrid
+              cars={cars}
+              emptyMessage={
+                brand.comingSoonLabel
+                  ? `รุ่นรถ ${brand.displayNameTh} เร็วๆ นี้ — ${brand.comingSoonLabel}`
+                  : undefined
+              }
+            />
+          )}
+
+          {isGeely && <GeelyShowroomAndFaq />}
 
           {/* Social links — from Notion CMS */}
           {(socialLinks.length > 0 || brand.social) && (

@@ -38,6 +38,8 @@ export interface BrandConfig {
   notionBrand: Car["brand"];
   displayName: string;
   displayNameTh: string;
+  /** Other names people search for / the brand is known by (SEO keywords + schema.org alternateName). */
+  alsoKnownAs?: string[];
   tagline?: string;
   descriptionTh: string;
   logoPath: string;
@@ -237,11 +239,14 @@ export const BRANDS: BrandConfig[] = [
   {
     slug: "deepal",
     notionBrand: "Deepal",
-    displayName: "Deepal",
+    displayName: "Changan Deepal",
     displayNameTh: "ดีพอล",
+    // In Thailand the maker is moving the brand to "Changan"; keep both names for SEO.
+    // Thai spellings of Changan are unconfirmed — verify against Search Console.
+    alsoKnownAs: ["Deepal", "Changan", "ดีพอล", "ฉางอัน", "ฉางอาน"],
     tagline: "Driving Forward with You",
     descriptionTh:
-      "ตัวแทนจำหน่าย Deepal รถยนต์ไฟฟ้าและปลั๊กอินไฮบริดจาก Changan ประเทศไทย — SUV และซีดานสมรรถนะสูง พร้อมเทคโนโลยี ADAS",
+      "ตัวแทนจำหน่าย Changan Deepal (ดีพอล) รถยนต์ไฟฟ้าและปลั๊กอินไฮบริดจาก Changan ประเทศไทย — SUV และซีดานสมรรถนะสูง พร้อมเทคโนโลยี ADAS",
     logoPath: "/brands/deepal-dark.svg",       // horizontal wordmark (icon + DEEPAL text) on light bg
     logoLightPath: "/brands/deepal-light.svg", // same on dark bg
     logoOnDark: "native",

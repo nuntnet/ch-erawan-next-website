@@ -60,6 +60,8 @@ describe("brandConfig", () => {
 
   it("uses correct Thai spelling for Deepal", () => {
     expect(BRAND_BY_SLUG.deepal.displayNameTh).toBe("ดีพอล");
+    expect(BRAND_BY_SLUG.deepal.displayName).toBe("Changan Deepal");
+    expect(BRAND_BY_SLUG.deepal.alsoKnownAs).toEqual(expect.arrayContaining(["Deepal", "Changan"]));
     expect(BRAND_BY_SLUG.deepal.heroBgImage).toBeTruthy();
     expect(BRAND_BY_SLUG.deepal.logoLightPath).toBe("/brands/deepal-light.svg");
   });

@@ -154,12 +154,10 @@ export default function BrandHero({
               </p>
 
               {/* Social links */}
-              {socialLinks && socialLinks.length > 0 && (
-                <div className="flex items-center gap-3 mt-5">
-                  <span className="text-white/35 text-xs tracking-wider uppercase">ติดตาม</span>
-                  <BrandSocialLinks links={socialLinks} brand={brand} variant="dark" size="sm" />
-                </div>
-              )}
+              <div className="flex items-center gap-3 mt-5">
+                <span className="text-white/35 text-xs tracking-wider uppercase">ติดตาม</span>
+                <BrandSocialLinks links={socialLinks ?? []} brand={brand} variant="dark" size="sm" />
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-3 shrink-0">

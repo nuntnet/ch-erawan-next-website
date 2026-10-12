@@ -18,6 +18,9 @@ import BrandSocialLinks from "@/components/BrandSocialLinks";
 import { GeelyModelCards, GeelyShowroomAndFaq } from "@/components/brands/GeelyHubSections";
 import { GEELY_MODELS, geelyFaq } from "@/lib/geelyModels";
 import { faqPageJsonLd } from "@/lib/seo/faq";
+import { BRAND_FAQ } from "@/lib/brandFaq";
+import BrandFaqSection from "@/components/brands/BrandFaqSection";
+import { canonicalUrl } from "@/lib/site";
 
 // All brands now have sub-pages via generic [brand]/service, [brand]/body-repair etc.
 const HAS_SUB_PAGES = new Set<BrandSlug>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia", "gac", "lepas"]);
@@ -36,12 +39,15 @@ export async function generateMetadata({ params }: PageProps) {
   const { brand: slug } = await params;
   if (!isBrandSlug(slug)) return {};
   const brand = BRAND_BY_SLUG[slug];
-  return pageMetadata({
+  return {
+    ...pageMetadata({
     title: `${brand.displayName} ${brand.locationTh ?? "นครปฐม"} ราคาและโปรโมชั่น 2569 | ช.เอราวัณ`,
     description: `${brand.displayNameTh} ${brand.locationTh ?? "นครปฐม"} — ตัวแทนจำหน่ายอย่างเป็นทางการ ราคาดีที่สุด ผ่อนสบาย ทดลองขับฟรี บริการหลังการขายครบวงจร. ${brand.descriptionTh}`,
     path: brand.hubPath,
     openGraphImage: brand.logoPath,
-  });
+  }),
+    ...(brand.alsoKnownAs?.length ? { keywords: Array.from(new Set([brand.displayName, brand.displayNameTh, ...brand.alsoKnownAs])) } : {}),
+  };
 }
 
 export default async function BrandHubPage({ params }: PageProps) {
@@ -56,6 +62,7 @@ export default async function BrandHubPage({ params }: PageProps) {
 
   // Geely: until the models exist in Notion, show the static model list + showroom info + FAQ.
   const isGeely = brand.slug === "geely";
+  const brandFaq = BRAND_FAQ[brand.slug] ?? [];
   const useStaticGeelyModels = isGeely && cars.length === 0;
   const modelCount = useStaticGeelyModels ? GEELY_MODELS.length : cars.length;
 
@@ -72,10 +79,22 @@ export default async function BrandHubPage({ params }: PageProps) {
           __html: JSON.stringify(breadcrumbJsonLd(breadcrumbs)),
         }}
       />
-      {isGeely && (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Brand",
+            name: brand.displayName,
+            ...(brand.alsoKnownAs?.length ? { alternateName: brand.alsoKnownAs } : {}),
+            url: canonicalUrl(brand.hubPath),
+          }),
+        }}
+      />
+      {(isGeely || brandFaq.length > 0) && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(geelyFaq())) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(isGeely ? geelyFaq() : brandFaq)) }}
         />
       )}
       <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
@@ -127,17 +146,16 @@ export default async function BrandHubPage({ params }: PageProps) {
           )}
 
           {isGeely && <GeelyShowroomAndFaq />}
+          {brandFaq.length > 0 && <BrandFaqSection items={brandFaq} id={`${brand.slug}-faq`} />}
 
-          {/* Social links — from Notion CMS */}
-          {(socialLinks.length > 0 || brand.social) && (
-            <div className="mt-10 flex items-center justify-between bg-gray-50 rounded-2xl px-6 py-4 border border-gray-100">
-              <div>
-                <p className="text-sm font-semibold text-[#0F172A]">ติดตาม {brand.displayNameTh}</p>
-                <p className="text-xs text-gray-400 mt-0.5">ข่าวสาร โปรโมชั่น และคอนเทนต์ล่าสุด</p>
-              </div>
-              <BrandSocialLinks links={socialLinks} brand={brand} variant="light" />
+          {/* Social links — Notion CMS overrides brandConfig; same five slots for every brand */}
+          <div className="mt-10 flex items-center justify-between bg-gray-50 rounded-2xl px-6 py-4 border border-gray-100">
+            <div>
+              <p className="text-sm font-semibold text-[#0F172A]">ติดตาม {brand.displayNameTh}</p>
+              <p className="text-xs text-gray-400 mt-0.5">ข่าวสาร โปรโมชั่น และคอนเทนต์ล่าสุด</p>
             </div>
-          )}
+            <BrandSocialLinks links={socialLinks} brand={brand} variant="light" />
+          </div>
 
           <div className="mt-10 flex flex-wrap gap-4 justify-center">
             <p className="w-full text-center text-sm text-gray-400 mb-2">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MapPin, Phone, ArrowRight } from "lucide-react";
 import { getBranchById } from "@/lib/branchData";
+import BrandFaqSection from "@/components/brands/BrandFaqSection";
 import { GEELY_MODELS, geelyStartingPrice, geelyFaq } from "@/lib/geelyModels";
 
 const baht = (n: number) => `฿${n.toLocaleString("th-TH")}`;
@@ -81,19 +82,7 @@ export function GeelyShowroomAndFaq() {
         </section>
       )}
 
-      <section className="mt-12" aria-labelledby="geely-faq">
-        <h2 id="geely-faq" className="text-xl font-bold text-[#0F172A]">คำถามที่พบบ่อย</h2>
-        <div className="mt-4 divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white">
-          {faq.map((item) => (
-            <details key={item.question} className="group p-5">
-              <summary className="cursor-pointer list-none text-sm font-semibold text-[#0F172A] marker:hidden">
-                {item.question}
-              </summary>
-              <p className="mt-2 text-sm leading-relaxed text-gray-500">{item.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
+      <BrandFaqSection items={faq} id="geely-faq" />
     </>
   );
 }

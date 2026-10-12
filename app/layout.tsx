@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     default: `${SITE_NAME} | ตัวแทนจำหน่ายรถยนต์ Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely`,
   },
   description: "ตัวแทนจำหน่ายรถยนต์ชั้นนำในจังหวัดนครปฐมและกรุงเทพฯ บริการซื้อ-ขาย ทดลองขับ และบริการหลังการขายครบวงจร Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely",
-  keywords: ["ช.เอราวัณ", "มาสด้า", "ฟอร์ด", "มิตซูบิชิ", "GWM", "Deepal", "Kia", "GAC", "Lepas", "Geely", "รถยนต์นครปฐม", "ตัวแทนจำหน่าย"],
+  keywords: ["ช.เอราวัณ", "มาสด้า", "ฟอร์ด", "มิตซูบิชิ", "GWM", "Deepal", "Changan Deepal", "Changan", "ฉางอัน", "ดีพอล", "Kia", "GAC", "Lepas", "Geely", "รถยนต์นครปฐม", "ตัวแทนจำหน่าย"],
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
   alternates: { canonical: BASE_URL },

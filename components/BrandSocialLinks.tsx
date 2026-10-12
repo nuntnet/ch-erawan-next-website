@@ -11,15 +11,6 @@ const ICONS: Record<string, React.ReactElement> = {
   Instagram: <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>,
 };
 
-// brandConfig.social keys are lower-case; icon/hover maps use display names.
-const PLATFORM_BY_KEY: Record<string, BrandSocialLink["platform"]> = {
-  facebook: "Facebook",
-  tiktok: "TikTok",
-  youtube: "YouTube",
-  line: "LINE",
-  instagram: "Instagram",
-};
-
 const HOVER_COLORS: Record<string, string> = {
   Facebook: "hover:bg-[#1877F2]",
   TikTok: "hover:bg-[#010101]",
@@ -28,54 +19,73 @@ const HOVER_COLORS: Record<string, string> = {
   Instagram: "hover:bg-[#E4405F]",
 };
 
+/** Same five slots, same order, for every brand. */
+const PLATFORM_ORDER: BrandSocialLink["platform"][] = ["Facebook", "Instagram", "TikTok", "YouTube", "LINE"];
+
+/** Group-wide channel used when a brand has no YouTube of its own. */
+const GROUP_YOUTUBE = "https://www.youtube.com/@Ch.Erawan";
+
 interface BrandSocialLinksProps {
-  /** Pass pre-fetched links from Notion */
+  /** Pre-fetched links from Notion (override brandConfig per platform) */
   links: BrandSocialLink[];
   variant?: "dark" | "light";
   size?: "sm" | "md";
-  /** Fallback: brand config social (used if links is empty) */
+  /** brandConfig.social is the fallback for platforms Notion doesn't have */
   brand?: BrandConfig;
 }
 
+/**
+ * Always renders all five platforms in a fixed order so every brand's hero looks the same.
+ * Per platform: Notion link → brandConfig.social → (YouTube only) group channel → greyed-out,
+ * non-clickable icon ("เร็วๆ นี้").
+ */
 export default function BrandSocialLinks({ links, variant = "dark", size = "md", brand }: BrandSocialLinksProps) {
-  // Use Notion links; fall back to brandConfig if no Notion data
-  const activeLinks = links.filter(l => l.isActive && l.url);
+  const fromNotion = new Map(links.filter((l) => l.isActive && l.url).map((l) => [l.platform, l]));
+  const config = (brand?.social ?? {}) as Record<string, string | undefined>;
 
-  // Fallback to brandConfig.social if no Notion links
-  const fallbackLinks = (!activeLinks.length && brand?.social)
-    ? Object.entries(brand.social)
-        .filter(([, url]) => url)
-        .map(([platform, url]) => ({
-          id: platform,
-          label: `${brand.displayName} ${platform}`,
-          brand: brand.notionBrand,
-          platform: PLATFORM_BY_KEY[platform] ?? (platform.charAt(0).toUpperCase() + platform.slice(1)) as BrandSocialLink["platform"],
-          url: url!,
-          isActive: true,
-        }))
-    : [];
-
-  const displayLinks = activeLinks.length ? activeLinks : fallbackLinks;
-  if (!displayLinks.length) return null;
+  const slots = PLATFORM_ORDER.map((platform) => {
+    const key = platform.toLowerCase();
+    const notion = fromNotion.get(platform);
+    const url = notion?.url ?? config[key] ?? (platform === "YouTube" ? GROUP_YOUTUBE : undefined);
+    const label = notion?.label || (brand ? `${brand.displayName} ${platform}` : platform);
+    return { platform, url, label };
+  });
 
   const baseClass = size === "sm" ? "w-8 h-8 rounded-lg" : "w-9 h-9 rounded-xl";
   const colorClass = variant === "dark"
     ? "bg-white/10 text-white/70 hover:text-white"
     : "bg-gray-100 text-gray-600 hover:text-white hover:bg-gray-800";
+  const disabledClass = variant === "dark"
+    ? "bg-white/5 text-white/20"
+    : "bg-gray-100 text-gray-300";
 
   return (
     <div className="flex items-center gap-2">
-      {displayLinks.map((link) => {
-        const icon = ICONS[link.platform];
-        const hover = HOVER_COLORS[link.platform] ?? "hover:bg-gray-700";
+      {slots.map(({ platform, url, label }) => {
+        const icon = ICONS[platform];
         if (!icon) return null;
+        if (!url) {
+          return (
+            <span
+              key={platform}
+              role="img"
+              aria-disabled="true"
+              aria-label={`${platform} (เร็วๆ นี้)`}
+              title={`${platform} เร็วๆ นี้`}
+              className={`${baseClass} ${disabledClass} flex items-center justify-center cursor-not-allowed select-none`}
+            >
+              {icon}
+            </span>
+          );
+        }
+        const hover = HOVER_COLORS[platform] ?? "hover:bg-gray-700";
         return (
           <a
-            key={link.id}
-            href={link.url}
+            key={platform}
+            href={url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={link.label || link.platform}
+            aria-label={label}
             className={`${baseClass} ${colorClass} ${hover} flex items-center justify-center transition-colors`}
           >
             {icon}

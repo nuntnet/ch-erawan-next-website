@@ -1,3 +1,4 @@
+import { GEELY_MODELS, geelyModelPath } from "@/lib/geelyModels";
 import type { MetadataRoute } from "next";
 import { getBlogSitemapEntries, getCarSitemapEntries } from "@/lib/notion";
 import { SITE_URL } from "@/lib/site";
@@ -37,6 +38,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ]);
 
+  const geelyModelPages: MetadataRoute.Sitemap = GEELY_MODELS.map((m) => ({
+    url: `${SITE_URL}${geelyModelPath(m.slug)}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
   const blogPages: MetadataRoute.Sitemap = blogEntries.map(({ slug, lastModified }) => ({
     url: `${SITE_URL}/blog/${slug}`,
     lastModified,
@@ -51,5 +59,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...brandPages, ...blogPages, ...carPages];
+  return [...staticPages, ...brandPages, ...geelyModelPages, ...blogPages, ...carPages];
 }

@@ -18,7 +18,7 @@ import BrandSocialLinks from "@/components/BrandSocialLinks";
 import { GeelyModelCards, GeelyShowroomAndFaq } from "@/components/brands/GeelyHubSections";
 import { GEELY_MODELS, geelyFaq } from "@/lib/geelyModels";
 import { faqPageJsonLd } from "@/lib/seo/faq";
-import { BRAND_FAQ } from "@/lib/brandFaq";
+import { getBrandFaq } from "@/lib/brandFaq";
 import BrandFaqSection from "@/components/brands/BrandFaqSection";
 import { canonicalUrl } from "@/lib/site";
 
@@ -62,7 +62,7 @@ export default async function BrandHubPage({ params }: PageProps) {
 
   // Geely: until the models exist in Notion, show the static model list + showroom info + FAQ.
   const isGeely = brand.slug === "geely";
-  const brandFaq = BRAND_FAQ[brand.slug] ?? [];
+  const brandFaq = isGeely ? [] : getBrandFaq(brand.slug);
   const useStaticGeelyModels = isGeely && cars.length === 0;
   const modelCount = useStaticGeelyModels ? GEELY_MODELS.length : cars.length;
 
@@ -88,6 +88,9 @@ export default async function BrandHubPage({ params }: PageProps) {
             name: brand.displayName,
             ...(brand.alsoKnownAs?.length ? { alternateName: brand.alsoKnownAs } : {}),
             url: canonicalUrl(brand.hubPath),
+            ...(Object.values(brand.social ?? {}).filter(Boolean).length
+              ? { sameAs: Object.entries(brand.social ?? {}).filter(([k, v]) => v && k !== "line").map(([, v]) => v) }
+              : {}),
           }),
         }}
       />

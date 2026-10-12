@@ -35,9 +35,8 @@ interface BrandSocialLinksProps {
 }
 
 /**
- * Always renders all five platforms in a fixed order so every brand's hero looks the same.
- * Per platform: Notion link → brandConfig.social → (YouTube only) group channel → greyed-out,
- * non-clickable icon ("เร็วๆ นี้").
+ * Shows only the platforms a brand actually has, always in the same fixed order.
+ * Per platform: Notion link → brandConfig.social → (YouTube only) group channel; otherwise skipped.
  */
 export default function BrandSocialLinks({ links, variant = "dark", size = "md", brand }: BrandSocialLinksProps) {
   const fromNotion = new Map(links.filter((l) => l.isActive && l.url).map((l) => [l.platform, l]));
@@ -55,29 +54,15 @@ export default function BrandSocialLinks({ links, variant = "dark", size = "md",
   const colorClass = variant === "dark"
     ? "bg-white/10 text-white/70 hover:text-white"
     : "bg-gray-100 text-gray-600 hover:text-white hover:bg-gray-800";
-  const disabledClass = variant === "dark"
-    ? "bg-white/5 text-white/20"
-    : "bg-gray-100 text-gray-300";
+
+  if (!slots.some((slot) => slot.url)) return null;
 
   return (
     <div className="flex items-center gap-2">
       {slots.map(({ platform, url, label }) => {
         const icon = ICONS[platform];
         if (!icon) return null;
-        if (!url) {
-          return (
-            <span
-              key={platform}
-              role="img"
-              aria-disabled="true"
-              aria-label={`${platform} (เร็วๆ นี้)`}
-              title={`${platform} เร็วๆ นี้`}
-              className={`${baseClass} ${disabledClass} flex items-center justify-center cursor-not-allowed select-none`}
-            >
-              {icon}
-            </span>
-          );
-        }
+        if (!url) return null;
         const hover = HOVER_COLORS[platform] ?? "hover:bg-gray-700";
         return (
           <a

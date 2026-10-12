@@ -46,10 +46,8 @@ export default function BrandHero({
     label: "นัดทดลองขับ",
     href: `/booking?type=test_drive&brand=${brand.notionBrand}`,
   };
-  const secondary = secondaryCta ?? {
-    label: "ดูรถทั้งหมด",
-    href: "/cars",
-  };
+  // One action per hero (mstack single-CTA rule): a secondary button only when a page passes one.
+  const secondary = secondaryCta ?? null;
 
   return (
     <section className="relative overflow-hidden min-h-[420px] lg:min-h-[500px] flex items-end">
@@ -169,14 +167,16 @@ export default function BrandHero({
                   {primary.label}
                 </Button>
               </Link>
-              <Link href={secondary.href}>
-                <Button
-                  variant="outline"
-                  className="border-white/35 text-white hover:bg-white/10 min-h-[44px] bg-white/5 backdrop-blur-sm"
-                >
-                  {secondary.label}
-                </Button>
-              </Link>
+              {secondary && (
+                <Link href={secondary.href}>
+                  <Button
+                    variant="outline"
+                    className="border-white/35 text-white hover:bg-white/10 min-h-[44px] bg-white/5 backdrop-blur-sm"
+                  >
+                    {secondary.label}
+                  </Button>
+                </Link>
+              )}
             </div>
           </BrandHeroContent>
 

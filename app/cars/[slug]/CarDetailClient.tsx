@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Calendar, ArrowLeft, ChevronLeft, ChevronRight, Calculator, Share2, Zap, Gauge, Ruler, BatteryCharging, Star, ChevronRight as ArrowRight } from "lucide-react";
 import type { Car } from "@/lib/notion-types";
 import { BRAND_BY_NOTION } from "@/lib/brandConfig";
+import Ga4PageSignals from "@/components/Ga4PageSignals";
 
 // Human-readable Thai labels for spec keys
 const SPEC_LABELS: Record<string, string> = {
@@ -116,6 +117,10 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
+      <Ga4PageSignals
+        pageType="car_detail"
+        item={{ itemId: car.id, itemName: car.name, itemBrand: car.brand, itemCategory: car.type, price: car.priceMin }}
+      />
       <div className="container py-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-[#64748B] mb-6">

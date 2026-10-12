@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackClickLine, trackClickCall } from "@/lib/ga4-events";
+import { trackClickLine, trackClickCall, trackSelectItem } from "@/lib/ga4-events";
 
 /**
  * One global click listener instead of instrumenting every tel:/line.me/
@@ -13,6 +13,13 @@ export default function OutboundClickTracker(): null {
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       const target = e.target as HTMLElement | null;
+      const selectable = target?.closest<HTMLElement>("[data-select-item]");
+      if (selectable) {
+        trackSelectItem({
+          itemName: selectable.dataset.selectItem ?? "",
+          ctaLocation: selectable.dataset.ctaLocation,
+        });
+      }
       const anchor = target?.closest("a");
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";

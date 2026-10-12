@@ -27,3 +27,38 @@ describe("ga4-events — Geely", () => {
     );
   });
 });
+
+import { trackScrollDepth, trackSelectItem, trackViewItem } from "@/lib/ga4-events";
+
+describe("ga4-events — funnel events", () => {
+  const gtag = vi.fn();
+  beforeEach(() => {
+    gtag.mockClear();
+    vi.stubGlobal("window", { gtag });
+  });
+
+  it("generate_lead carries value and currency", () => {
+    trackGenerateLead({ inquiryType: "test_drive", carModel: "EX5" });
+    expect(gtag).toHaveBeenCalledWith("event", "generate_lead", expect.objectContaining({ value: 0, currency: "THB" }));
+  });
+
+  it("view_item sends an items array with price", () => {
+    trackViewItem({ itemId: "geely-ex5", itemName: "EX5", itemBrand: "Geely", itemCategory: "new_car", price: 799000 });
+    expect(gtag).toHaveBeenCalledWith(
+      "event",
+      "view_item",
+      expect.objectContaining({
+        currency: "THB",
+        value: 799000,
+        items: [expect.objectContaining({ item_id: "geely-ex5", item_name: "EX5", price: 799000 })],
+      })
+    );
+  });
+
+  it("select_item and scroll_depth use the mstack parameter names", () => {
+    trackSelectItem({ itemName: "EX5", ctaLocation: "model_image" });
+    expect(gtag).toHaveBeenCalledWith("event", "select_item", expect.objectContaining({ item_name: "EX5", cta_location: "model_image" }));
+    trackScrollDepth({ percent: 75, pageType: "brand_hub" });
+    expect(gtag).toHaveBeenCalledWith("event", "scroll_depth", { percent_scrolled: 75, page_type: "brand_hub" });
+  });
+});

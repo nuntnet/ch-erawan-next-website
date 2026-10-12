@@ -20,6 +20,8 @@ export function trackGenerateLead(params: { inquiryType: InquiryType; branch?: s
     ...(params.branch ? { branch: params.branch } : {}),
     ...(params.carModel ? { car_model: params.carModel } : {}),
     // mstack GA4 taxonomy (website-cro / ga4-event-schema-architect)
+    value: 0, // lead value is unknown at submit time; required by the taxonomy
+    currency: "THB",
     lead_type: params.inquiryType,
     ...(params.branch ? { showroom_branch: params.branch } : {}),
     ...(params.carModel ? { model_interest: params.carModel } : {}),
@@ -44,4 +46,45 @@ export function trackClickLine(params: { path: string; lineUrl: string }): void 
 /** Fired by OutboundClickTracker for any tel: link click. */
 export function trackClickCall(params: { path: string; phone: string }): void {
   fire("click_call", { path: params.path, phone: params.phone });
+}
+
+export interface Ga4Item {
+  itemId: string;
+  itemName: string;
+  itemBrand?: string;
+  itemCategory?: string;
+  price?: number;
+}
+
+const toItem = (i: Ga4Item) => ({
+  item_id: i.itemId,
+  item_name: i.itemName,
+  ...(i.itemBrand ? { item_brand: i.itemBrand } : {}),
+  ...(i.itemCategory ? { item_category: i.itemCategory } : {}),
+  ...(i.price != null ? { price: i.price } : {}),
+});
+
+/** A car/model detail page was opened (funnel step 1). */
+export function trackViewItem(item: Ga4Item): void {
+  // items[] is the GA4 standard; the flat params mirror it for the mstack taxonomy (custom reports).
+  fire("view_item", {
+    currency: "THB",
+    ...(item.price != null ? { value: item.price } : {}),
+    ...toItem(item),
+    items: [toItem(item)],
+  });
+}
+
+/** A model card/link was clicked (engagement). ctaLocation e.g. "model_card", "model_name". */
+export function trackSelectItem(params: { itemName: string; ctaLocation?: string }): void {
+  fire("select_item", {
+    item_name: params.itemName,
+    ...(params.ctaLocation ? { cta_location: params.ctaLocation } : {}),
+    items: [{ item_name: params.itemName }],
+  });
+}
+
+/** Fired once per threshold (50/75/90) as the visitor scrolls a page. */
+export function trackScrollDepth(params: { percent: 50 | 75 | 90; pageType: string }): void {
+  fire("scroll_depth", { percent_scrolled: params.percent, page_type: params.pageType });
 }

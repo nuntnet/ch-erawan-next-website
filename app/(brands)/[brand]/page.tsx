@@ -21,6 +21,7 @@ import { faqPageJsonLd } from "@/lib/seo/faq";
 import { getBrandFaq } from "@/lib/brandFaq";
 import BrandFaqSection from "@/components/brands/BrandFaqSection";
 import { canonicalUrl } from "@/lib/site";
+import Ga4PageSignals from "@/components/Ga4PageSignals";
 
 // All brands now have sub-pages via generic [brand]/service, [brand]/body-repair etc.
 const HAS_SUB_PAGES = new Set<BrandSlug>(["gwm", "mazda", "ford", "mitsubishi", "deepal", "kia", "gac", "lepas"]);
@@ -100,6 +101,7 @@ export default async function BrandHubPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(isGeely ? geelyFaq() : brandFaq)) }}
         />
       )}
+      <Ga4PageSignals pageType="brand_hub" />
       <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
         <BrandHero
           brand={brand}

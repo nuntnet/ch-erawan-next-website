@@ -147,10 +147,9 @@ function BookingForm() {
   useEffect(() => { if (carParam) setForm(f => ({ ...f, carModel: carParam })); }, [carParam]);
   useEffect(() => { if (presetBranch) setForm(f => (f.branch ? f : { ...f, branch: presetBranch })); }, [presetBranch]);
 
-  // Geely Ratchada runs the 3-field lead form (name, phone, date/time): email is dropped
-  // for test-drive bookings there; the sales advisor asks the rest over phone/LINE.
-  const selectedBranchBrand = branchDirectory.find((b) => b.name === form.branch)?.brand;
-  const hideEmail = selectedType === "test_drive" && selectedBranchBrand === "Geely";
+  // Test-drive bookings use the 3-field lead form (name, phone, date/time) for every brand
+  // (mstack form-friction rule): email is dropped; the sales advisor asks the rest over phone/LINE.
+  const hideEmail = selectedType === "test_drive";
 
   // On mobile the type cards are tall enough that the form below (which
   // changes per type) sits off-screen — tapping a card gave no visible sign

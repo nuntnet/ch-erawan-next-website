@@ -41,7 +41,7 @@ export default function BrandCarGrid({
         const imgSrc = carImageSrc(car);
 
         return (
-          <Link key={car.id} href={href} className="group block h-full">
+          <Link key={car.id} href={href} className="group block h-full" data-select-item={car.name} data-cta-location="brand_car_grid">
             <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer h-full flex flex-col">
               <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative img-shimmer">
                 {/* Native img avoids next/image hostname errors for dynamic Notion URLs */}

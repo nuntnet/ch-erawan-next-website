@@ -14,7 +14,7 @@ export function GeelyModelCards() {
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {GEELY_MODELS.map((m) => (
         <div key={m.slug} className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-lg">
-          <Link href={geelyModelPath(m.slug)} className="block" aria-label={`ดูรายละเอียด ${m.name}`}>
+          <Link href={geelyModelPath(m.slug)} className="block" aria-label={`ดูรายละเอียด ${m.name}`} data-select-item={m.name} data-cta-location="model_image">
             <div className="relative aspect-[4/3] bg-gradient-to-b from-slate-50 to-slate-200">
               <Image
                 src={m.image.src}
@@ -27,14 +27,14 @@ export function GeelyModelCards() {
           </Link>
           <div className="flex flex-1 flex-col p-6">
             <p className="text-xs font-semibold tracking-[0.2em] text-[#3B8BEB]">GEELY</p>
-            <Link href={geelyModelPath(m.slug)} className="mt-1 text-2xl font-bold text-[#0F172A] hover:text-[#3B8BEB]">
+            <Link href={geelyModelPath(m.slug)} className="mt-1 text-2xl font-bold text-[#0F172A] hover:text-[#3B8BEB]" data-select-item={m.name} data-cta-location="model_name">
               {m.name}
             </Link>
             <p className="mt-1 text-sm text-gray-500">{m.summary}</p>
             <p className="mt-3 text-sm text-gray-500">
               เริ่มต้น <span className="text-lg font-bold text-[#0F172A]">{baht(geelyStartingPrice(m))}</span>
             </p>
-            <Link href={geelyModelPath(m.slug)} className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-[#3B8BEB] hover:underline">
+            <Link href={geelyModelPath(m.slug)} className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-[#3B8BEB] hover:underline" data-select-item={m.name} data-cta-location="model_details">
               ดูรายละเอียด <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link

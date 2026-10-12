@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { GEELY_MODELS, getGeelyModel, geelyModelPath, geelyStartingPrice } from "@/lib/geelyModels";
 import { BRAND_BY_SLUG } from "@/lib/brandConfig";
+import Ga4PageSignals from "@/components/Ga4PageSignals";
 import { breadcrumbJsonLd, pageMetadata, canonicalUrl } from "@/lib/site";
 
 const baht = (n: number) => `฿${n.toLocaleString("th-TH")}`;
@@ -63,6 +64,10 @@ export default async function GeelyModelPage({ params }: PageProps) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(crumbs)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }} />
+      <Ga4PageSignals
+        pageType="model_detail"
+        item={{ itemId: `geely-${model.slug}`, itemName: model.name, itemBrand: "Geely", itemCategory: "new_car", price: geelyStartingPrice(model) }}
+      />
       <div className="min-h-screen bg-[#F8FAFC] pt-[68px]">
         <div className="container py-8 lg:py-12">
           <nav aria-label="breadcrumb" className="text-sm text-gray-400">

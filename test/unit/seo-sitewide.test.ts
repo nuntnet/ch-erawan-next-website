@@ -48,3 +48,16 @@ describe("title length", () => {
     expect(meta.openGraph?.title).toBe(long);
   });
 });
+
+describe("Geely opening hours", () => {
+  it("emits structured openingHoursSpecification for Geely and the legacy string for others", () => {
+    const nodes = localBusinessGraph()["@graph"] as { name: string; openingHours?: string; openingHoursSpecification?: { dayOfWeek: string[]; opens: string; closes: string }[] }[];
+    const geely = nodes.find((n) => n.name.startsWith("GEELY"))!;
+    expect(geely.openingHours).toBeUndefined();
+    expect(geely.openingHoursSpecification).toEqual([
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "08:30", closes: "17:30" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "09:00", closes: "17:00" },
+    ]);
+    expect(nodes.find((n) => n.name.startsWith("มาสด้า ช.เอราวัณ นครปฐม"))!.openingHours).toBeTruthy();
+  });
+});

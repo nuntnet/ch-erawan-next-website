@@ -36,6 +36,8 @@ export interface Branch {
   contacts: BranchContact[];
   /** Set when the branch is announced but not yet operating (e.g. under construction). */
   openingDate?: string;
+  /** Structured hours for schema.org openingHoursSpecification (when set, preferred over the free-text `hours`). */
+  schemaHours?: { days: string[]; opens: string; closes: string }[];
   /** Schema.org addressLocality; defaults to นครปฐม when omitted. */
   locality?: string;
 }
@@ -409,8 +411,12 @@ export const branches: Branch[] = [
     // No LINE OA yet — empty lineUrl renders a greyed-out, non-clickable LINE button.
     lineId: "",
     lineUrl: "",
-    // TODO: confirm opening hours with the showroom (Facebook page shows "Closed now" only).
-    hours: "จ–ศ 08:30–18:00 · ส–อา 08:30–17:00",
+    // Confirmed by the owner (2026-10-13): Mon–Sat 08:30–17:30; Sundays and public holidays 09:00–17:00.
+    hours: "จ–ส 08:30–17:30 · อาทิตย์และวันหยุดนักขัตฤกษ์ 09:00–17:00",
+    schemaHours: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "08:30", closes: "17:30" },
+      { days: ["Sunday"], opens: "09:00", closes: "17:00" },
+    ],
     services: [
       "ขายรถยนต์ใหม่ GEELY (EX2, EX5, STARRAY EM-R)",
       "ทดลองขับ GEELY EV",

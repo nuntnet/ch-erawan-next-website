@@ -43,6 +43,7 @@ describe("branchData — Geely Ratchada", () => {
     expect(geely!.address).toContain("161 ถนนรัชดาภิเษก");
     expect(geely!.openingDate).toBeUndefined();
     expect(geely!.locality).toBe("กรุงเทพมหานคร");
+    expect(geely!.hours).toBe("จ–ส 08:30–17:30 · อาทิตย์และวันหยุดนักขัตฤกษ์ 09:00–17:00");
   });
 
   it("maps the Geely branch to the geely brand for notification routing", () => {

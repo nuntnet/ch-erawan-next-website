@@ -26,7 +26,16 @@ export function localBusinessGraph() {
         addressCountry: "TH",
       },
       telephone: branch.phone,
-      openingHours: branch.hours,
+      ...(branch.schemaHours
+        ? {
+            openingHoursSpecification: branch.schemaHours.map((h) => ({
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: h.days,
+              opens: h.opens,
+              closes: h.closes,
+            })),
+          }
+        : { openingHours: branch.hours }),
       geo: {
         "@type": "GeoCoordinates",
         latitude: branch.lat,

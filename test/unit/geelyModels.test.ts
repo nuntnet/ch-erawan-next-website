@@ -9,6 +9,7 @@ describe("geelyModels", () => {
   it("starting price is the cheapest trim", () => {
     const ex5 = GEELY_MODELS.find((m) => m.slug === "ex5")!;
     expect(geelyStartingPrice(ex5)).toBe(799_000);
+    expect(ex5.trims.map((t) => t.msrp)).toEqual([799_000, 899_000, 929_000, 939_000]);
   });
 
   it("FAQ answers include the Ratchada address and opening date", () => {

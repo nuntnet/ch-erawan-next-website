@@ -11,7 +11,7 @@
  * ⚠ Writes to whichever Notion workspace NOTION_CARS_DB_ID in .env.local points to
  *   (local dev uses PRODUCTION data). Point it at the staging DB for staging, or confirm before running.
  * Requires: NOTION_CARS_DB_ID, NOTION_API_KEY. The "Brand" select gets a "Geely" option automatically.
- * Prices are MSRP incl. VAT from the Thonburi dealer file — confirm they may be published first.
+ * Prices are MSRP incl. VAT from the Thonburi "Geely Price structure" file (approved for publishing).
  */
 import { config } from "dotenv";
 import { createCar, getActiveCars, setCarSortOrder } from "../lib/notion";
@@ -56,13 +56,13 @@ const CARS: CarInput[] = [
     type: "suv",
     condition: "new",
     priceMin: 799000,
-    priceMax: 929000,
+    priceMax: 939000,
     engineSize: "Electric",
     transmission: "auto",
     fuelType: "electric",
     description: "SUV ไฟฟ้า ดีไซน์ใหม่จาก GEELY",
     specs: {
-      trims: ["PRO|799000", "MAX|899000", "MAX+|929000"],
+      trims: ["PRO|799000", "MAX|899000", "MAX+|929000", "MAX+ (Moss Green)|939000"],
       official_url: "https://www.geely.com/en/models/ex5",
     },
     imageUrls: ["https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861803/ch-erawan/cars/geely-ex5.webp"],

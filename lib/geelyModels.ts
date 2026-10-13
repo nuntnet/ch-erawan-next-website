@@ -12,8 +12,8 @@ import type { Car } from "@/lib/notion-types";
  *   Name/Model → name · Description → summary · Image URLs[0] → image · Price Min → starting price
  *   Specs JSON → { "trims": ["PRO|429990", "MAX|459990"], "official_url": "https://…" }  (trims optional)
  *
- * Fallback prices are MSRP incl. VAT from the Thonburi "Geely Price structure" (dealer file).
- * TODO: confirm with Geely/Thonburi that these list prices may be published before launch.
+ * Prices are MSRP incl. VAT from the Thonburi "Geely Price structure" file; the owner approved
+ * publishing them as announced prices (2026-10-13).
  */
 export interface GeelyTrim {
   name: string;
@@ -56,6 +56,7 @@ export const GEELY_MODELS: GeelyModel[] = [
       { name: "PRO", msrp: 799_000 },
       { name: "MAX", msrp: 899_000 },
       { name: "MAX+", msrp: 929_000 },
+      { name: "MAX+ (Moss Green)", msrp: 939_000 },
     ],
   },
   {

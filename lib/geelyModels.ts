@@ -39,7 +39,7 @@ export const GEELY_MODELS: GeelyModel[] = [
     slug: "ex2",
     name: "EX2",
     summary: "รถยนต์ไฟฟ้า 5 ที่นั่ง ขนาดกะทัดรัดสำหรับใช้งานในเมือง",
-    image: { src: "/brands/geely/ex2.jpg", alt: "GEELY EX2 บนทางด่วนในกรุงเทพฯ", kind: "photo" },
+    image: { src: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861801/ch-erawan/cars/geely-ex2.jpg", alt: "GEELY EX2 บนทางด่วนในกรุงเทพฯ", kind: "photo" },
     officialUrl: "https://www.geely.com/en/news/2025/geely-ex2-thailand-debut",
     trims: [
       { name: "PRO", msrp: 429_990 },
@@ -50,7 +50,7 @@ export const GEELY_MODELS: GeelyModel[] = [
     slug: "ex5",
     name: "EX5",
     summary: "SUV ไฟฟ้า ดีไซน์ใหม่จาก GEELY",
-    image: { src: "/brands/geely/ex5.webp", alt: "GEELY EX5", kind: "render" },
+    image: { src: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861803/ch-erawan/cars/geely-ex5.webp", alt: "GEELY EX5", kind: "render" },
     officialUrl: "https://www.geely.com/en/models/ex5",
     trims: [
       { name: "PRO", msrp: 799_000 },
@@ -63,7 +63,7 @@ export const GEELY_MODELS: GeelyModel[] = [
     name: "STARRAY EM-R",
     summary: "SUV พลังงานใหม่แบบ Range Extender (EM-R)",
     // Rendered from the Starray EM-i model (same body) — replace with an EM-R specific image when available.
-    image: { src: "/brands/geely/starray-em-r.webp", alt: "GEELY STARRAY", kind: "render" },
+    image: { src: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861805/ch-erawan/cars/geely-starray-em-r.webp", alt: "GEELY STARRAY", kind: "render" },
     trims: [
       { name: "PRO", msrp: 729_900 },
       { name: "MAX", msrp: 799_900 },

@@ -3,7 +3,7 @@
  * /geely/models/[model] are driven by Notion instead of the static fallback in lib/geelyModels.ts.
  *
  * Trims live in the Specs JSON: { "trims": ["PRO|429990", ...], "official_url": "…" }.
- * Image URLs here are site-relative (/brands/geely/…); replace with Cloudinary URLs in Notion when available.
+ * Image URLs are Cloudinary (ch-erawan/cars/geely-*).
  *
  * Run:      bun run scripts/seed-geely-cars.ts
  * Dry run:  bun run scripts/seed-geely-cars.ts --dry-run     (no Notion writes — do this first)
@@ -39,7 +39,7 @@ const CARS: CarInput[] = [
       trims: ["PRO|429990", "MAX|459990"],
       official_url: "https://www.geely.com/en/news/2025/geely-ex2-thailand-debut",
     },
-    imageUrls: ["/brands/geely/ex2.jpg"],
+    imageUrls: ["https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861801/ch-erawan/cars/geely-ex2.jpg"],
     videoUrl: null,
     isActive: true,
     isBestSeller: false,
@@ -65,7 +65,7 @@ const CARS: CarInput[] = [
       trims: ["PRO|799000", "MAX|899000", "MAX+|929000"],
       official_url: "https://www.geely.com/en/models/ex5",
     },
-    imageUrls: ["/brands/geely/ex5.webp"],
+    imageUrls: ["https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861803/ch-erawan/cars/geely-ex5.webp"],
     videoUrl: null,
     isActive: true,
     isBestSeller: true,
@@ -89,7 +89,7 @@ const CARS: CarInput[] = [
     description: "SUV พลังงานใหม่แบบ Range Extender (EM-R)",
     specs: { trims: ["PRO|729900", "MAX|799900"] },
     // Rendered from the Starray EM-i model (same body) — replace with an EM-R image when available.
-    imageUrls: ["/brands/geely/starray-em-r.webp"],
+    imageUrls: ["https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861805/ch-erawan/cars/geely-starray-em-r.webp"],
     videoUrl: null,
     isActive: true,
     isBestSeller: false,

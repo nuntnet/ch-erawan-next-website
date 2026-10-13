@@ -32,6 +32,7 @@ const BOOKABLE_BRANCH_NAMES = [
   "GWM ช.เอราวัณ นครปฐม",
   "Kia ช.เอราวัณ นครปฐม",
   "GEELY ช.เอราวัณ รัชดา",
+  "Lepas ช.เอราวัณ นครปฐม",
 ];
 
 // Each bookable branch paired with its brand's logo, for the radio-card picker.

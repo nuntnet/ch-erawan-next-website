@@ -49,4 +49,9 @@ describe("branchData — Geely Ratchada", () => {
   it("maps the Geely branch to the geely brand for notification routing", () => {
     expect(resolveBrandFromBranch("GEELY ช.เอราวัณ รัชดา")).toBe("geely");
   });
+
+  it("maps the Lepas branch to the lepas brand so test-drive bookings route to Lepas", () => {
+    expect(resolveBrandFromBranch("Lepas ช.เอราวัณ นครปฐม")).toBe("lepas");
+    expect(getBranchById("lepas-nakhonpathom")!.name).toBe("Lepas ช.เอราวัณ นครปฐม");
+  });
 });

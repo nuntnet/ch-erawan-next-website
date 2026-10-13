@@ -27,7 +27,7 @@ export default function BrandHallCard({ brand, className }: BrandHallCardProps) 
 
   const accent = brand.accentColor ?? "#DD5259";
   const heroImage =
-    brand.heroBgImage ?? brand.navBgImage ?? BRAND_IMAGES[brand.notionBrand];
+    brand.cardImage ?? brand.heroBgImage ?? brand.navBgImage ?? BRAND_IMAGES[brand.notionBrand];
   // Showroom photo shown on hover (crossfade from car → dealership exterior)
   const showroomImage = brand.showroomImageUrl ?? null;
 

@@ -55,6 +55,8 @@ export interface BrandConfig {
   accentColor?: string;
   /** Full-width hero background — falls back to navBgImage then BRAND_IMAGES */
   heroBgImage?: string;
+  /** Portrait image for the home BrandHall card (default state; hover crossfades to showroomImageUrl) */
+  cardImage?: string;
   /** Faint background image for nav mega menu tiles on hover */
   navBgImage?: string;
   hubPath: string;
@@ -368,8 +370,11 @@ export const BRANDS: BrandConfig[] = [
     logoOnDark: "native",
     logoScale: 1.1,
     accentColor: "#3B8BEB",
-    // Stand-in: AI-generated showroom illustration. Swap for real photos (Cloudinary) after CI/renovation.
-    navBgImage: BRAND_IMAGES.Geely,
+    // Default (car): official EX2 press photo in Bangkok. Hover (showroom): AI-generated illustration
+    // — swap for a real photo of the Ratchada showroom once the CI/renovation is done.
+    cardImage: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791863560/ch-erawan/brands/geely-card-car.jpg",
+    heroBgImage: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791861801/ch-erawan/cars/geely-ex2.jpg",
+    navBgImage: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791863560/ch-erawan/brands/geely-card-car.jpg",
     showroomImageUrl: BRAND_IMAGES.Geely,
     hubPath: "/geely",
     locationTh: "รัชดา กรุงเทพฯ",

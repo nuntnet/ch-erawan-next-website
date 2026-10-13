@@ -264,7 +264,8 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
                       {/* Any extra keys not in groups */}
                       {(() => {
                         const usedKeys = new Set([...SPEC_GROUPS.flatMap(g => g.keys), "features", "description"]);
-                        const extras = Object.entries(car.specs).filter(([k]) => !usedKeys.has(k));
+                        // "trims" / "official_url" feed the Geely model pages (lib/geelyModels.ts), not the spec table.
+                        const extras = Object.entries(car.specs).filter(([k]) => !usedKeys.has(k) && k !== "trims" && k !== "official_url");
                         if (extras.length === 0) return null;
                         return (
                           <div>

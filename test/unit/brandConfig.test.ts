@@ -117,3 +117,21 @@ describe("GAC and Lepas brand entries", () => {
     expect(matchCarToLine(aionCar, gac, hyptecLine)).toBe(false);
   });
 });
+
+import { canonicalNotionBrand, notionBrandValues } from "@/lib/brandConfig";
+
+describe("Notion brand aliases (Changan Deepal)", () => {
+  it("normalises alias values to the canonical Deepal", () => {
+    expect(canonicalNotionBrand("Deepal (Changan)")).toBe("Deepal");
+    expect(canonicalNotionBrand("Changan")).toBe("Deepal");
+    expect(canonicalNotionBrand("Changan NEVO")).toBe("Deepal");
+    expect(canonicalNotionBrand("Deepal")).toBe("Deepal");
+    expect(canonicalNotionBrand("Mazda")).toBe("Mazda");
+    expect(canonicalNotionBrand("Unknown")).toBe("Unknown");
+  });
+
+  it("filters by every value that means the brand", () => {
+    expect(notionBrandValues("Deepal")).toEqual(["Deepal", "Deepal (Changan)", "Changan", "Changan NEVO"]);
+    expect(notionBrandValues("Mazda")).toEqual(["Mazda"]);
+  });
+});

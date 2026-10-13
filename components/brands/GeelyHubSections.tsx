@@ -3,16 +3,16 @@ import Image from "next/image";
 import { MapPin, Phone, ArrowRight } from "lucide-react";
 import { getBranchById } from "@/lib/branchData";
 import BrandFaqSection from "@/components/brands/BrandFaqSection";
-import { GEELY_MODELS, geelyStartingPrice, geelyFaq, geelyModelPath } from "@/lib/geelyModels";
+import { geelyStartingPrice, geelyFaq, geelyModelPath, type GeelyModel } from "@/lib/geelyModels";
 
 const baht = (n: number) => `฿${n.toLocaleString("th-TH")}`;
 const BOOKING = "/booking?type=test_drive&brand=Geely";
 
 /** Static model cards for /geely (used until Notion has Geely cars). Card → detail page; button → test-drive booking. */
-export function GeelyModelCards() {
+export function GeelyModelCards({ models }: { models: GeelyModel[] }) {
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {GEELY_MODELS.map((m) => (
+      {models.map((m) => (
         <div key={m.slug} className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-lg">
           <Link href={geelyModelPath(m.slug)} className="block" aria-label={`ดูรายละเอียด ${m.name}`} data-select-item={m.name} data-cta-location="model_image">
             <div className="relative aspect-[4/3] bg-gradient-to-b from-slate-50 to-slate-200">
@@ -31,9 +31,11 @@ export function GeelyModelCards() {
               {m.name}
             </Link>
             <p className="mt-1 text-sm text-gray-500">{m.summary}</p>
-            <p className="mt-3 text-sm text-gray-500">
-              เริ่มต้น <span className="text-lg font-bold text-[#0F172A]">{baht(geelyStartingPrice(m))}</span>
-            </p>
+            {geelyStartingPrice(m) > 0 && (
+              <p className="mt-3 text-sm text-gray-500">
+                เริ่มต้น <span className="text-lg font-bold text-[#0F172A]">{baht(geelyStartingPrice(m))}</span>
+              </p>
+            )}
             <Link href={geelyModelPath(m.slug)} className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-[#3B8BEB] hover:underline" data-select-item={m.name} data-cta-location="model_details">
               ดูรายละเอียด <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -54,9 +56,9 @@ export function GeelyModelCards() {
 }
 
 /** Showroom address/phone/map + FAQ for /geely. */
-export function GeelyShowroomAndFaq() {
+export function GeelyShowroomAndFaq({ models }: { models: GeelyModel[] }) {
   const branch = getBranchById("geely-ratchada");
-  const faq = geelyFaq();
+  const faq = geelyFaq(models);
   return (
     <>
       {branch && (

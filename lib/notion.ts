@@ -19,7 +19,7 @@ import type {
   VideoReview,
   FAQItem,
 } from "./notion-types";
-import { BRAND_BY_NOTION, matchCarToLine } from "./brandConfig";
+import { BRAND_BY_NOTION, canonicalNotionBrand, matchCarToLine, notionBrandValues } from "./brandConfig";
 
 // ─── Rate-limit aware fetch (429 + transient 5xx retry w/ backoff) ────────────
 
@@ -187,7 +187,8 @@ function pageToCar(page: NotionPage): Car {
   return {
     id: page.id,
     name: propTitle(page, "Name"),
-    brand: propSelect(page, "Brand") as Car["brand"],
+    // Notion may tag the same brand under alias values (e.g. "Deepal (Changan)") — normalise.
+    brand: canonicalNotionBrand(propSelect(page, "Brand")) as Car["brand"],
     model: propText(page, "Model"),
     year: propNumber(page, "Year"),
     // Lowercase enums — Notion may store "SUV"/"Pickup"/"EV"/"Sedan" mixed-case
@@ -222,10 +223,12 @@ export async function getActiveCars(filters?: {
   ];
 
   if (filters?.brand) {
-    filterConditions.push({
-      property: "Brand",
-      select: { equals: filters.brand },
-    });
+    const values = notionBrandValues(filters.brand);
+    filterConditions.push(
+      values.length > 1
+        ? { or: values.map((v) => ({ property: "Brand", select: { equals: v } })) }
+        : { property: "Brand", select: { equals: filters.brand } }
+    );
   }
   if (filters?.condition) {
     filterConditions.push({

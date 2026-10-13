@@ -1,11 +1,18 @@
 import type { FaqItem } from "@/lib/seo/faq";
 import { getBranchById } from "@/lib/branchData";
+import type { Car } from "@/lib/notion-types";
 
 /**
- * Static Geely model list for /geely — shown until the models exist in the Notion Cars DB
- * (the hub falls back to this only when Notion returns no Geely cars).
+ * Geely models for /geely and /geely/models/[model].
  *
- * Prices are MSRP incl. VAT from the Thonburi "Geely Price structure" (dealer file).
+ * Source of truth is the Notion Cars DB (brand = Geely): see carToGeelyModel / lib/geelyCatalog.ts.
+ * GEELY_MODELS below is only the FALLBACK used while Notion has no active Geely cars.
+ *
+ * Notion → model mapping (Cars DB columns):
+ *   Name/Model → name · Description → summary · Image URLs[0] → image · Price Min → starting price
+ *   Specs JSON → { "trims": ["PRO|429990", "MAX|459990"], "official_url": "https://…" }  (trims optional)
+ *
+ * Fallback prices are MSRP incl. VAT from the Thonburi "Geely Price structure" (dealer file).
  * TODO: confirm with Geely/Thonburi that these list prices may be published before launch.
  */
 export interface GeelyTrim {
@@ -64,15 +71,53 @@ export const GEELY_MODELS: GeelyModel[] = [
   },
 ];
 
-export function getGeelyModel(slug: string): GeelyModel | undefined {
+/** 0 when the model has no price (hide price UI in that case). */
+export function geelyStartingPrice(model: GeelyModel): number {
+  return model.trims.length ? Math.min(...model.trims.map((t) => t.msrp)) : 0;
+}
+
+/** "geely-ex5-2026" → "ex5" so URLs stay short: /geely/models/ex5 */
+export function modelSlugFromCarSlug(carSlug: string): string {
+  return carSlug.replace(/^geely-/, "").replace(/-20\d\d$/, "");
+}
+
+/** Parse Specs.trims: ["PRO|429990", ...] (also accepts "PRO: 429,990"). */
+export function parseTrims(specs: Car["specs"]): GeelyTrim[] {
+  const raw = specs?.trims;
+  const list = Array.isArray(raw) ? raw : typeof raw === "string" ? raw.split(/\r?\n/) : [];
+  const out: GeelyTrim[] = [];
+  for (const entry of list) {
+    const m = String(entry).match(/^\s*(.+?)\s*[|:]\s*([\d,]+(?:\.\d+)?)\s*$/);
+    if (m) out.push({ name: m[1], msrp: Number(m[2].replace(/,/g, "")) });
+  }
+  return out;
+}
+
+/** Map a Notion Car (brand Geely) to the model view used by the Geely pages. */
+export function carToGeelyModel(car: Car): GeelyModel {
+  const name = (car.model || car.name).replace(/^GEELY\s+/i, "").trim();
+  let trims = parseTrims(car.specs);
+  if (!trims.length && car.priceMin > 0) trims = [{ name: "ราคาเริ่มต้น", msrp: car.priceMin }];
+  const img = car.imageUrls[0];
+  const summary = (car.description || "").split(/\r?\n/)[0].slice(0, 160);
+  const official = typeof car.specs?.official_url === "string" ? car.specs.official_url : undefined;
+  return {
+    slug: modelSlugFromCarSlug(car.slug || car.id),
+    name,
+    summary: summary || `GEELY ${name}`,
+    image: img
+      ? { src: img, alt: `GEELY ${name}`, kind: /\.(png|webp)(\?|$)/i.test(img) ? "render" : "photo" }
+      : { src: "/brands/geely-showroom.jpg", alt: "GEELY ช.เอราวัณ รัชดา", kind: "photo" },
+    trims,
+    officialUrl: official,
+  };
+}
+
+export function getStaticGeelyModel(slug: string): GeelyModel | undefined {
   return GEELY_MODELS.find((m) => m.slug === slug);
 }
 
-export function geelyStartingPrice(model: GeelyModel): number {
-  return Math.min(...model.trims.map((t) => t.msrp));
-}
-
-export function geelyFaq(): FaqItem[] {
+export function geelyFaq(models: GeelyModel[] = GEELY_MODELS): FaqItem[] {
   const b = getBranchById("geely-ratchada");
   return [
     {
@@ -85,7 +130,7 @@ export function geelyFaq(): FaqItem[] {
     },
     {
       question: "มีรุ่นอะไรให้เลือกที่โชว์รูมรัชดาบ้าง",
-      answer: "รุ่นที่จำหน่าย ได้แก่ GEELY EX2, EX5 และ STARRAY EM-R สอบถามสต็อกและวันส่งมอบกับที่ปรึกษาการขายได้ที่โชว์รูม",
+      answer: `รุ่นที่จำหน่าย ได้แก่ ${models.map((m) => `GEELY ${m.name}`).join(", ")} สอบถามสต็อกและวันส่งมอบกับที่ปรึกษาการขายได้ที่โชว์รูม`,
     },
     {
       question: "นัดทดลองขับ GEELY ได้อย่างไร",

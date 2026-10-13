@@ -36,6 +36,8 @@ export type GwmSubLine = SubLine;
 export interface BrandConfig {
   slug: BrandSlug;
   notionBrand: Car["brand"];
+  /** Other Notion "Brand" select values that mean the same brand (e.g. Deepal → Changan renaming). */
+  notionAliases?: string[];
   displayName: string;
   displayNameTh: string;
   /** Other names people search for / the brand is known by (SEO keywords + schema.org alternateName). */
@@ -239,6 +241,8 @@ export const BRANDS: BrandConfig[] = [
   {
     slug: "deepal",
     notionBrand: "Deepal",
+    // Notion Cars DB also has "Deepal (Changan)", "Changan", "Changan NEVO" options (Changan rebrand).
+    notionAliases: ["Deepal (Changan)", "Changan", "Changan NEVO"],
     displayName: "Changan Deepal",
     displayNameTh: "ดีพอล",
     // In Thailand the maker is moving the brand to "Changan"; keep both names for SEO.
@@ -438,4 +442,16 @@ export function matchCarToLine(car: Car, brand: BrandConfig, line: SubLine): boo
   if (car.brand !== brand.notionBrand) return false;
   const model = car.model.toUpperCase();
   return line.modelPrefixes.some((prefix) => model.startsWith(prefix.toUpperCase()));
+}
+
+/** All Notion "Brand" select values (canonical + aliases) that belong to a brand — use for filters. */
+export function notionBrandValues(brand: string): string[] {
+  const cfg = BRANDS.find((b) => b.notionBrand === brand);
+  return cfg ? [cfg.notionBrand, ...(cfg.notionAliases ?? [])] : [brand];
+}
+
+/** Map any Notion "Brand" value (canonical or alias) to the canonical Car["brand"]. */
+export function canonicalNotionBrand(raw: string): string {
+  const cfg = BRANDS.find((b) => b.notionBrand === raw || b.notionAliases?.includes(raw));
+  return cfg ? cfg.notionBrand : raw;
 }

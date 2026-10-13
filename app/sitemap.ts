@@ -1,4 +1,5 @@
-import { GEELY_MODELS, geelyModelPath } from "@/lib/geelyModels";
+import { geelyModelPath } from "@/lib/geelyModels";
+import { getGeelyCatalog } from "@/lib/geelyCatalog";
 import type { MetadataRoute } from "next";
 import { getBlogSitemapEntries, getCarSitemapEntries } from "@/lib/notion";
 import { SITE_URL } from "@/lib/site";
@@ -8,9 +9,10 @@ import { BRANDS } from "@/lib/brandConfig";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [blogEntries, carEntries] = await Promise.all([
+  const [blogEntries, carEntries, geelyModels] = await Promise.all([
     getBlogSitemapEntries().catch(() => []),
     getCarSitemapEntries().catch(() => []),
+    getGeelyCatalog().catch(() => []),
   ]);
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -38,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ]);
 
-  const geelyModelPages: MetadataRoute.Sitemap = GEELY_MODELS.map((m) => ({
+  const geelyModelPages: MetadataRoute.Sitemap = geelyModels.map((m) => ({
     url: `${SITE_URL}${geelyModelPath(m.slug)}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,

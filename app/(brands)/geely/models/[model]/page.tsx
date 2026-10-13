@@ -2,7 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import { GEELY_MODELS, getGeelyModel, geelyModelPath, geelyStartingPrice } from "@/lib/geelyModels";
+import { geelyModelPath, geelyStartingPrice } from "@/lib/geelyModels";
+import { getGeelyCatalog } from "@/lib/geelyCatalog";
 import { BRAND_BY_SLUG } from "@/lib/brandConfig";
 import Ga4PageSignals from "@/components/Ga4PageSignals";
 import { breadcrumbJsonLd, pageMetadata, canonicalUrl } from "@/lib/site";
@@ -13,17 +14,21 @@ interface PageProps {
   params: Promise<{ model: string }>;
 }
 
-export function generateStaticParams() {
-  return GEELY_MODELS.map((m) => ({ model: m.slug }));
+// Notion is the source of truth; pages are rebuilt hourly and new models render on first request.
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return (await getGeelyCatalog()).map((m) => ({ model: m.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { model: slug } = await params;
-  const model = getGeelyModel(slug);
+  const model = (await getGeelyCatalog()).find((m) => m.slug === slug);
   if (!model) return {};
+  const price = geelyStartingPrice(model);
   return pageMetadata({
-    title: `GEELY ${model.name} ราคา เริ่มต้น ${baht(geelyStartingPrice(model))} | GEELY รัชดา ช.เอราวัณ`,
-    description: `GEELY ${model.name} — ${model.summary} ราคาเริ่มต้น ${baht(geelyStartingPrice(model))} นัดทดลองขับได้ที่ GEELY ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ`,
+    title: `GEELY ${model.name}${price ? ` ราคา เริ่มต้น ${baht(price)}` : ""} | GEELY รัชดา ช.เอราวัณ`,
+    description: `GEELY ${model.name} — ${model.summary}${price ? ` ราคาเริ่มต้น ${baht(price)}` : ""} นัดทดลองขับได้ที่ GEELY ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ`,
     path: geelyModelPath(model.slug),
     openGraphImage: model.image.src,
   });
@@ -31,11 +36,12 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function GeelyModelPage({ params }: PageProps) {
   const { model: slug } = await params;
-  const model = getGeelyModel(slug);
+  const catalog = await getGeelyCatalog();
+  const model = catalog.find((m) => m.slug === slug);
   if (!model) notFound();
 
   const brand = BRAND_BY_SLUG.geely;
-  const others = GEELY_MODELS.filter((m) => m.slug !== model.slug);
+  const others = catalog.filter((m) => m.slug !== model.slug);
   const crumbs = [
     { name: "หน้าแรก", path: "/" },
     { name: brand.displayNameTh, path: brand.hubPath },
@@ -50,14 +56,14 @@ export default async function GeelyModelPage({ params }: PageProps) {
     description: model.summary,
     image: canonicalUrl(model.image.src),
     url: canonicalUrl(geelyModelPath(model.slug)),
-    offers: model.trims.map((t) => ({
+    ...(model.trims.length === 0 ? {} : { offers: model.trims.map((t) => ({
       "@type": "Offer",
       name: `${model.name} ${t.name}`,
       price: t.msrp,
       priceCurrency: "THB",
       availability: "https://schema.org/InStock",
       seller: { "@type": "AutoDealer", name: "GEELY ช.เอราวัณ รัชดา" },
-    })),
+    })) }),
   };
 
   return (
@@ -92,21 +98,25 @@ export default async function GeelyModelPage({ params }: PageProps) {
               <p className="text-xs font-semibold tracking-[0.25em] text-[#3B8BEB]">GEELY</p>
               <h1 className="mt-1 text-3xl font-bold text-[#0F172A] lg:text-4xl">{model.name}</h1>
               <p className="mt-2 text-gray-500">{model.summary}</p>
-              <p className="mt-5 text-sm text-gray-500">
-                ราคาเริ่มต้น <span className="text-2xl font-bold text-[#0F172A]">{baht(geelyStartingPrice(model))}</span>
-              </p>
+              {model.trims.length > 0 && (
+                <>
+                  <p className="mt-5 text-sm text-gray-500">
+                    ราคาเริ่มต้น <span className="text-2xl font-bold text-[#0F172A]">{baht(geelyStartingPrice(model))}</span>
+                  </p>
 
-              <ul className="mt-5 divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white">
-                {model.trims.map((t) => (
-                  <li key={t.name} className="flex items-center justify-between px-5 py-3 text-sm">
-                    <span className="font-medium text-gray-700">{model.name} {t.name}</span>
-                    <span className="font-semibold text-[#0F172A]">{baht(t.msrp)}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-2 text-xs text-gray-400">
-                ราคาป้ายแนะนำรวมภาษีมูลค่าเพิ่ม อาจเปลี่ยนแปลงตามโปรโมชั่นและเงื่อนไขของผู้ผลิต
-              </p>
+                  <ul className="mt-5 divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white">
+                    {model.trims.map((t) => (
+                      <li key={t.name} className="flex items-center justify-between px-5 py-3 text-sm">
+                        <span className="font-medium text-gray-700">{model.name} {t.name}</span>
+                        <span className="font-semibold text-[#0F172A]">{baht(t.msrp)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-xs text-gray-400">
+                    ราคาป้ายแนะนำรวมภาษีมูลค่าเพิ่ม อาจเปลี่ยนแปลงตามโปรโมชั่นและเงื่อนไขของผู้ผลิต
+                  </p>
+                </>
+              )}
 
               <Link
                 href={`/booking?type=test_drive&brand=Geely&car=${encodeURIComponent(model.name)}`}
@@ -144,7 +154,8 @@ export default async function GeelyModelPage({ params }: PageProps) {
                   href={geelyModelPath(m.slug)}
                   className="rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-700 hover:border-[#3B8BEB] hover:text-[#3B8BEB]"
                 >
-                  {m.name} <span className="text-gray-400">เริ่มต้น {baht(geelyStartingPrice(m))}</span>
+                  {m.name}
+                  {geelyStartingPrice(m) > 0 && <span className="text-gray-400"> เริ่มต้น {baht(geelyStartingPrice(m))}</span>}
                 </Link>
               ))}
             </div>

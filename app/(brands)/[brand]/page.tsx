@@ -16,7 +16,8 @@ import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
 import { ArrowRight } from "lucide-react";
 import BrandSocialLinks from "@/components/BrandSocialLinks";
 import { GeelyModelCards, GeelyShowroomAndFaq } from "@/components/brands/GeelyHubSections";
-import { GEELY_MODELS, geelyFaq } from "@/lib/geelyModels";
+import { geelyFaq } from "@/lib/geelyModels";
+import { getGeelyCatalog } from "@/lib/geelyCatalog";
 import { faqPageJsonLd } from "@/lib/seo/faq";
 import { getBrandFaq } from "@/lib/brandFaq";
 import BrandFaqSection from "@/components/brands/BrandFaqSection";
@@ -56,16 +57,17 @@ export default async function BrandHubPage({ params }: PageProps) {
   if (!isBrandSlug(slug)) notFound();
 
   const brand = BRAND_BY_SLUG[slug as BrandSlug];
-  const [cars, socialLinks] = await Promise.all([
-    getCarsByBrandLine(brand.notionBrand),
+  const isGeely = brand.slug === "geely";
+  const [cars, socialLinks, geelyModels] = await Promise.all([
+    // Geely renders its own model cards from the Notion-backed catalog (below), not the generic grid.
+    isGeely ? Promise.resolve([]) : getCarsByBrandLine(brand.notionBrand),
     getSocialLinksByBrand(brand.notionBrand),
+    isGeely ? getGeelyCatalog() : Promise.resolve([]),
   ]);
 
-  // Geely: until the models exist in Notion, show the static model list + showroom info + FAQ.
-  const isGeely = brand.slug === "geely";
+  // Geely: model cards from Notion (static fallback while Notion has none) + showroom info + FAQ.
   const brandFaq = isGeely ? [] : getBrandFaq(brand.slug);
-  const useStaticGeelyModels = isGeely && cars.length === 0;
-  const modelCount = useStaticGeelyModels ? GEELY_MODELS.length : cars.length;
+  const modelCount = isGeely ? geelyModels.length : cars.length;
 
   const breadcrumbs = [
     { name: "หน้าแรก", path: "/" },
@@ -98,7 +100,7 @@ export default async function BrandHubPage({ params }: PageProps) {
       {(isGeely || brandFaq.length > 0) && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(isGeely ? geelyFaq() : brandFaq)) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(isGeely ? geelyFaq(geelyModels) : brandFaq)) }}
         />
       )}
       <Ga4PageSignals pageType="brand_hub" />
@@ -137,8 +139,8 @@ export default async function BrandHubPage({ params }: PageProps) {
             </Link>
           </div>
 
-          {useStaticGeelyModels ? (
-            <GeelyModelCards />
+          {isGeely ? (
+            <GeelyModelCards models={geelyModels} />
           ) : (
             <BrandCarGrid
               cars={cars}
@@ -150,7 +152,7 @@ export default async function BrandHubPage({ params }: PageProps) {
             />
           )}
 
-          {isGeely && <GeelyShowroomAndFaq />}
+          {isGeely && <GeelyShowroomAndFaq models={geelyModels} />}
           {brandFaq.length > 0 && <BrandFaqSection items={brandFaq} id={`${brand.slug}-faq`} />}
 
           {/* Social links — Notion CMS overrides brandConfig; same five slots for every brand */}

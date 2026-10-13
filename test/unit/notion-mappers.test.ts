@@ -164,6 +164,22 @@ describe("getActiveCars filter building", () => {
     expect(query.sorts).toEqual([{ property: "Sort Order", direction: "ascending" }, { property: "Year", direction: "descending" }]);
   });
 
+  it("brand filter matches every Notion alias (Deepal → Changan) and normalises the result", async () => {
+    notionMock.databases.query.mockResolvedValue({ results: [makeCarPage({ Brand: select("Changan") })] });
+    const cars = await notion.getActiveCars({ brand: "Deepal" });
+
+    expect(cars[0].brand).toBe("Deepal");
+    const query = notionMock.databases.query.mock.calls[0][0];
+    expect(query.filter.and[1]).toEqual({
+      or: [
+        { property: "Brand", select: { equals: "Deepal" } },
+        { property: "Brand", select: { equals: "Deepal (Changan)" } },
+        { property: "Brand", select: { equals: "Changan" } },
+        { property: "Brand", select: { equals: "Changan NEVO" } },
+      ],
+    });
+  });
+
   it("only filters Is Active when no filters passed", async () => {
     notionMock.databases.query.mockResolvedValue({ results: [] });
     await notion.getActiveCars();

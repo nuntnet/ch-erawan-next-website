@@ -1,6 +1,5 @@
 import { BRANDS } from "@/lib/brandConfig";
 import { branches } from "@/lib/branchData";
-import { GEELY_MODELS, geelyModelPath } from "@/lib/geelyModels";
 
 /**
  * Tool definitions for WebMCP (navigator.modelContext) — an experimental browser API that lets an
@@ -11,7 +10,7 @@ export interface WebMcpTool {
   name: string;
   description: string;
   inputSchema: Record<string, unknown>;
-  execute: (input: Record<string, unknown>) => unknown;
+  execute: (input: Record<string, unknown>) => unknown | Promise<unknown>;
 }
 
 const text = (data: unknown) => ({ content: [{ type: "text", text: JSON.stringify(data) }] });
@@ -59,17 +58,17 @@ export function buildWebMcpTools(origin: string): WebMcpTool[] {
     },
     {
       name: "list_geely_models",
-      description: "List GEELY models sold at GEELY ช.เอราวัณ รัชดา with trims and list prices (THB, incl. VAT).",
+      description: "List GEELY models sold at GEELY ช.เอราวัณ รัชดา with trims and list prices (THB, incl. VAT). Data comes from the site's CMS.",
       inputSchema: { type: "object", properties: {} },
-      execute: () =>
-        text(
-          GEELY_MODELS.map((m) => ({
-            model: m.name,
-            summary: m.summary,
-            trims: m.trims,
-            url: `${origin}${geelyModelPath(m.slug)}`,
-          }))
-        ),
+      execute: async () => {
+        try {
+          const res = await fetch("/api/geely-models");
+          if (!res.ok) throw new Error(String(res.status));
+          return text(await res.json());
+        } catch {
+          return text({ error: "Could not load the Geely model list. Open the Geely page instead.", url: `${origin}/geely` });
+        }
+      },
     },
     {
       name: "get_test_drive_booking_link",

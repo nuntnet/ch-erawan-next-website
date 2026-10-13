@@ -108,7 +108,7 @@ export function carToGeelyModel(car: Car): GeelyModel {
     summary: summary || `GEELY ${name}`,
     image: img
       ? { src: img, alt: `GEELY ${name}`, kind: /\.(png|webp)(\?|$)/i.test(img) ? "render" : "photo" }
-      : { src: "/brands/geely-showroom.jpg", alt: "GEELY ช.เอราวัณ รัชดา", kind: "photo" },
+      : { src: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791866239/ch-erawan/brands/geely-showroom.jpg", alt: "GEELY ช.เอราวัณ รัชดา", kind: "photo" },
     trims,
     officialUrl: official,
   };

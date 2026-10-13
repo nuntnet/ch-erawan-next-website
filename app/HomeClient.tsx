@@ -53,10 +53,11 @@ const heroSlides = [
   { slug: "gwm",        brand: "GWM",        tagline: "Go With More",           thaiTitle: "จีดับเบิลยูเอ็ม" },
   { slug: "deepal",     brand: "Deepal",     tagline: "Driving Forward with You", thaiTitle: "ดีพอล" },
   { slug: "kia",        brand: "Kia",        tagline: "Movement that inspires", thaiTitle: "เกีย" },
-  // Geely hero art is local (AI-generated stand-in) until real Cloudinary hero assets exist.
+  // Geely hero art is an AI-generated stand-in (Cloudinary) until a real showroom photo exists.
   {
     slug: "geely", brand: "Geely", tagline: "See the World in Full", thaiTitle: "จีลี่",
-    desktop: "/brands/geely-hero-desktop.jpg", mobile: "/brands/geely-hero-mobile.jpg",
+    desktop: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791866241/ch-erawan/hero/geely-hero-desktop.jpg",
+    mobile: "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791866243/ch-erawan/hero/geely-hero-mobile.jpg",
   },
 ].map((s) => ({
   ...s,

@@ -420,7 +420,8 @@ export const branches: Branch[] = [
     mapUrl: "https://maps.app.goo.gl/famd7Pu5vYeYZQMF6",
     mapEmbed: "https://www.google.com/maps?q=13.8305909,100.5342816&hl=th&output=embed",
     // Built from OpenStreetMap tiles (© OpenStreetMap contributors); swap for the illustrated style when designed.
-    graphicMapUrl: "/branch-maps/branch-map-geely-ratchada.png",
+    graphicMapUrl:
+      "https://res.cloudinary.com/n5llrdnq/image/upload/f_auto,q_auto:best/v1791866246/ch-erawan/branch-maps/branch-map-geely-ratchada.png",
     // Pin from the official Google Maps link for GEELY ช.เอราวัณ รัชดา.
     lat: 13.8305909,
     lng: 100.5342816,

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import CompanyLogo from "@/components/CompanyLogo";
+import CookieSettingsButton from "@/components/CookieSettingsButton";
 import { branches } from "@/lib/branchData";
 import { getYearsOfExperience } from "@/lib/company";
 
@@ -194,6 +195,8 @@ export default function Footer() {
             <Link href="/privacy-cctv" className="hover:text-white/70 transition-colors">นโยบาย CCTV</Link>
             <span className="hidden md:inline text-white/15">|</span>
             <Link href="/cookie-policy" className="hover:text-white/70 transition-colors">นโยบายคุกกี้</Link>
+            <span className="hidden md:inline text-white/15">|</span>
+            <CookieSettingsButton className="hover:text-white/70 transition-colors" />
           </div>
         </div>
       </div>

@@ -9,6 +9,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import OutboundClickTracker from "@/components/OutboundClickTracker";
 import WebMcpTools from "@/components/WebMcpTools";
+import CookieConsent from "@/components/CookieConsent";
+import { consentBootstrapScript } from "@/lib/consent";
 import Script from "next/script";
 
 // Unset on staging on purpose — a second GA4 property/env var would be
@@ -91,15 +93,16 @@ export default function RootLayout({
         <WebMcpTools />
         {GA_MEASUREMENT_ID && (
           <>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+            {/* Consent Mode v2: default denied + replay a stored choice, THEN config. Order matters. */}
             <Script id="ga4-init" strategy="afterInteractive">
               {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
+                ${consentBootstrapScript()}
                 gtag('js', new Date());
                 gtag('config', '${GA_MEASUREMENT_ID}');
               `}
             </Script>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+            <CookieConsent />
           </>
         )}
       </body>

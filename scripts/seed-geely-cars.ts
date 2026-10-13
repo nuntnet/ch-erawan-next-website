@@ -14,7 +14,7 @@
  * Prices are MSRP incl. VAT from the Thonburi dealer file — confirm they may be published first.
  */
 import { config } from "dotenv";
-import { createCar, getActiveCars } from "../lib/notion";
+import { createCar, getActiveCars, setCarSortOrder } from "../lib/notion";
 import type { CarInput } from "../lib/notion-types";
 
 config({ path: ".env.local" });
@@ -112,6 +112,8 @@ async function main() {
       continue;
     }
     const created = await createCar(car);
+    // createCar does not write "Sort Order" (admin drag-and-drop owns it), so set it explicitly.
+    await setCarSortOrder(created.id, car.sortOrder);
     console.log(`created: ${created.slug} (${created.id})`);
   }
 }

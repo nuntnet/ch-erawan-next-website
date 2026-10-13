@@ -7,6 +7,16 @@ import {
   organizationSameAs,
 } from "./constants";
 
+/** HQ = Mazda Nakhon Pathom (branchData isHQ). */
+const HQ_ADDRESS = {
+  "@type": "PostalAddress" as const,
+  streetAddress: "75/2 หมู่ 1 ถนนเพชรเกษม ตำบลธรรมศาลา อำเภอเมืองนครปฐม",
+  addressLocality: "นครปฐม",
+  addressRegion: "นครปฐม",
+  postalCode: "73000",
+  addressCountry: "TH",
+};
+
 const dealerDescription =
   "ตัวแทนจำหน่ายรถยนต์ชั้นนำในจังหวัดนครปฐมและกรุงเทพฯ Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely — 10 สาขา";
 
@@ -21,12 +31,7 @@ export function organizationNode() {
     logo: LOGO_URL,
     description: dealerDescription,
     telephone: DEFAULT_PHONE,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "นครปฐม",
-      addressRegion: "นครปฐม",
-      addressCountry: "TH",
-    },
+    address: HQ_ADDRESS,
     ...(sameAs.length > 0 ? { sameAs } : {}),
   };
 }
@@ -42,11 +47,7 @@ export function autoDealerNode() {
     description: dealerDescription,
     telephone: DEFAULT_PHONE,
     parentOrganization: { "@id": `${SITE_URL}/#organization` },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "นครปฐม",
-      addressCountry: "TH",
-    },
+    address: HQ_ADDRESS,
     areaServed: { "@type": "City", name: "นครปฐม" },
     brand: DEALER_BRANDS.map((name) => ({ "@type": "Brand", name })),
   };

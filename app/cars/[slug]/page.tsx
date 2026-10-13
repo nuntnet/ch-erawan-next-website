@@ -1,3 +1,4 @@
+import { geelyModelPath, modelSlugFromCarSlug } from "@/lib/geelyModels";
 import { notFound } from "next/navigation";
 import { getCarBySlug, getCarSlugsForPrerender, getActiveCars } from "@/lib/notion";
 import CarDetailClient from "./CarDetailClient";
@@ -28,7 +29,9 @@ export async function generateMetadata({
   const title = `${car.brand} ${car.model} ${car.year}`;
   const description =
     car.description || `${car.brand} ${car.model} ราคาเริ่มต้น ฿${car.priceMin.toLocaleString()}`;
-  const path = `/cars/${car.slug || slug}`;
+  // Geely cars live on /geely/models/<slug> (same content) — point search engines there.
+  const path =
+    car.brand === "Geely" ? geelyModelPath(modelSlugFromCarSlug(car.slug || slug)) : `/cars/${car.slug || slug}`;
   return {
     title,
     description,

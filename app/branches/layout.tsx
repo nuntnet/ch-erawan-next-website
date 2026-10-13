@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 import { localBusinessGraph } from "@/lib/seo";
+import { BRANDS } from "@/lib/brandConfig";
+import { branches } from "@/lib/branchData";
 
 export const metadata: Metadata = pageMetadata({
-  title: "สาขาของเรา",
-  description: "10 สาขา ช.เอราวัณ กรุ๊ป ในนครปฐมและกรุงเทพฯ — Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely",
+  title: "10 สาขา นครปฐมและกรุงเทพฯ — ที่ตั้ง เบอร์โทร แผนที่",
+  description: `ที่ตั้ง เบอร์โทร และแผนที่ ${branches.length} สาขา ช.เอราวัณ กรุ๊ป ในนครปฐม สามพราน และรัชดา กรุงเทพฯ — ${BRANDS.map((b) => b.displayName).join(", ")}`,
   path: "/branches",
 });
 

@@ -10,7 +10,7 @@ export function localBusinessGraph() {
     "@graph": branches.map((branch) => ({
       "@type": ["AutoDealer", "LocalBusiness"],
       "@id": `${SITE_URL}/#branch-${branch.id}`,
-      name: branch.name,
+      name: branch.displayName ?? branch.name,
       branchOf: { "@id": `${SITE_URL}/#organization` },
       brand: {
         "@type": "Brand",

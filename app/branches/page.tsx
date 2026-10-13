@@ -181,7 +181,7 @@ export default function ServiceLocator() {
                           </span>
                         )}
                       </div>
-                      <h3 className="font-bold text-[#0F172A] text-sm leading-snug">{branch.name}</h3>
+                      <h3 className="font-bold text-[#0F172A] text-sm leading-snug">{branch.displayName ?? branch.name}</h3>
                       <p className="text-[#64748B] text-xs mt-1 line-clamp-1">{branch.address}</p>
                       <p className="text-[#0F172A] text-xs font-medium mt-1">{branch.phone}</p>
                     </div>
@@ -249,7 +249,7 @@ export default function ServiceLocator() {
                             </span>
                             {selected.isHQ && <span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-full font-medium">สำนักงานใหญ่</span>}
                           </div>
-                          <h2 className="text-lg font-bold text-[#0F172A]">{selected.name}</h2>
+                          <h2 className="text-lg font-bold text-[#0F172A]">{selected.displayName ?? selected.name}</h2>
                           {selected.note && (
                             <p className="text-xs text-[#64748B] mt-0.5 italic">{selected.note}</p>
                           )}

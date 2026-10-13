@@ -16,6 +16,8 @@ export interface Branch {
   name: string;
   companyName: string;
   shortName: string;
+  /** Public/SEO name when it differs from `name` (which stays as the internal key for booking/SPS/email routing). */
+  displayName?: string;
   isHQ: boolean;
   address: string;
   phone: string;
@@ -124,6 +126,7 @@ export const branches: Branch[] = [
     id: "deepal-salaya",
     brand: "Deepal",
     name: "Deepal ช.เอราวัณ ศาลายา",
+    displayName: "Changan Deepal ช.เอราวัณ ศาลายา",
     companyName: "บริษัท ช.เอราวัณ ออโตเซลล์ จำกัด",
     shortName: "Deepal ศาลายา",
     isHQ: false,

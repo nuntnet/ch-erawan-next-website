@@ -179,7 +179,7 @@ export default function CarDetailClient({ car, relatedCars = [] }: { car: Car; r
                       aria-label={`ดูรูปที่ ${i + 1}`}
                       className={`w-16 h-12 rounded-lg overflow-hidden border-2 shrink-0 ${i === currentImage ? "border-[#0F172A]" : "border-transparent"}`}
                     >
-                      <img src={img} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                      <img src={img} alt={`${car.brand} ${car.model} รูปที่ ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>

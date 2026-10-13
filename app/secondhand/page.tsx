@@ -2,12 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle, Phone, Mail, MapPin, Car, Gauge, Palette, Settings, CreditCard, Wrench, ArrowRight, Clock, DollarSign, Shield } from "lucide-react";
 import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/lib/seo";
+import { faqPageJsonLd } from "@/lib/seo/faq";
+import { getSecondhandFaq } from "@/lib/brandFaq";
+import BrandFaqSection from "@/components/brands/BrandFaqSection";
 
 export const revalidate = 86400;
 
 export const metadata = pageMetadata({
   title: "รับซื้อรถมือสอง",
-  description: "บริการรับซื้อรถมือสอง ประเมินราคายุติธรรม จาก ช.เอราวัณ กรุ๊ป",
+  description: "รับซื้อรถมือสองและเทิร์นรถเก่าแลกคันใหม่กับ ช.เอราวัณ กรุ๊ป ประเมินราคาจากสภาพรถจริง ช่วยประสานไฟแนนซ์และเอกสารให้ครบในที่เดียว",
   path: "/secondhand",
 });
 
@@ -255,6 +259,11 @@ export default function Secondhand() {
             </div>
           </div>
         </div>
+      </div>
+
+      <JsonLd data={faqPageJsonLd(getSecondhandFaq())} />
+      <div className="container pb-16">
+        <BrandFaqSection items={getSecondhandFaq()} id="secondhand-faq" />
       </div>
     </div>
   );

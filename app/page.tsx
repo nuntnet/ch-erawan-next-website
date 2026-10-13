@@ -4,6 +4,9 @@ import { pageMetadata, SITE_NAME } from "@/lib/site";
 import { JsonLd, itemListJsonLd } from "@/lib/seo";
 import HomeClient from "./HomeClient";
 import { getYearsOfExperience } from "@/lib/company";
+import { getSiteFaq } from "@/lib/brandFaq";
+import { faqPageJsonLd } from "@/lib/seo/faq";
+import BrandFaqSection from "@/components/brands/BrandFaqSection";
 
 export const revalidate = 3600;
 
@@ -25,7 +28,7 @@ const HOME_DESCRIPTION =
   `ดีลเลอร์รถยนต์ครบวงจร จ.นครปฐม กว่า ${getYearsOfExperience()} ปี — Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely ราคาดีที่สุด 10 สาขา ทดลองขับฟรี จองนัดออนไลน์ได้เลย`;
 
 export const metadata: Metadata = pageMetadata({
-  title: `ดีลเลอร์รถยนต์นครปฐม Mazda Ford Mitsubishi GWM Deepal Kia GAC Lepas Geely | ${SITE_NAME}`,
+  title: `ดีลเลอร์รถยนต์นครปฐมและกรุงเทพฯ 9 แบรนด์ 10 สาขา | ${SITE_NAME}`,
   description: HOME_DESCRIPTION,
   path: "/",
 });
@@ -92,6 +95,12 @@ export default async function HomePage() {
         publicStories={publicStories}
         promotions={promotions}
       />
+      <JsonLd data={faqPageJsonLd(getSiteFaq())} />
+      <section className="bg-white pb-16">
+        <div className="container">
+          <BrandFaqSection items={getSiteFaq()} id="home-faq" />
+        </div>
+      </section>
     </>
   );
 }

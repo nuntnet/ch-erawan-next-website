@@ -4,7 +4,7 @@ import { contactPageJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "ติดต่อเรา",
-  description: "ติดต่อ ช.เอราวัณ กรุ๊ป 10 สาขาในนครปฐมและกรุงเทพฯ",
+  description: "ติดต่อ ช.เอราวัณ กรุ๊ป 10 สาขาในนครปฐมและกรุงเทพฯ — เบอร์โทรฝ่ายขาย ฝ่ายบริการ ฝ่ายอะไหล่ และประกันภัย พร้อมแบบฟอร์มส่งข้อความ",
   path: "/contact",
 });
 

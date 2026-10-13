@@ -47,14 +47,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const blogPages: MetadataRoute.Sitemap = blogEntries.map(({ slug, lastModified }) => ({
+  // Notion can return the same post twice — keep one URL per slug.
+  const uniqueBlog = Array.from(new Map(blogEntries.map((e) => [e.slug, e])).values());
+  const blogPages: MetadataRoute.Sitemap = uniqueBlog.map(({ slug, lastModified }) => ({
     url: `${SITE_URL}/blog/${slug}`,
     lastModified,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  const carPages: MetadataRoute.Sitemap = carEntries.map(({ slug, lastModified }) => ({
+  // /cars/geely-* canonicalise to /geely/models/*, so keep them out of the sitemap.
+  const carPages: MetadataRoute.Sitemap = carEntries.filter(({ slug }) => !slug.startsWith("geely-")).map(({ slug, lastModified }) => ({
     url: `${SITE_URL}/cars/${slug}`,
     lastModified,
     changeFrequency: "weekly",

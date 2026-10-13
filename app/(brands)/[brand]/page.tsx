@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps) {
   const brand = BRAND_BY_SLUG[slug];
   return {
     ...pageMetadata({
-    title: `${brand.displayName} ${brand.locationTh ?? "นครปฐม"} ราคาและโปรโมชั่น 2569 | ช.เอราวัณ`,
+    title: `${brand.displayName} ${brand.locationTh ?? "นครปฐม"} ราคาและโปรโมชั่น 2569`,
     description: `${brand.displayNameTh} ${brand.locationTh ?? "นครปฐม"} — ตัวแทนจำหน่ายอย่างเป็นทางการ ราคาดีที่สุด ผ่อนสบาย ทดลองขับฟรี บริการหลังการขายครบวงจร. ${brand.descriptionTh}`,
     path: brand.hubPath,
     openGraphImage: brand.logoPath,

@@ -14,7 +14,7 @@ export function GET() {
 
   const branchLines = branches.map((b, i) => {
     const status = b.openingDate ? ` [opening ${b.openingDate}]` : "";
-    return `${i + 1}. ${b.name}${status} — ${b.address} — โทร ${b.phone}`;
+    return `${i + 1}. ${b.displayName ?? b.name}${status} — ${b.address} — โทร ${b.phone}`;
   });
 
   const body = `# ${LEGAL_NAME} (Ch.Erawan Group)

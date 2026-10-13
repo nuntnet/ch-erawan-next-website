@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export const metadata = pageMetadata({
   title: "เรื่องราวลูกค้า",
-  description: `ความประทับใจจากลูกค้าจริงที่ไว้วางใจ ช.เอราวัณ กรุ๊ป มากว่า ${getYearsOfExperience()} ปี`,
+  description: `ความประทับใจและรีวิวจากลูกค้าจริงที่ซื้อรถและใช้บริการกับ ช.เอราวัณ กรุ๊ป ผู้จำหน่ายรถยนต์ในนครปฐมและกรุงเทพฯ มากว่า ${getYearsOfExperience()} ปี`,
   path: "/stories",
 });
 

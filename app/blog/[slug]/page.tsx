@@ -9,7 +9,7 @@ import { ChevronRight } from "lucide-react";
 import CallToAction from "@/components/CallToAction";
 import { cldUrl } from "@/lib/cloudinary";
 import type { Metadata } from "next";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/site";
+import { breadcrumbJsonLd, canonicalUrl, fitTitle } from "@/lib/site";
 import { JsonLd, articleJsonLd } from "@/lib/seo";
 
 export const revalidate = 86400;
@@ -36,7 +36,7 @@ export async function generateMetadata({
   const description = post.seoDescription || post.excerpt;
   const path = `/blog/${post.slug || slug}`;
   return {
-    title,
+    title: fitTitle(title),
     description,
     alternates: { canonical: canonicalUrl(path) },
     openGraph: {

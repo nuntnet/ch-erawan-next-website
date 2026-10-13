@@ -31,3 +31,20 @@ describe("site-wide SEO data", () => {
     expect(faq[1].answer).toContain("GEELY ช.เอราวัณ รัชดา");
   });
 });
+
+import { fitTitle, pageMetadata, TITLE_MAX } from "@/lib/site";
+
+describe("title length", () => {
+  it("keeps the site suffix for short titles and drops it for long ones", () => {
+    expect(fitTitle("สาขาของเรา")).toBe("สาขาของเรา");
+    const long = "ก".repeat(TITLE_MAX - 5);
+    expect(fitTitle(long)).toEqual({ absolute: long });
+  });
+
+  it("pageMetadata fits the <title> but keeps the full title for Open Graph", () => {
+    const long = "ข".repeat(60);
+    const meta = pageMetadata({ title: long, description: "d", path: "/x" });
+    expect(meta.title).toEqual({ absolute: long });
+    expect(meta.openGraph?.title).toBe(long);
+  });
+});

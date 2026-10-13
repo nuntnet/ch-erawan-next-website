@@ -4,7 +4,7 @@ import { getCarBySlug, getCarSlugsForPrerender, getActiveCars } from "@/lib/noti
 import CarDetailClient from "./CarDetailClient";
 import type { Metadata } from "next";
 import { JsonLd, productVehicleJsonLd, carBreadcrumbJsonLd } from "@/lib/seo";
-import { canonicalUrl } from "@/lib/site";
+import { canonicalUrl, fitTitle } from "@/lib/site";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -33,7 +33,7 @@ export async function generateMetadata({
   const path =
     car.brand === "Geely" ? geelyModelPath(modelSlugFromCarSlug(car.slug || slug)) : `/cars/${car.slug || slug}`;
   return {
-    title,
+    title: fitTitle(title),
     description,
     alternates: { canonical: canonicalUrl(path) },
     openGraph: {

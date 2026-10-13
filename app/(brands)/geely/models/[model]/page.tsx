@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
   if (!model) return {};
   const price = geelyStartingPrice(model);
   return pageMetadata({
-    title: `GEELY ${model.name}${price ? ` ราคา เริ่มต้น ${baht(price)}` : ""} | GEELY รัชดา ช.เอราวัณ`,
+    title: `GEELY ${model.name}${price ? ` ราคา เริ่มต้น ${baht(price)}` : ""} รัชดา`,
     description: `GEELY ${model.name} — ${model.summary}${price ? ` ราคาเริ่มต้น ${baht(price)}` : ""} นัดทดลองขับได้ที่ GEELY ช.เอราวัณ รัชดา ถนนรัชดาภิเษก เขตบางซื่อ กรุงเทพฯ`,
     path: geelyModelPath(model.slug),
     openGraphImage: model.image.src,

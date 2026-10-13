@@ -22,6 +22,19 @@ export function canonicalUrl(path: string): string {
   return new URL(normalized, SITE_URL).toString();
 }
 
+/** Max <title> length we aim for (search results truncate around here). */
+export const TITLE_MAX = 65;
+/** The root layout appends " | {SITE_NAME}" to every title. */
+const TITLE_SUFFIX_LENGTH = " | ".length + SITE_NAME.length;
+
+/**
+ * Keep <title> within TITLE_MAX: when the page title plus the site suffix would be too long,
+ * drop the suffix (the full page title is kept) instead of letting the result get cut mid-word.
+ */
+export function fitTitle(title: string): Metadata["title"] {
+  return title.length + TITLE_SUFFIX_LENGTH > TITLE_MAX ? { absolute: title } : title;
+}
+
 /** Shared metadata fields for static/list pages. */
 export function pageMetadata({
   title,
@@ -35,7 +48,7 @@ export function pageMetadata({
   openGraphImage?: string | null;
 }): Metadata {
   return {
-    title,
+    title: fitTitle(title),
     description,
     alternates: { canonical: canonicalUrl(path) },
     openGraph: {

@@ -408,9 +408,8 @@ export const branches: Branch[] = [
     address: "161 ถนนรัชดาภิเษก แขวงวงศ์สว่าง เขตบางซื่อ กรุงเทพมหานคร 10800",
     phone: "098-354-2979",
     fax: "",
-    // No LINE OA yet — empty lineUrl renders a greyed-out, non-clickable LINE button.
-    lineId: "",
-    lineUrl: "",
+    lineId: "@172vhprg",
+    lineUrl: "https://line.me/R/ti/p/@172vhprg",
     // Confirmed by the owner (2026-10-13): Mon–Sat 08:30–17:30; Sundays and public holidays 09:00–17:00.
     hours: "จ–ส 08:30–17:30 · อาทิตย์และวันหยุดนักขัตฤกษ์ 09:00–17:00",
     schemaHours: [

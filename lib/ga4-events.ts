@@ -30,8 +30,7 @@ export function trackGenerateLead(params: { inquiryType: InquiryType; branch?: s
 
 /** Fired by OutboundClickTracker for any line.me/lin.ee link click. */
 export function trackClickLine(params: { path: string; lineUrl: string }): void {
-  // Geely Ratchada shares the Mitsubishi LINE OA for now, so the URL alone would be
-  // attributed to Mitsubishi — fall back to the page the click came from.
+  // Clicks on /geely pages always count as Geely, even if a shared/legacy OA link is used.
   const brand = params.path.startsWith("/geely") ? "Geely" : brandFromLineUrl(params.lineUrl);
   fire("click_line", {
     path: params.path,

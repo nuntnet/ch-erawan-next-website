@@ -13,7 +13,7 @@ const LINE_ACCOUNTS: { brand: string; lineId: string; url: string | null; color:
   { brand: "Mitsubishi", lineId: "ฝ่ายขาย", url: "https://lin.ee/N7UjCTE", color: "#E60012" },
   { brand: "GWM",        lineId: "ฝ่ายขาย", url: "https://lin.ee/xKFaZcUG", color: "#C8102E" },
   { brand: "Kia",        lineId: "ฝ่ายขาย", url: "https://lin.ee/XQiajzI", color: "#BB162B" },
-  { brand: "Geely",      lineId: "เร็วๆ นี้", url: null, color: "#0B5CAD" },
+  { brand: "Geely",      lineId: "ฝ่ายขาย", url: "https://line.me/R/ti/p/@172vhprg", color: "#0B5CAD" },
 ];
 
 const LINE_SVG = (

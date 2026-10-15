@@ -8,6 +8,7 @@ describe("brandFromLineUrl", () => {
     expect(brandFromLineUrl("https://lin.ee/PhIWeTl")).toBe("Ford");
     expect(brandFromLineUrl("https://lin.ee/xKFaZcUG")).toBe("GWM");
     expect(brandFromLineUrl("https://lin.ee/XQiajzI")).toBe("Kia");
+    expect(brandFromLineUrl("https://line.me/R/ti/p/@172vhprg")).toBe("Geely");
   });
 
   it("resolves line.me/@handle links to their brand", () => {

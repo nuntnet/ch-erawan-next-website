@@ -20,6 +20,7 @@ const LINE_URL_BRAND: { match: string; brand: string }[] = [
   { match: "xKFaZcUG", brand: "GWM" },
   { match: "gwmch.erawan", brand: "GWM" },
   { match: "XQiajzI", brand: "Kia" },
+  { match: "172vhprg", brand: "Geely" },
   { match: "kiach.erawan", brand: "Kia" },
 ];
 

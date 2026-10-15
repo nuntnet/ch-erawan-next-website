@@ -12,7 +12,7 @@ const LINE_ACCOUNTS: { brand: string; lineId: string; url: string | null }[] = [
   { brand: "Mitsubishi", lineId: "@mitsuch.erawan", url: "https://line.me/R/ti/p/@mitsuch.erawan" },
   { brand: "GWM",        lineId: "@gwmch.erawan",   url: "https://line.me/R/ti/p/@gwmch.erawan" },
   { brand: "Kia",        lineId: "@kiach.erawan",   url: "https://line.me/R/ti/p/@kiach.erawan" },
-  { brand: "Geely",      lineId: "เร็วๆ นี้",        url: null },
+  { brand: "Geely",      lineId: "@172vhprg",       url: "https://line.me/R/ti/p/@172vhprg" },
 ];
 
 const LINE_SVG = (

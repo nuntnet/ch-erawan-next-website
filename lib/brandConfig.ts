@@ -386,6 +386,7 @@ export const BRANDS: BrandConfig[] = [
       facebook: "https://www.facebook.com/people/GEELY-%E0%B8%8A%E0%B9%80%E0%B8%AD%E0%B8%A3%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%93-%E0%B8%A3%E0%B8%B1%E0%B8%8A%E0%B8%94%E0%B8%B2/61594950693980/",
       instagram: "https://www.instagram.com/geely_ch.erawanratchada/",
       tiktok: "https://www.tiktok.com/@geelych.erawanratchada",
+      line: "https://line.me/R/ti/p/@172vhprg",
     },
   },
 ];

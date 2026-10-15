@@ -25,10 +25,10 @@ const heroSrcSet = (variant: "desktop" | "mobile") =>
   ).join(", ");
 
 const HOME_DESCRIPTION =
-  `ดีลเลอร์รถยนต์ครบวงจร จ.นครปฐม กว่า ${getYearsOfExperience()} ปี — Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely ราคาดีที่สุด 10 สาขา ทดลองขับฟรี จองนัดออนไลน์ได้เลย`;
+  `ดีลเลอร์รถยนต์ครบวงจร จ.นครปฐม กว่า ${getYearsOfExperience()} ปี — Mazda, Ford, Mitsubishi, GWM, Deepal, Kia, GAC, Lepas, Geely 10 สาขา ทดลองขับฟรี จองนัดออนไลน์ได้เลย`;
 
 export const metadata: Metadata = pageMetadata({
-  title: `ดีลเลอร์รถยนต์นครปฐมและกรุงเทพฯ 9 แบรนด์ 10 สาขา | ${SITE_NAME}`,
+  title: `ดีลเลอร์รถยนต์นครปฐม 9 แบรนด์ 10 สาขา | ${SITE_NAME}`,
   description: HOME_DESCRIPTION,
   path: "/",
 });

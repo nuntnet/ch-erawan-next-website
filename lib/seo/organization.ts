@@ -39,7 +39,7 @@ export function organizationNode() {
 /** AutoDealer node for @graph */
 export function autoDealerNode() {
   return {
-    "@type": "AutoDealer" as const,
+    "@type": ["AutoDealer", "LocalBusiness"] as string[],
     "@id": `${SITE_URL}/#autodealer`,
     name: ORGANIZATION_NAME,
     url: SITE_URL,
@@ -50,6 +50,18 @@ export function autoDealerNode() {
     address: HQ_ADDRESS,
     areaServed: { "@type": "City", name: "นครปฐม" },
     brand: DEALER_BRANDS.map((name) => ({ "@type": "Brand", name })),
+    // Services only (no prices): the same offerings the site FAQ already states.
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "บริการของ ช.เอราวัณ กรุ๊ป",
+      itemListElement: [
+        "จำหน่ายรถยนต์ใหม่และนัดทดลองขับ",
+        "ศูนย์บริการและซ่อมบำรุง",
+        "ซ่อมสีและตัวถัง (Body & Paint)",
+        "ประกันภัยรถยนต์",
+        "รถมือสองและรับเทิร์นรถเก่า",
+      ].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
+    },
   };
 }
 

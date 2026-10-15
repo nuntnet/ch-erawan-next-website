@@ -1,0 +1,6 @@
+date,platform,prompt_id,mentioned,recommended,cited_our_site,info_accurate,competitors,notes
+2026-10-14,perplexity,B01,yes,yes,yes,no,,ตอบว่า 6 แบรนด์ (ปัจจุบัน 9) ข้อมูลล้าสมัย
+2026-10-14,perplexity,B02,yes,no,yes,yes,,กลาง ๆ: เตือนข่าว สคบ. ปี 2020 (ช.เอราวัณ มอเตอร์ นครปฐม) + โพสต์ Pantip เก่า (เชฟโรเลต ราชบุรี) — ต้องตรวจว่าใช่นิติบุคคลในกลุ่มเราหรือไม่
+2026-10-14,perplexity,B03,yes,yes,yes,no,,ตอบว่า 7 สาขา (ปัจจุบัน 10); เบอร์ Kia ซ้ำกับ Ford (02-431-1000) ตรวจว่าเว็บใส่ผิดหรือไม่
+2026-10-14,perplexity,B07,yes,yes,yes,no,,ที่อยู่/เบอร์ถูก แต่บอกว่าเวลาเปิดไม่ระบุ แล้วเดา 08:00–17:00 (จริง 08:30–17:30)
+2026-10-14,perplexity,C08,yes,no,no,yes,GEELY Praram3 Autohaus;GEELY ดอนเมือง (MEGA Auto),ถูกจัดอันดับ 3 ในตาราง เวลาเปิดถูกต้อง; แนะนำ Praram3 Autohaus เป็นอันดับแรก (รีวิว 4.7/104)

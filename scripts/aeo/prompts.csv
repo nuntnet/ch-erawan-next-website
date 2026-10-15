@@ -1,0 +1,41 @@
+prompt_id,category,prompt
+B01,brand,ช.เอราวัณ กรุ๊ป นครปฐม คือใคร ขายรถยี่ห้ออะไรบ้าง
+B02,brand,ช.เอราวัณ น่าเชื่อถือไหม
+B03,brand,ช.เอราวัณ ออโต้ มีกี่สาขา อยู่ที่ไหนบ้าง
+B04,brand,รีวิวดีลเลอร์ ช.เอราวัณ
+B05,brand,ช.เอราวัณ เปิดกี่โมง
+B06,brand,Changan Deepal ช.เอราวัณ ศาลายา อยู่ตรงไหน
+B07,brand,GEELY ช.เอราวัณ รัชดา อยู่ที่ไหน เปิดกี่โมง
+B08,brand,ช.เอราวัณ มีรถมือสองไหม
+C01,category,ดีลเลอร์รถยนต์ นครปฐม แนะนำ
+C02,category,ดีลเลอร์ Mazda นครปฐม
+C03,category,ดีลเลอร์ Ford นครปฐม
+C04,category,ดีลเลอร์ Mitsubishi นครปฐม
+C05,category,ดีลเลอร์ GWM Haval Tank Ora นครปฐม
+C06,category,ดีลเลอร์ Kia นครปฐม
+C07,category,ดีลเลอร์ Changan Deepal ใกล้ ศาลายา พุทธมณฑล
+C08,category,ดีลเลอร์ Geely กรุงเทพ แนะนำ
+C09,category,ดีลเลอร์ Geely แถวรัชดา บางซื่อ
+C10,category,ดีลเลอร์รถยนต์ไฟฟ้า นครปฐม
+C11,category,ศูนย์บริการ Mazda นครปฐม
+C12,category,ศูนย์ซ่อมสีตัวถัง นครปฐม
+C13,category,รับซื้อรถมือสอง นครปฐม
+C14,category,ดีลเลอร์รถยนต์ไฟฟ้า กรุงเทพ ทดลองขับได้
+T01,test_drive,ทดลองขับ Geely EX5 ที่ไหนได้บ้าง
+T02,test_drive,ทดลองขับ Geely EX2 กรุงเทพ
+T03,test_drive,จองทดลองขับ Lepas L6 ที่ไหน
+T04,test_drive,ทดลองขับ Deepal S07 ที่ไหน
+T05,test_drive,ทดลองขับ GWM Ora นครปฐม
+P01,promotion,โปรโมชั่น Geely EX5 เดือนนี้
+P02,promotion,โปรโมชั่น Mazda นครปฐม
+P03,promotion,โปรโมชั่น GWM Haval H6 เดือนนี้
+P04,promotion,ราคา Geely EX2 ผ่อนเดือนละเท่าไหร่
+P05,promotion,ราคา Geely Starray EM-R ผ่อนเท่าไหร่
+P06,promotion,แคมเปญ Kia ล่าสุด
+E01,comparison,Geely EX5 กับ BYD Atto 3 ต่างกันอย่างไร
+E02,comparison,Changan กับ Deepal เป็นแบรนด์เดียวกันไหม
+E03,comparison,ควรซื้อรถไฟฟ้ากับดีลเลอร์ไหนดี ดูอะไรบ้าง
+E04,comparison,ดีลเลอร์ Geely ในไทยมีที่ไหนบ้าง
+S01,service,ศูนย์บริการ GWM นครปฐม
+S02,service,ซ่อมสีรถ ประกันชั้น 1 นครปฐม ต้องไปอู่ไหน
+S03,service,ศูนย์บริการ Ford นครปฐม

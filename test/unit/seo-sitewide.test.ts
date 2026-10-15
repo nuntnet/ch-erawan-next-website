@@ -27,8 +27,10 @@ describe("site-wide SEO data", () => {
   it("home FAQ counts come from data", () => {
     const faq = getSiteFaq();
     expect(faq[0].answer).toContain(`${BRANDS.length} แบรนด์`);
-    expect(faq[1].answer).toContain(`${branches.length} สาขา`);
-    expect(faq[1].answer).toContain("GEELY ช.เอราวัณ รัชดา");
+    expect(faq[0].answer).toContain(`${branches.length} สาขา`);
+    expect(faq[1].answer).toContain(`${BRANDS.length} แบรนด์`);
+    expect(faq[2].answer).toContain(`${branches.length} สาขา`);
+    expect(faq[2].answer).toContain("GEELY ช.เอราวัณ รัชดา");
   });
 });
 

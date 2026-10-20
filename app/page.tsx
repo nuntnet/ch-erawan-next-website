@@ -7,6 +7,9 @@ import { getYearsOfExperience } from "@/lib/company";
 import { getSiteFaq } from "@/lib/brandFaq";
 import { faqPageJsonLd } from "@/lib/seo/faq";
 import BrandFaqSection from "@/components/brands/BrandFaqSection";
+import Link from "next/link";
+import { BRANDS } from "@/lib/brandConfig";
+import { branches } from "@/lib/branchData";
 
 export const revalidate = 3600;
 
@@ -95,6 +98,32 @@ export default async function HomePage() {
         publicStories={publicStories}
         promotions={promotions}
       />
+      <section className="bg-white pt-4 pb-8" aria-labelledby="home-about">
+        <div className="container">
+          <h2 id="home-about" className="text-xl font-bold text-[#0F172A]">ช.เอราวัณ กรุ๊ป คือตัวแทนจำหน่ายรถยนต์อย่างเป็นทางการ</h2>
+          <p className="mt-2 text-sm leading-relaxed text-gray-600">
+            ช.เอราวัณ กรุ๊ป คือกลุ่มตัวแทนจำหน่ายรถยนต์อย่างเป็นทางการใน จ.นครปฐมและกรุงเทพฯ จำหน่ายรถยนต์ {BRANDS.length} แบรนด์ ผ่าน {branches.length} สาขา พร้อมศูนย์บริการ ซ่อมสีตัวถัง ประกันภัย และรถมือสอง
+          </p>
+          <div className="mt-4 grid gap-6 sm:grid-cols-2">
+            <div>
+              <h3 className="text-sm font-semibold text-[#0F172A]">แบรนด์ที่จำหน่าย</h3>
+              <ul className="mt-2 list-disc pl-5 text-sm text-gray-600 space-y-1">
+                {BRANDS.map((b) => (
+                  <li key={b.slug}><Link href={b.hubPath} className="hover:underline">{b.displayName}</Link></li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-[#0F172A]">สาขา</h3>
+              <ul className="mt-2 list-disc pl-5 text-sm text-gray-600 space-y-1">
+                {branches.map((b) => (
+                  <li key={b.id}><Link href="/branches" className="hover:underline">{b.displayName ?? b.name}</Link></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
       <JsonLd data={faqPageJsonLd(getSiteFaq())} />
       <section className="bg-white pb-16">
         <div className="container">

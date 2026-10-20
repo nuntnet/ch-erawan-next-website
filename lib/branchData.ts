@@ -56,6 +56,10 @@ export const branches: Branch[] = [
     lineId: "@mazdach.erawan",
     lineUrl: "https://lin.ee/NLeKZy6",
     hours: "จ–ศ 08:00–18:00 · ส–อา 08:00–17:00",
+    schemaHours: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
+      { days: ["Saturday", "Sunday"], opens: "08:00", closes: "17:00" },
+    ],
     services: [
       "ขายรถยนต์ใหม่ Mazda",
       "ศูนย์บริการมาตรฐาน Mazda",

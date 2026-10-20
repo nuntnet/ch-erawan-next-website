@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { organizationGraph } from "@/lib/seo/organization";
+import { organizationGraph, autoDealerNode } from "@/lib/seo/organization";
 import { localBusinessGraph } from "@/lib/seo/local-business";
 import { getSiteFaq } from "@/lib/brandFaq";
 import { branches } from "@/lib/branchData";
@@ -60,6 +60,14 @@ describe("Geely opening hours", () => {
       { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "08:30", closes: "17:30" },
       { "@type": "OpeningHoursSpecification", dayOfWeek: ["Sunday"], opens: "09:00", closes: "17:00" },
     ]);
-    expect(nodes.find((n) => n.name.startsWith("มาสด้า ช.เอราวัณ นครปฐม"))!.openingHours).toBeTruthy();
+    expect(nodes.find((n) => n.name.startsWith("ฟอร์ด ช.เอราวัณ"))!.openingHours).toBeTruthy();
+  });
+
+  it("HQ AutoDealer node uses the HQ phone shown on pages, plus geo and structured hours", () => {
+    const dealer = autoDealerNode() as { telephone: string; geo?: { latitude: number }; openingHoursSpecification?: unknown[] };
+    const hq = branches.find((b) => b.isHQ)!;
+    expect(dealer.telephone).toBe(hq.phone);
+    expect(dealer.geo?.latitude).toBe(hq.lat);
+    expect(dealer.openingHoursSpecification?.length).toBe(2);
   });
 });

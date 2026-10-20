@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/site";
+import { branches } from "@/lib/branchData";
 import {
   DEALER_BRANDS,
   DEFAULT_PHONE,
@@ -38,6 +39,8 @@ export function organizationNode() {
 
 /** AutoDealer node for @graph */
 export function autoDealerNode() {
+  // Use the HQ branch's phone/geo/hours so structured data matches what the pages display.
+  const hq = branches.find((b) => b.isHQ);
   return {
     "@type": ["AutoDealer", "LocalBusiness"] as string[],
     "@id": `${SITE_URL}/#autodealer`,
@@ -45,9 +48,22 @@ export function autoDealerNode() {
     url: SITE_URL,
     logo: LOGO_URL,
     description: dealerDescription,
-    telephone: DEFAULT_PHONE,
+    telephone: hq?.phone ?? DEFAULT_PHONE,
     parentOrganization: { "@id": `${SITE_URL}/#organization` },
     address: HQ_ADDRESS,
+    ...(hq?.lat != null && hq?.lng != null
+      ? { geo: { "@type": "GeoCoordinates", latitude: hq.lat, longitude: hq.lng } }
+      : {}),
+    ...(hq?.schemaHours
+      ? {
+          openingHoursSpecification: hq.schemaHours.map((h) => ({
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: h.days,
+            opens: h.opens,
+            closes: h.closes,
+          })),
+        }
+      : {}),
     areaServed: { "@type": "City", name: "นครปฐม" },
     brand: DEALER_BRANDS.map((name) => ({ "@type": "Brand", name })),
     // Services only (no prices): the same offerings the site FAQ already states.
